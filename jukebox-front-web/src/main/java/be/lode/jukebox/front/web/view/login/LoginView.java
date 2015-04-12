@@ -1,10 +1,9 @@
 package be.lode.jukebox.front.web.view.login;
 
 import be.lode.jukebox.front.web.controller.OAuthListenerJukebox;
-import be.lode.jukebox.service.dto.OAuthApiInfoDTO;
+import be.lode.jukebox.front.web.view.general.FacebookButtonLayout;
+import be.lode.jukebox.front.web.view.general.MainLayout;
 import be.lode.jukebox.service.manager.JukeboxManager;
-import be.lode.jukebox.service.manager.OAuthApiInfoManager;
-import be.lode.oauth.FacebookButton;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -23,27 +22,21 @@ public class LoginView extends CustomComponent implements View {
 		return NAME;
 	}
 
-	private FacebookButton btn;
+	// private FacebookButton btn;
 	private JukeboxManager mgr;
-	private OAuthApiInfoDTO oAuthApiInfoDTO;
 	private OAuthListenerJukebox oauthListener;
+	private FacebookButtonLayout fbLayout;
 
 	// https://vaadin.com/wiki/-/wiki/Main/Creating%20a%20simple%20login%20view
 	public LoginView(JukeboxManager mgr) {
 		super();
 		this.mgr = mgr;
 		setSizeFull();
-		OAuthApiInfoManager OAuthManager = new OAuthApiInfoManager();
-		oAuthApiInfoDTO = OAuthManager.getOAuthApiInfo("Facebook");
 
-		oauthListener = new OAuthListenerJukebox(this.getUI(), mgr);
-		btn = new FacebookButton("Login with facebook",
-				oAuthApiInfoDTO.getApiKey(), oAuthApiInfoDTO.getApiSecret(),
-				oauthListener);
-
+		fbLayout = new FacebookButtonLayout();
 		HorizontalLayout facebookButtonLayout = new HorizontalLayout();
 		facebookButtonLayout.setSpacing(true);
-		facebookButtonLayout.addComponent(btn);
+		facebookButtonLayout.addComponent(fbLayout);
 
 		VerticalLayout fb = new VerticalLayout();
 		fb.addComponent(facebookButtonLayout);
@@ -51,7 +44,8 @@ public class LoginView extends CustomComponent implements View {
 		fb.setMargin(new MarginInfo(true, true, true, false));
 		fb.setSizeUndefined();
 
-		VerticalLayout viewLayout = new VerticalLayout(fb);
+		MainLayout viewLayout = new MainLayout();
+		viewLayout.addComponent(fb);
 		viewLayout.setSizeFull();
 		viewLayout.setComponentAlignment(fb, Alignment.MIDDLE_CENTER);
 		viewLayout.setStyleName(Reindeer.LAYOUT_BLUE);
@@ -65,14 +59,12 @@ public class LoginView extends CustomComponent implements View {
 		} else {
 			oauthListener = new OAuthListenerJukebox(this.getUI(), mgr);
 		}
-		btn.setAuthListener(oauthListener);
+		fbLayout.setAuthListener(oauthListener);
 	};
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		btn = new FacebookButton("Login with facebook",
-				oAuthApiInfoDTO.getApiKey(), oAuthApiInfoDTO.getApiSecret(),
-				new OAuthListenerJukebox(this.getUI(), mgr));
+		fbLayout = new FacebookButtonLayout();
 	}
 
 }

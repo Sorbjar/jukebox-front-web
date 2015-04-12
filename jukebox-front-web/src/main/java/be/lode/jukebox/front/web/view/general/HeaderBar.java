@@ -12,7 +12,7 @@ import com.vaadin.ui.VerticalLayout;
 
 public class HeaderBar extends VerticalLayout {
 	private static final long serialVersionUID = -6328436734391733513L;
-	AccountDTO acc;
+	private AccountDTO acc;
 
 	public HeaderBar() {
 		super();
@@ -47,12 +47,16 @@ public class HeaderBar extends VerticalLayout {
 			MenuBar barmenu = new MenuBar();
 			if (acc.getFirstName() != null) {
 				MenuItem userItem = barmenu.addItem(acc.getFirstName(), null);
+				//TODO edit profile command
 				userItem.addItem("edit profile", null);
+				//TODO logout command
 				userItem.addItem("logout", null);
 			}
 			return barmenu;
 		} else
-			return new MenuBar();
+		{
+			FacebookButtonLayout btn = new FacebookButtonLayout();
+			return btn;
+		}
 	}
-
 }

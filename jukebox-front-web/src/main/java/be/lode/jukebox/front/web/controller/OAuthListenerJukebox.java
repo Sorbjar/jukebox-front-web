@@ -1,6 +1,6 @@
 package be.lode.jukebox.front.web.controller;
 
-import be.lode.jukebox.front.web.view.login.ChooseJukeboxView;
+import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
 import be.lode.jukebox.service.manager.JukeboxManager;
 import be.lode.oauth.OAuthButton.IOAuthUser;
 import be.lode.oauth.OAuthButton.OAuthListener;
