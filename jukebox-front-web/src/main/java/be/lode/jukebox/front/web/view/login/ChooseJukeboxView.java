@@ -1,19 +1,23 @@
 package be.lode.jukebox.front.web.view.login;
 
 import be.lode.jukebox.front.web.view.general.MainLayout;
+import be.lode.jukebox.service.dto.AccountDTO;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.CustomComponent;
 
-public class LoggedInView extends CustomComponent implements View {
+public class ChooseJukeboxView extends CustomComponent implements View {
 	private static final long serialVersionUID = 8079850607581069102L;
 
 	private static final String NAME = "";
+	AccountDTO acc;
 
-	public LoggedInView() {
+	public ChooseJukeboxView() {
 		super();
-		MainLayout vl = new MainLayout();
+		acc = (AccountDTO) VaadinSession.getCurrent().getAttribute("user");
+		MainLayout vl = new MainLayout(acc);
 		setCompositionRoot(vl);
 
 		this.markAsDirty();
@@ -22,16 +26,8 @@ public class LoggedInView extends CustomComponent implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// OAuthUser u = (OAuthUser)
-		// VaadinSession.getCurrent().getAttribute("user");
-		// mgr.getUser((OAuthUser)
-		// VaadinSession.getCurrent().getAttribute("user"));
-		// Get the user name from the session
-		/*
-		 * String username = String.valueOf(getSession().getAttribute("user"));
-		 * 
-		 * And show the username text.setValue("Hello " + username);
-		 */
+		
+		acc = (AccountDTO) VaadinSession.getCurrent().getAttribute("user");
 		this.markAsDirty();
 	}
 

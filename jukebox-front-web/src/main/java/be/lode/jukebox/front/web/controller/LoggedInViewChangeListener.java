@@ -38,7 +38,6 @@ public class LoggedInViewChangeListener implements ViewChangeListener {
 
 	@Override
 	public void afterViewChange(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
 
 	}
 

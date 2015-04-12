@@ -2,6 +2,7 @@ package be.lode.jukebox.front.web.view.login;
 
 import be.lode.jukebox.front.web.controller.OAuthListenerJukebox;
 import be.lode.jukebox.service.dto.OAuthApiInfoDTO;
+import be.lode.jukebox.service.manager.JukeboxManager;
 import be.lode.jukebox.service.manager.OAuthApiInfoManager;
 import be.lode.oauth.FacebookButton;
 
@@ -15,25 +16,27 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
 public class LoginView extends CustomComponent implements View {
+	private static final String NAME = "Login";
 	private static final long serialVersionUID = 3684376934342087722L;
-	private static final String NAME = "Login View";
 
 	public static String getName() {
 		return NAME;
 	}
 
-	private OAuthApiInfoDTO oAuthApiInfoDTO;
 	private FacebookButton btn;
+	private JukeboxManager mgr;
+	private OAuthApiInfoDTO oAuthApiInfoDTO;
 	private OAuthListenerJukebox oauthListener;
 
 	// https://vaadin.com/wiki/-/wiki/Main/Creating%20a%20simple%20login%20view
-	public LoginView() {
+	public LoginView(JukeboxManager mgr) {
 		super();
+		this.mgr = mgr;
 		setSizeFull();
-		OAuthApiInfoManager manager = new OAuthApiInfoManager();
-		oAuthApiInfoDTO = manager.getOAuthApiInfo("Facebook");
+		OAuthApiInfoManager OAuthManager = new OAuthApiInfoManager();
+		oAuthApiInfoDTO = OAuthManager.getOAuthApiInfo("Facebook");
 
-		oauthListener = new OAuthListenerJukebox(this.getUI(), oAuthApiInfoDTO);
+		oauthListener = new OAuthListenerJukebox(this.getUI(), mgr);
 		btn = new FacebookButton("Login with facebook",
 				oAuthApiInfoDTO.getApiKey(), oAuthApiInfoDTO.getApiSecret(),
 				oauthListener);
@@ -60,8 +63,7 @@ public class LoginView extends CustomComponent implements View {
 		if (oauthListener != null) {
 			oauthListener.setMainUI(this.getUI());
 		} else {
-			oauthListener = new OAuthListenerJukebox(this.getUI(),
-					oAuthApiInfoDTO);
+			oauthListener = new OAuthListenerJukebox(this.getUI(), mgr);
 		}
 		btn.setAuthListener(oauthListener);
 	};
@@ -70,7 +72,7 @@ public class LoginView extends CustomComponent implements View {
 	public void enter(ViewChangeEvent event) {
 		btn = new FacebookButton("Login with facebook",
 				oAuthApiInfoDTO.getApiKey(), oAuthApiInfoDTO.getApiSecret(),
-				new OAuthListenerJukebox(this.getUI(), oAuthApiInfoDTO));
+				new OAuthListenerJukebox(this.getUI(), mgr));
 	}
 
 }

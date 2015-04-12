@@ -1,6 +1,9 @@
 package be.lode.jukebox.front.web.view.general;
 
+import be.lode.jukebox.service.dto.AccountDTO;
+
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -9,9 +12,22 @@ import com.vaadin.ui.VerticalLayout;
 
 public class HeaderBar extends VerticalLayout {
 	private static final long serialVersionUID = -6328436734391733513L;
+	AccountDTO acc;
 
 	public HeaderBar() {
-		MenuBar barmenu = createMenuBar();
+		super();
+		this.acc = new AccountDTO();
+		constructor();
+	}
+
+	public HeaderBar(AccountDTO acc) {
+		super();
+		this.acc = acc;
+		constructor();
+	}
+
+	private void constructor() {
+		Component barmenu = createMenuBar();
 
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.setSizeFull();
@@ -25,12 +41,18 @@ public class HeaderBar extends VerticalLayout {
 		this.addComponent(content);
 	}
 
-	private MenuBar createMenuBar() {
-		MenuBar barmenu = new MenuBar();
-		MenuItem userItem = barmenu.addItem("test", null);
-		userItem.addItem("edit profile", null);
-		userItem.addItem("logout", null);
-		return barmenu;
+	private Component createMenuBar() {
+		// TODO update menubar upon login
+		if (acc != null) {
+			MenuBar barmenu = new MenuBar();
+			if (acc.getFirstName() != null) {
+				MenuItem userItem = barmenu.addItem(acc.getFirstName(), null);
+				userItem.addItem("edit profile", null);
+				userItem.addItem("logout", null);
+			}
+			return barmenu;
+		} else
+			return new MenuBar();
 	}
 
 }

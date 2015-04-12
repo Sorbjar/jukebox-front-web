@@ -1,9 +1,9 @@
 package be.lode.jukebox.front.web.controller;
 
-import be.lode.jukebox.front.web.view.login.LoggedInView;
-import be.lode.jukebox.service.dto.OAuthApiInfoDTO;
+import be.lode.jukebox.front.web.view.login.ChooseJukeboxView;
+import be.lode.jukebox.service.manager.JukeboxManager;
+import be.lode.oauth.OAuthButton.IOAuthUser;
 import be.lode.oauth.OAuthButton.OAuthListener;
-import be.lode.oauth.OAuthButton.OAuthUser;
 
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
@@ -11,11 +11,11 @@ import com.vaadin.ui.UI;
 public class OAuthListenerJukebox implements OAuthListener {
 
 	private UI mainUI;
-	private OAuthApiInfoDTO oAuthApiInfoDTO;
+	private JukeboxManager mgr;
 
-	public OAuthListenerJukebox(UI mainUI, OAuthApiInfoDTO oAuthApiInfoDTO) {
+	public OAuthListenerJukebox(UI mainUI, JukeboxManager mgr) {
 		this.mainUI = mainUI;
-		this.oAuthApiInfoDTO = oAuthApiInfoDTO;
+		this.mgr = mgr;
 	}
 
 	@Override
@@ -28,9 +28,8 @@ public class OAuthListenerJukebox implements OAuthListener {
 	}
 
 	@Override
-	public void userAuthenticated(OAuthUser user) {
-		VaadinSession.getCurrent();
-		VaadinSession.getCurrent().setAttribute("user", user);
-		mainUI.getNavigator().navigateTo(LoggedInView.getName());
+	public void userAuthenticated(IOAuthUser user) {
+		VaadinSession.getCurrent().setAttribute("user", mgr.getUser(user));
+		mainUI.getNavigator().navigateTo(ChooseJukeboxView.getName());
 	}
 }

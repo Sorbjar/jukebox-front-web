@@ -1,5 +1,7 @@
 package be.lode.jukebox.front.web.view.general;
 
+import be.lode.jukebox.service.dto.AccountDTO;
+
 import com.vaadin.ui.VerticalLayout;
 
 public class MainLayout extends VerticalLayout {
@@ -9,5 +11,11 @@ public class MainLayout extends VerticalLayout {
 		super();
 		this.setSizeFull();
 		this.addComponent(new HeaderBar());
+	}
+
+	public MainLayout(AccountDTO acc) {
+		super();
+		this.setSizeFull();
+		this.addComponent(new HeaderBar(acc));
 	}
 }
