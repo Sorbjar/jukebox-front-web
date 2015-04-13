@@ -13,6 +13,9 @@
         <dependent-module archiveName="jukebox-business-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/jukebox-business/jukebox-business">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="repository-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/repository/repository">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="jukebox-front-web"/>
         <property name="java-output-path" value="/jukebox-front-web/target/classes"/>
         <property name="component.exclusion.patterns" value="WEB-INF/classes/VAADIN/gwt-unitCache/**,WEB-INF/classes/VAADIN/widgetsets/WEB-INF/**"/>
