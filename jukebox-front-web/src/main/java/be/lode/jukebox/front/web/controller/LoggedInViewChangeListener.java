@@ -3,6 +3,7 @@ package be.lode.jukebox.front.web.controller;
 import be.lode.jukebox.front.web.view.MainUI;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.front.web.view.login.LoginView;
+import be.lode.jukebox.front.web.view.temp.TempView;
 
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.UI;
@@ -20,15 +21,15 @@ public class LoggedInViewChangeListener implements ViewChangeListener {
 	public boolean beforeViewChange(ViewChangeEvent event) {
 		// Check if a user has logged in
 		boolean isLoginView = event.getNewView() instanceof LoginView;
-
 		if (!VaadinSessionManager.isAccountLoggedIn() && !isLoginView) {
 			// Redirect to login view always if a user has not yet logged in
-			mainUI.getNavigator().navigateTo(LoginView.getName());
+			((MainUI) mainUI).navigateTo(LoginView.getName());
 			return false;
 
 		} else if (VaadinSessionManager.isAccountLoggedIn() && isLoginView) {
-			// If someone tries to access to login view while logged in, then
-			// cancel the viewChange
+			// If someone tries to access to login view while logged in, then go
+			// to default view
+			((MainUI) mainUI).navigateTo(TempView.getName());
 			return false;
 		}
 

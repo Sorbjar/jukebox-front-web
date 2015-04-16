@@ -23,9 +23,8 @@ public class LoginView extends CustomComponent implements View {
 		return NAME;
 	}
 
-	private MainLayout mainLayout;
 	private FacebookButtonLayout fbBtnLayout;
-	private OAuthListenerJukebox oAuthListenerJukebox;
+	private MainLayout mainLayout;
 	private OAuthListenerJukebox oauthListener;
 
 	// https://vaadin.com/wiki/-/wiki/Main/Creating%20a%20simple%20login%20view
@@ -33,6 +32,32 @@ public class LoginView extends CustomComponent implements View {
 		super();
 		init();
 	}
+
+	public void attach() {
+		super.attach();
+		update();
+
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		update();
+	}
+
+	private Layout getFacebookLayout() {
+
+		fbBtnLayout = new FacebookButtonLayout();
+		HorizontalLayout hl = new HorizontalLayout();
+		hl.setSpacing(true);
+		hl.addComponent(fbBtnLayout);
+
+		VerticalLayout vl = new VerticalLayout();
+		vl.addComponent(hl);
+		vl.setSpacing(true);
+		vl.setMargin(new MarginInfo(true, true, true, false));
+		vl.setSizeUndefined();
+		return vl;
+	};
 
 	private void init() {
 		this.setSizeFull();
@@ -50,27 +75,6 @@ public class LoginView extends CustomComponent implements View {
 
 	}
 
-	private Layout getFacebookLayout() {
-
-		fbBtnLayout = new FacebookButtonLayout();
-		HorizontalLayout hl = new HorizontalLayout();
-		hl.setSpacing(true);
-		hl.addComponent(fbBtnLayout);
-
-		VerticalLayout vl = new VerticalLayout();
-		vl.addComponent(hl);
-		vl.setSpacing(true);
-		vl.setMargin(new MarginInfo(true, true, true, false));
-		vl.setSizeUndefined();
-		return vl;
-	}
-
-	public void attach() {
-		super.attach();
-		update();
-
-	};
-
 	private void update() {
 		mainLayout.update();
 		if (this.getUI() != null) {
@@ -82,11 +86,6 @@ public class LoginView extends CustomComponent implements View {
 			}
 			fbBtnLayout.setAuthListener(oauthListener);
 		}
-	}
-
-	@Override
-	public void enter(ViewChangeEvent event) {
-		update();
 	}
 
 }

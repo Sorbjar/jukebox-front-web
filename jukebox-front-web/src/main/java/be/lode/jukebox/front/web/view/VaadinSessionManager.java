@@ -3,6 +3,7 @@ package be.lode.jukebox.front.web.view;
 import be.lode.jukebox.service.dto.AccountDTO;
 
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.UI;
 
 public class VaadinSessionManager {
 
@@ -24,5 +25,9 @@ public class VaadinSessionManager {
 
 	public static void logOutAccount() {
 		VaadinSession.getCurrent().setAttribute("user", null);
+	}
+
+	public static MainUI getMainUI() {
+		return (MainUI) UI.getCurrent();
 	}
 }

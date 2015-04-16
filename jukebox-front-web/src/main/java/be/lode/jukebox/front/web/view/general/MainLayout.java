@@ -1,13 +1,14 @@
 package be.lode.jukebox.front.web.view.general;
 
+import be.lode.jukebox.front.web.controller.EditProfileCommand;
 import be.lode.jukebox.front.web.controller.LogoutCommand;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.service.dto.AccountDTO;
 
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Panel;
@@ -44,6 +45,9 @@ public class MainLayout extends VerticalLayout {
 
 	public void update() {
 		hl.removeAllComponents();
+		
+		setJukeboxLabel();
+		
 		if (VaadinSessionManager.loggedInAccount() != null) {
 			MenuBar menu = getMenuBar();
 			hl.addComponent(menu);
@@ -57,11 +61,18 @@ public class MainLayout extends VerticalLayout {
 
 	}
 
+	private void setJukeboxLabel() {
+		Label jbLabel = new Label("Lode's Jukebox");
+		hl.addComponent(jbLabel);
+		hl.setComponentAlignment(jbLabel, Alignment.MIDDLE_LEFT);
+	}
+
 	private MenuBar getMenuBar() {
 		MenuBar ret = new MenuBar();
 		AccountDTO acc = VaadinSessionManager.loggedInAccount();
 		MenuItem userItem = ret.addItem(acc.getFirstName(), null);
 		MenuItem editProfileItem = userItem.addItem("Edit Profile", null);
+		editProfileItem.setCommand(new EditProfileCommand());
 		MenuItem logoutItem = userItem.addItem("Logout", null);
 		logoutItem.setCommand(new LogoutCommand());
 		// TODO set commands for menu items

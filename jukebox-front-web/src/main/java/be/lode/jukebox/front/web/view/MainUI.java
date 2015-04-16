@@ -3,7 +3,7 @@ package be.lode.jukebox.front.web.view;
 import javax.servlet.annotation.WebServlet;
 
 import be.lode.jukebox.front.web.controller.LoggedInViewChangeListener;
-import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
+import be.lode.jukebox.front.web.view.account.EditAccountView;
 import be.lode.jukebox.front.web.view.login.LoginView;
 import be.lode.jukebox.front.web.view.temp.TempView;
 import be.lode.jukebox.service.manager.JukeboxManager;
@@ -35,6 +35,10 @@ public class MainUI extends UI {
 	private JukeboxManager jukeboxManager;
 	private OAuthApiInfoManager oAuthManager;
 
+	private String previousNavigationState;
+
+	private String currentNavigationState;
+
 	public MainUI() {
 		super();
 		jukeboxManager = new JukeboxManager();
@@ -51,7 +55,10 @@ public class MainUI extends UI {
 		this.setNavigator(new Navigator(this, this));
 		this.getNavigator().addView(LoginView.getName(), LoginView.class);
 		this.getNavigator().addView(TempView.getName(), TempView.class);
-		//this.getNavigator().addView(ChooseJukeboxView.getName(), ChooseJukeboxView.class);
+		this.getNavigator().addView(EditAccountView.getName(),
+				EditAccountView.class);
+		// this.getNavigator().addView(ChooseJukeboxView.getName(),
+		// ChooseJukeboxView.class);
 		/*
 		 * this.getNavigator().addView(LoginView.getName(), new
 		 * LoginView(jukeboxManager));
@@ -63,8 +70,24 @@ public class MainUI extends UI {
 		// Redirected user to the login view if the user is not logged in
 		this.getNavigator().addViewChangeListener(
 				new LoggedInViewChangeListener(this));
+	}
 
+	public void navigateTo(String navigationState) {
+		// use this in stead of getNavigator, so we can go back
+		// XXX possibly save in ordered list
+		this.previousNavigationState = currentNavigationState;
+		this.currentNavigationState = navigationState;
+		if (navigationState != null)
+			this.getNavigator().navigateTo(navigationState);
+		else
+			this.getNavigator().navigateTo("");
+	}
 
+	public void navigateBack() {
+		if (previousNavigationState != null)
+			this.getNavigator().navigateTo(previousNavigationState);
+		else
+			this.getNavigator().navigateTo("");
 	}
 
 	public OAuthApiInfoManager getoAuthManager() {

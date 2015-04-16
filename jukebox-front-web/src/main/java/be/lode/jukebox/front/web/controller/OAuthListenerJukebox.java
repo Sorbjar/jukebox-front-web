@@ -1,7 +1,5 @@
 package be.lode.jukebox.front.web.controller;
 
-import com.vaadin.ui.UI;
-
 import be.lode.jukebox.front.web.view.MainUI;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
@@ -21,7 +19,7 @@ public class OAuthListenerJukebox implements OAuthListener {
 	public void userAuthenticated(IOAuthUser user) {
 		VaadinSessionManager.setLoggedInAccount(mainUI.getJukeboxManager()
 				.getUser(user));
-		mainUI.getNavigator().navigateTo(ChooseJukeboxView.getName());
+		mainUI.navigateTo(ChooseJukeboxView.getName());
 	}
 
 	public MainUI getMainUI() {

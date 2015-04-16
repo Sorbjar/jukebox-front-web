@@ -5,7 +5,6 @@ import be.lode.jukebox.front.web.view.general.MainLayout;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
 
 public class TempView extends CustomComponent implements View {
 	private static final long serialVersionUID = -9112596372107786366L;
@@ -15,7 +14,6 @@ public class TempView extends CustomComponent implements View {
 		return NAME;
 	}
 
-	private HorizontalLayout hl;
 	private MainLayout ml;
 
 	@Override
