@@ -49,8 +49,7 @@ public class JukeboxPlayerView extends CustomComponent implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
-
+		//TODO setup
 	}
 
 }

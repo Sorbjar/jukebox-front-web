@@ -4,8 +4,9 @@ import javax.servlet.annotation.WebServlet;
 
 import be.lode.jukebox.front.web.controller.LoggedInViewChangeListener;
 import be.lode.jukebox.front.web.view.account.EditAccountView;
+import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
+import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.front.web.view.login.LoginView;
-import be.lode.jukebox.front.web.view.temp.TempView;
 import be.lode.jukebox.service.manager.JukeboxManager;
 import be.lode.jukebox.service.manager.OAuthApiInfoManager;
 
@@ -37,6 +38,10 @@ public class MainUI extends UI {
 
 	private String previousNavigationState;
 
+	public String getPreviousNavigationState() {
+		return previousNavigationState;
+	}
+
 	private String currentNavigationState;
 
 	public MainUI() {
@@ -54,9 +59,12 @@ public class MainUI extends UI {
 			oAuthManager = new OAuthApiInfoManager();
 		this.setNavigator(new Navigator(this, this));
 		this.getNavigator().addView(LoginView.getName(), LoginView.class);
-		this.getNavigator().addView(TempView.getName(), TempView.class);
+		this.getNavigator().addView(ChooseJukeboxView.getName(),
+				ChooseJukeboxView.class);
 		this.getNavigator().addView(EditAccountView.getName(),
 				EditAccountView.class);
+		this.getNavigator().addView(JukeboxPlayerView.getName(),
+				JukeboxPlayerView.class);
 		// this.getNavigator().addView(ChooseJukeboxView.getName(),
 		// ChooseJukeboxView.class);
 		/*
@@ -83,8 +91,10 @@ public class MainUI extends UI {
 			this.getNavigator().navigateTo("");
 	}
 
-	public void navigateBack() {
-		if (previousNavigationState != null)
+	public void navigateBack(String currentViewName) {
+		if (previousNavigationState != null
+				&& previousNavigationState != currentViewName
+				&& previousNavigationState != currentNavigationState)
 			this.getNavigator().navigateTo(previousNavigationState);
 		else
 			this.getNavigator().navigateTo("");

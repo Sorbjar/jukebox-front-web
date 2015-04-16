@@ -6,6 +6,7 @@ import be.lode.jukebox.front.web.controller.CancelListener;
 import be.lode.jukebox.front.web.controller.SaveAccountListener;
 import be.lode.jukebox.front.web.view.MainUI;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
+import be.lode.jukebox.front.web.view.general.ErrorLabel;
 import be.lode.jukebox.front.web.view.general.MainLayout;
 import be.lode.jukebox.service.dto.AccountDTO;
 
@@ -21,7 +22,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-//TODO return to original
 public class EditAccountView extends CustomComponent implements View {
 	private static final String NAME = "EditAccount";
 	private static final long serialVersionUID = 5356689012928107750L;
@@ -73,11 +73,10 @@ public class EditAccountView extends CustomComponent implements View {
 		form.addComponent(emailTF);
 
 		HorizontalLayout buttonLayout = new HorizontalLayout();
-		// FIXME save listener
 		Button saveButton = new Button("Save");
 		saveButton.addClickListener(new SaveAccountListener(this));
 		Button cancelButton = new Button("Cancel");
-		cancelListener = new CancelListener();
+		cancelListener = new CancelListener(getName());
 		cancelButton.addClickListener(cancelListener);
 		buttonLayout.addComponent(saveButton);
 		buttonLayout.addComponent(cancelButton);
@@ -115,7 +114,6 @@ public class EditAccountView extends CustomComponent implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		update();
-
 	}
 
 	public void update() {

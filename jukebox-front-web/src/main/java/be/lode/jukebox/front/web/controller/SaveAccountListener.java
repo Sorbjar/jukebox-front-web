@@ -28,10 +28,10 @@ public class SaveAccountListener implements ClickListener {
 			dto.setEmailAddress(editAccountView.getEmailTF().getValue());
 			JukeboxManager mgr = VaadinSessionManager.getMainUI()
 					.getJukeboxManager();
-			//TODO save the actual object, so it's retrievable
 			dto = mgr.save(dto);
 			VaadinSessionManager.setLoggedInAccount(dto);
-			editAccountView.update();
+			VaadinSessionManager.getMainUI().navigateBack(
+					editAccountView.getClass().getName());
 		} else {
 			editAccountView.showErrors(errors);
 		}

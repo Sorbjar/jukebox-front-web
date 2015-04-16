@@ -14,7 +14,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
-//TODO add title to bar
+//TODO prettify title in bar
 public class MainLayout extends VerticalLayout {
 	private static final long serialVersionUID = 5257805110680869966L;
 	// The container is what the application will interact with.
@@ -75,7 +75,6 @@ public class MainLayout extends VerticalLayout {
 		editProfileItem.setCommand(new EditProfileCommand());
 		MenuItem logoutItem = userItem.addItem("Logout", null);
 		logoutItem.setCommand(new LogoutCommand());
-		// TODO set commands for menu items
 		return ret;
 	}
 

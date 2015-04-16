@@ -7,10 +7,16 @@ import com.vaadin.ui.Button.ClickListener;
 
 public class CancelListener implements ClickListener {
 	private static final long serialVersionUID = 6545003499682551628L;
+	private String currentViewName;
+
+	public CancelListener(String currentViewName) {
+		super();
+		this.currentViewName = currentViewName;
+	}
 
 	@Override
 	public void buttonClick(ClickEvent event) {
-		VaadinSessionManager.getMainUI().navigateBack();
+		VaadinSessionManager.getMainUI().navigateBack(this.currentViewName);
 	}
 
 }

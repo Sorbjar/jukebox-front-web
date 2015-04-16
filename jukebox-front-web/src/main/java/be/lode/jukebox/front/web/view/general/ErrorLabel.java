@@ -1,4 +1,4 @@
-package be.lode.jukebox.front.web.view.account;
+package be.lode.jukebox.front.web.view.general;
 
 import com.vaadin.ui.Label;
 
