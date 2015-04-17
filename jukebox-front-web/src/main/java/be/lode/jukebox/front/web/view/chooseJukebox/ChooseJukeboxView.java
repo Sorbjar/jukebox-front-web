@@ -1,10 +1,14 @@
 package be.lode.jukebox.front.web.view.chooseJukebox;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import be.lode.jukebox.front.web.controller.DeleteJukeboxListener;
 import be.lode.jukebox.front.web.controller.ManageJukeboxClickListener;
 import be.lode.jukebox.front.web.controller.NewJukeboxButtonClickListener;
-import be.lode.jukebox.front.web.view.VaadinSessionManager;
+import be.lode.jukebox.front.web.view.general.JukeboxCustomComponent;
 import be.lode.jukebox.front.web.view.general.MainLayout;
+import be.lode.jukebox.service.UpdateArgs;
 import be.lode.jukebox.service.dto.AccountDTO;
 import be.lode.jukebox.service.dto.JukeboxDTO;
 import be.lode.jukebox.service.manager.JukeboxManager;
@@ -14,14 +18,14 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
 //TODO prettify
-public class ChooseJukeboxView extends CustomComponent implements View {
+public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
+		Observer {
 
 	private static final String NAME = "";
 	private static final long serialVersionUID = -9756195884344605L;
@@ -38,10 +42,6 @@ public class ChooseJukeboxView extends CustomComponent implements View {
 	private MainLayout ml;
 	private JukeboxDTO selectedJukebox;
 
-	public JukeboxDTO getSelectedJukebox() {
-		return selectedJukebox;
-	}
-
 	public ChooseJukeboxView() {
 		super();
 		init();
@@ -50,6 +50,7 @@ public class ChooseJukeboxView extends CustomComponent implements View {
 	@Override
 	public void attach() {
 		super.attach();
+		getMainUI().getJukeboxManager().addObserver(this);
 		update();
 	}
 
@@ -58,8 +59,22 @@ public class ChooseJukeboxView extends CustomComponent implements View {
 		update();
 	}
 
+	public JukeboxDTO getSelectedJukebox() {
+		return selectedJukebox;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (arg.equals(UpdateArgs.JUKEBOXLIST)) {
+			jukeboxTable.setContainerDataSource(generateTableContent());
+			jukeboxTable.setVisibleColumns(new Object[] { "name" });
+			jukeboxTable.setColumnHeaders("Your jukeboxes");
+			setButtonsActiveStatus();
+		}
+
+	}
+
 	private void addDeleteButton() {
-		// TODO setup new delete listener
 		deleteButton = new Button("Delete jukebox");
 		deleteButton.addClickListener(new DeleteJukeboxListener(this));
 		buttonsLayout.addComponent(deleteButton);
@@ -88,7 +103,7 @@ public class ChooseJukeboxView extends CustomComponent implements View {
 
 	private void addManageButton() {
 		manageButton = new Button("Manage jukebox");
-		manageButton.addClickListener(new ManageJukeboxClickListener());
+		manageButton.addClickListener(new ManageJukeboxClickListener(this));
 		buttonsLayout.addComponent(manageButton);
 	}
 
@@ -102,11 +117,9 @@ public class ChooseJukeboxView extends CustomComponent implements View {
 	private Container generateTableContent() {
 		BeanItemContainer<JukeboxDTO> cont = new BeanItemContainer<JukeboxDTO>(
 				JukeboxDTO.class);
-		if (VaadinSessionManager.isAccountLoggedIn()
-				&& VaadinSessionManager.getMainUI() != null) {
-			AccountDTO loggedInAccount = VaadinSessionManager.loggedInAccount();
-			JukeboxManager mgr = VaadinSessionManager.getMainUI()
-					.getJukeboxManager();
+		if (isAccountLoggedIn() && getMainUI() != null) {
+			AccountDTO loggedInAccount = loggedInAccount();
+			JukeboxManager mgr = getMainUI().getJukeboxManager();
 			loggedInAccount = mgr.getAccount(loggedInAccount);
 			cont.addAll(mgr.getJukeboxes(loggedInAccount));
 		}
@@ -138,7 +151,7 @@ public class ChooseJukeboxView extends CustomComponent implements View {
 		vl.addComponent(hl);
 
 		ml = new MainLayout();
-		ml.addComponentContainer(vl);
+		ml.addComponentToContainer(vl);
 		this.setCompositionRoot(ml);
 
 	}

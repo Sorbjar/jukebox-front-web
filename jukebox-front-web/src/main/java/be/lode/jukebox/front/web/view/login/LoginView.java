@@ -66,7 +66,7 @@ public class LoginView extends CustomComponent implements View {
 
 		mainLayout = new MainLayout();
 
-		mainLayout.addComponentContainer(facebookLayout);
+		mainLayout.addComponentToContainer(facebookLayout);
 		mainLayout.setComponentAlignmentContainer(facebookLayout,
 				Alignment.MIDDLE_CENTER);
 

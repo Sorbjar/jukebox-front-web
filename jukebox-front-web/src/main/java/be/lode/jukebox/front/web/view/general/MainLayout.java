@@ -28,7 +28,7 @@ public class MainLayout extends VerticalLayout {
 		init();
 	}
 
-	public void addComponentContainer(Component c) {
+	public void addComponentToContainer(Component c) {
 		container.addComponent(c);
 	}
 
@@ -48,7 +48,7 @@ public class MainLayout extends VerticalLayout {
 		
 		setJukeboxLabel();
 		
-		if (VaadinSessionManager.loggedInAccount() != null) {
+		if (VaadinSessionManager.getLoggedInAccount() != null) {
 			MenuBar menu = getMenuBar();
 			hl.addComponent(menu);
 			hl.setComponentAlignment(menu, Alignment.MIDDLE_RIGHT);
@@ -69,7 +69,7 @@ public class MainLayout extends VerticalLayout {
 
 	private MenuBar getMenuBar() {
 		MenuBar ret = new MenuBar();
-		AccountDTO acc = VaadinSessionManager.loggedInAccount();
+		AccountDTO acc = VaadinSessionManager.getLoggedInAccount();
 		MenuItem userItem = ret.addItem(acc.getFirstName(), null);
 		MenuItem editProfileItem = userItem.addItem("Edit Profile", null);
 		editProfileItem.setCommand(new EditProfileCommand());

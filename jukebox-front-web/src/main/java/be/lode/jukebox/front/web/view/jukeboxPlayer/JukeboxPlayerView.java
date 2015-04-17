@@ -1,5 +1,7 @@
 package be.lode.jukebox.front.web.view.jukeboxPlayer;
 
+import be.lode.jukebox.front.web.view.general.MainLayout;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
@@ -14,6 +16,8 @@ public class JukeboxPlayerView extends CustomComponent implements View {
 	public static String getName() {
 		return NAME;
 	}
+
+	private MainLayout ml;
 	
 	public JukeboxPlayerView() {
 		super();
@@ -44,12 +48,25 @@ public class JukeboxPlayerView extends CustomComponent implements View {
 		vl.addComponent(topLayout);
 		vl.addComponent(bottomLayout);
 		
-		this.setCompositionRoot(vl);
+		ml = new MainLayout();
+		ml.addComponentToContainer(vl);
+		this.setCompositionRoot(ml);
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		//TODO setup
+		update();
+	}
+	
+	@Override
+	public void attach() {
+		super.attach();
+		update();
+	}
+
+	private void update() {
+		ml.update();
+		//TODO update
 	}
 
 }

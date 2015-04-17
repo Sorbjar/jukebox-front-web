@@ -24,24 +24,19 @@ public class DeleteJukeboxListener implements ClickListener {
 		JukeboxDTO jbDto = chooseJukeboxView.getSelectedJukebox();
 		if (VaadinSessionManager.getMainUI() != null) {
 			MainUI mainUI = VaadinSessionManager.getMainUI();
-			// The quickest way to confirm
-			//TODO solve
-			ConfirmDialog.show(this, repeat(MESSAGE_1),
-			        new ConfirmDialog.Listener() {
+			// TODO prettify
+			ConfirmDialog.show(mainUI, "Confirm delete",
+					"Are you sure you wish to delete"
+							+ chooseJukeboxView.getSelectedJukebox().getName(),
+					"Yes", "No", new ConfirmDialog.Listener() {
+						private static final long serialVersionUID = -8020518088629472261L;
 
-			            public void onClose(ConfirmDialog dialog) {
-			                if (dialog.isConfirmed()) {
-			                    // Confirmed to continue
-			                    feedback(dialog.isConfirmed());
-			                } else {
-			                    // User did not confirm
-			                    feedback(dialog.isConfirmed());
-			                }
-			            }
-			        });
-			// TODO ask confirmation
-			// TODO delete
-			// TODO update table
+						public void onClose(ConfirmDialog dialog) {
+							if (dialog.isConfirmed()) {
+								mainUI.getJukeboxManager().deleteJukebox(jbDto);
+							}
+						}
+					});
 		}
 
 	}

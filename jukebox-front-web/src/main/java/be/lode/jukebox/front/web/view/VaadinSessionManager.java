@@ -7,7 +7,7 @@ import com.vaadin.ui.UI;
 
 public class VaadinSessionManager {
 
-	public static AccountDTO loggedInAccount() {
+	public static AccountDTO getLoggedInAccount() {
 		boolean isLoggedIn = VaadinSession.getCurrent().getAttribute("user") != null;
 		if (isLoggedIn) {
 			return (AccountDTO) VaadinSession.getCurrent().getAttribute("user");

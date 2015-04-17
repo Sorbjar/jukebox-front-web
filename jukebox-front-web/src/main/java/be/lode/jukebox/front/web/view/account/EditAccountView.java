@@ -89,7 +89,7 @@ public class EditAccountView extends CustomComponent implements View {
 		vl.addComponent(errorMessageLayout);
 
 		ml = new MainLayout();
-		ml.addComponentContainer(vl);
+		ml.addComponentToContainer(vl);
 		this.setCompositionRoot(ml);
 	}
 
@@ -119,7 +119,7 @@ public class EditAccountView extends CustomComponent implements View {
 	public void update() {
 		MainUI ui = (MainUI) UI.getCurrent();
 		currentAccount = ui.getJukeboxManager().getAccount(
-				VaadinSessionManager.loggedInAccount());
+				VaadinSessionManager.getLoggedInAccount());
 		ml.update();
 		fillFields();
 		errorMessageLayout.removeAllComponents();
