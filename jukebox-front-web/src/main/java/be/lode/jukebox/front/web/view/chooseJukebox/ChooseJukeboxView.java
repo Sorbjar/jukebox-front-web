@@ -23,7 +23,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
-//TODO prettify
+//TODO 610 prettify
 public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		Observer {
 
@@ -108,7 +108,6 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 	}
 
 	private void addNewJukeboxButton() {
-		// TODO setup new jukeboxbutton listener
 		Button newJukeboxButton = new Button("New jukebox");
 		buttonsLayout.addComponent(newJukeboxButton);
 		newJukeboxButton.addClickListener(new NewJukeboxButtonClickListener());

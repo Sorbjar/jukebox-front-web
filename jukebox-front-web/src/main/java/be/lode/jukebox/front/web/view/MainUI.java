@@ -17,10 +17,9 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
-//TODO externalise Strings
-//TODO internationalisation
-//TODO solve lazy loading issue
-//TODO solve observer pattern
+//TODO 650 externalise Strings
+//TODO 650 internationalisation
+//TODO 850 solve lazy loading issue
 
 @Theme("jukeboxTheme")
 @Widgetset("be.lode.jukebox.front.web.JukeboxWidgetset")
@@ -82,7 +81,7 @@ public class MainUI extends UI {
 
 	public void navigateTo(String navigationState) {
 		// use this in stead of getNavigator, so we can go back
-		// XXX possibly save in ordered list
+		// TODO 890 possibly save in ordered list
 		this.previousNavigationState = currentNavigationState;
 		this.currentNavigationState = navigationState;
 		if (navigationState != null)

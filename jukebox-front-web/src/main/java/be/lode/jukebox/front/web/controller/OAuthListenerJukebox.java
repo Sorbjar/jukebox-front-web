@@ -6,13 +6,13 @@ import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
 import be.lode.oauth.OAuthButton.IOAuthUser;
 import be.lode.oauth.OAuthButton.OAuthListener;
 
-//TODO make sure it can be reused after logout
+//TODO 400 issue with error message
 public class OAuthListenerJukebox implements OAuthListener {
 	private MainUI mainUI;
 
 	@Override
 	public void failed(String reason) {
-		// TODO something when failed
+		// TODO 400 something when failed
 	}
 
 	@Override
