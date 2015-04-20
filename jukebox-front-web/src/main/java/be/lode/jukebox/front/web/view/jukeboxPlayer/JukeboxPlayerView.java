@@ -7,6 +7,7 @@ import be.lode.jukebox.front.web.view.general.JukeboxCustomComponent;
 import be.lode.jukebox.front.web.view.general.MainLayout;
 import be.lode.jukebox.service.UpdateArgs;
 import be.lode.jukebox.service.dto.PlaylistDTO;
+import be.lode.jukebox.service.dto.SongDTO;
 import be.lode.jukebox.service.manager.JukeboxManager;
 
 import com.vaadin.data.Container;
@@ -21,6 +22,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
+//TODO 200 break up in pieces
 public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		Observer {
 	private static final String NAME = "JukeboxPlayer";
@@ -30,48 +32,16 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		return NAME;
 	}
 
-	private PlaylistDTO currentPlaylist;
 	private Label jukeboxNameLabel;
 	private MainLayout ml;
 	private Label playListNameLabel;
 	private Table playlistSongTable;
 	private Table playlistTable;
+	private Table songLibraryTable;
 
 	public JukeboxPlayerView() {
 		super();
 		init();
-	}
-
-	private void init() {
-		Panel jukeboxPlaylistPanel = setupJukeboxPlaylistpanel();
-
-		Panel songTablePanel = new Panel("Song table panel");
-		songTablePanel.setSizeFull();
-
-		Panel currentPlaylistSongpanel = setupCurrentPlaylistSongpanel();
-
-		Panel musicButtonPanel = new Panel("Music button panel");
-		// musicButtonPanel.setSizeFull();
-
-		HorizontalLayout topLayout = new HorizontalLayout();
-		topLayout.addComponent(currentPlaylistSongpanel);
-		topLayout.addComponent(songTablePanel);
-		topLayout.addComponent(jukeboxPlaylistPanel);
-		topLayout.setSizeFull();
-
-		HorizontalLayout bottomLayout = new HorizontalLayout();
-		bottomLayout.setSizeFull();
-		bottomLayout.addComponent(musicButtonPanel);
-
-		VerticalLayout vl = new VerticalLayout();
-		vl.setSizeFull();
-		vl.addComponent(topLayout);
-		vl.addComponent(bottomLayout);
-
-		ml = new MainLayout();
-		ml.addComponentToContainer(vl);
-		this.setCompositionRoot(ml);
-
 	}
 
 	@Override
@@ -97,6 +67,16 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		}
 	}
 
+	private Container generatePlaylistSongTableContent() {
+		BeanItemContainer<SongDTO> cont = new BeanItemContainer<SongDTO>(
+				SongDTO.class);
+		if (isAccountLoggedIn() && getMainUI() != null) {
+			JukeboxManager mgr = getJukeboxManager();
+			cont.addAll(mgr.getSongs(mgr.getCurrentPlaylistDTO()));
+		}
+		return cont;
+	}
+
 	private Container generatePlaylistTableContent() {
 		BeanItemContainer<PlaylistDTO> cont = new BeanItemContainer<PlaylistDTO>(
 				PlaylistDTO.class);
@@ -105,6 +85,47 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 			cont.addAll(mgr.getSavedPlaylists(mgr.getCurrentJukeboxDTO()));
 		}
 		return cont;
+	}
+
+	private Container generateSongLibraryTableContent() {
+		BeanItemContainer<SongDTO> cont = new BeanItemContainer<SongDTO>(
+				SongDTO.class);
+		if (isAccountLoggedIn() && getMainUI() != null) {
+			JukeboxManager mgr = getJukeboxManager();
+			cont.addAll(mgr.getAllSongs());
+		}
+		return cont;
+	}
+
+	private void init() {
+		Panel jukeboxPlaylistPanel = setupJukeboxPlaylistpanel();
+
+		Panel songTablePanel = setupSongTablepanel();
+
+		Panel currentPlaylistSongpanel = setupCurrentPlaylistSongpanel();
+
+		Panel musicButtonPanel = new Panel("Music button panel");
+		// musicButtonPanel.setSizeFull();
+
+		HorizontalLayout topLayout = new HorizontalLayout();
+		topLayout.addComponent(currentPlaylistSongpanel);
+		topLayout.addComponent(songTablePanel);
+		topLayout.addComponent(jukeboxPlaylistPanel);
+		topLayout.setSizeFull();
+
+		HorizontalLayout bottomLayout = new HorizontalLayout();
+		bottomLayout.setSizeFull();
+		bottomLayout.addComponent(musicButtonPanel);
+
+		VerticalLayout vl = new VerticalLayout();
+		vl.setSizeFull();
+		vl.addComponent(topLayout);
+		vl.addComponent(bottomLayout);
+
+		ml = new MainLayout();
+		ml.addComponentToContainer(vl);
+		this.setCompositionRoot(ml);
+
 	}
 
 	private Panel setupCurrentPlaylistSongpanel() {
@@ -178,10 +199,40 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		return p;
 	}
 
+	private Panel setupSongTablepanel() {
+		// TODO 600 change button to crotchet
+		// TODO 200 add listener
+		Button syncLibraryButton = new Button("Sync");
+
+		HorizontalLayout syncLayout = new HorizontalLayout();
+		syncLayout.addComponent(syncLibraryButton);
+		syncLayout.setComponentAlignment(syncLibraryButton,
+				Alignment.MIDDLE_RIGHT);
+
+		songLibraryTable = new Table();
+		updateSongLibraryTable();
+		songLibraryTable.setPageLength(20);
+		songLibraryTable.setSelectable(true);
+		songLibraryTable.setMultiSelect(true);
+		songLibraryTable.setImmediate(true);
+		songLibraryTable.setWidth(200, Unit.PIXELS);
+		// TODO add drag and drop listener, to currentplaylisttable
+		// TODO add doublce click
+
+		VerticalLayout songPanelLayout = new VerticalLayout();
+		songPanelLayout.addComponent(songLibraryTable);
+		songPanelLayout.addComponent(syncLayout);
+
+		Panel p = new Panel("Song panel");
+		p.setContent(songPanelLayout);
+		return p;
+	}
+
 	private void update() {
 		ml.update();
 		updateCurrentJukebox();
 		updateCurrentPlaylist();
+		updateSongLibraryTable();
 		// TODO 100 update
 	}
 
@@ -192,6 +243,7 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 
 	private void updateCurrentPlaylist() {
 		updatePlaylistName();
+		updatePlaylistSongTable();
 	}
 
 	private void updateJukeboxName() {
@@ -214,30 +266,25 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 	}
 
 	private void updatePlaylistSongTable() {
-		// TODO 050 set container stuff
-		/*
-		playlistTable
+		// TODO 010 set tostring as table
+		playlistSongTable
 				.setContainerDataSource(generatePlaylistSongTableContent());
-		playlistTable.setVisibleColumns(new Object[] { "title" });
-		playlistTable.setColumnHeaders("Songs");
-		*/
+		playlistSongTable.setVisibleColumns(new Object[] { "title" });
+		playlistSongTable.setColumnHeaders("Songs");
 
 	}
-/*
-	private Container generatePlaylistSongTableContent() {
-		BeanItemContainer<SongDTO> cont = new BeanItemContainer<SongDTO>(
-				SongDTO.class);
-		if (isAccountLoggedIn() && getMainUI() != null) {
-			JukeboxManager mgr = getJukeboxManager();
-			cont.addAll(mgr.getSongs(mgr.getCurrentPlaylistDTO()));
-		}
-	}
-	*/
 
 	private void updatePlaylistTable() {
 		playlistTable.setContainerDataSource(generatePlaylistTableContent());
 		playlistTable.setVisibleColumns(new Object[] { "name" });
 		playlistTable.setColumnHeaders("Playlists");
+	}
+
+	private void updateSongLibraryTable() {
+		//TODO setup correct columns
+		songLibraryTable
+				.setContainerDataSource(generateSongLibraryTableContent());
+
 	}
 
 }
