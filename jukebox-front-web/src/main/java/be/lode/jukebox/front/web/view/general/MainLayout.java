@@ -1,5 +1,6 @@
 package be.lode.jukebox.front.web.view.general;
 
+import be.lode.jukebox.front.web.controller.ChooseJukeboxCommand;
 import be.lode.jukebox.front.web.controller.EditProfileCommand;
 import be.lode.jukebox.front.web.controller.LogoutCommand;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
@@ -71,8 +72,10 @@ public class MainLayout extends VerticalLayout {
 		MenuBar ret = new MenuBar();
 		AccountDTO acc = VaadinSessionManager.getLoggedInAccount();
 		MenuItem userItem = ret.addItem(acc.getFirstName(), null);
-		MenuItem editProfileItem = userItem.addItem("Edit Profile", null);
+		MenuItem editProfileItem = userItem.addItem("Edit profile", null);
 		editProfileItem.setCommand(new EditProfileCommand());
+		MenuItem chooseJukebox = userItem.addItem("Choose jukebox", null);
+		chooseJukebox.setCommand(new ChooseJukeboxCommand());
 		MenuItem logoutItem = userItem.addItem("Logout", null);
 		logoutItem.setCommand(new LogoutCommand());
 		return ret;
@@ -80,15 +83,12 @@ public class MainLayout extends VerticalLayout {
 
 	private void init() {
 		hl = new HorizontalLayout();
-		hl.setSizeFull();
 		Panel headerBar = new Panel();
 		headerBar.setContent(hl);
-		headerBar.setSizeFull();
 		headerBar.setStyleName("headerbar");
 		this.addComponent(headerBar);
 		container = new VerticalLayout();
 		container.setSizeFull();
 		this.addComponent(container);
-		this.setSizeFull();
 	}
 }
