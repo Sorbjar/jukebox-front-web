@@ -30,6 +30,7 @@ public class MainUI extends UI {
 		private static final long serialVersionUID = 826835517787166751L;
 	}
 
+	//TODO 300 seesion cookies etc
 	private static final long serialVersionUID = -4892783635443538479L;
 
 	private JukeboxManager jukeboxManager;

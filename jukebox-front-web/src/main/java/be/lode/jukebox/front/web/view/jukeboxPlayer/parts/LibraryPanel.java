@@ -8,15 +8,17 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Table.TableDragMode;
+import com.vaadin.ui.VerticalLayout;
 
 public class LibraryPanel extends Panel {
 	private static final long serialVersionUID = 1363346584892497032L;
-	
+
 	private Table libraryTable;
 	private JukeboxPlayerView parent;
 
@@ -45,15 +47,22 @@ public class LibraryPanel extends Panel {
 	}
 
 	private void init() {
-		// TODO 200 add listener
 		Button syncLibraryButton = new Button("Sync");
+		syncLibraryButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 3268458617996093852L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				updateSongLibraryTable();
+			}
+		});
 
 		HorizontalLayout syncLayout = new HorizontalLayout();
 		syncLayout.addComponent(syncLibraryButton);
 		syncLayout.setComponentAlignment(syncLibraryButton,
 				Alignment.MIDDLE_RIGHT);
 
-		//TODO 700 current song bold
+		// TODO 700 current song bold
 		libraryTable = new Table();
 		updateSongLibraryTable();
 		libraryTable.setPageLength(15);
@@ -62,8 +71,14 @@ public class LibraryPanel extends Panel {
 		libraryTable.setImmediate(true);
 		libraryTable.setWidth(100, Unit.PERCENTAGE);
 		libraryTable.setDragMode(TableDragMode.ROW);
-		// TODO 800 add drag and drop listener, to currentplaylisttable => multirow
-		// TODO 300 add double click listener
+		// TODO 800 add drag-drop listener, to currentplaylisttable => multirow
+		libraryTable.addItemClickListener(event -> {
+			if (event.isDoubleClick() && event.getItemId() != null) {
+				parent.getJukeboxManager().setNewCurrentPlaylist((SongDTO) event.getItemId());
+				parent.playSong((SongDTO) event.getItemId());
+				//TODO 200 create new playlist, set as current, add current song
+			}
+		});
 
 		VerticalLayout songPanelLayout = new VerticalLayout();
 		songPanelLayout.addComponent(libraryTable);

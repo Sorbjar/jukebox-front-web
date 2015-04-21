@@ -15,8 +15,10 @@ import com.vaadin.event.dd.acceptcriteria.Or;
 import com.vaadin.event.dd.acceptcriteria.SourceIs;
 import com.vaadin.ui.AbstractSelect.AbstractSelectTargetDetails;
 import com.vaadin.ui.AbstractSelect.AcceptItem;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -58,6 +60,14 @@ public class CurrentPlaylistPanel extends Panel {
 		// TODO 600 change button to disk icon
 		// TODO 200 add listener
 		Button savePlaylistButton = new Button("Save");
+		savePlaylistButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 4802873580639834918L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				parent.getJukeboxManager().saveCurrentPlayListToJukebox();
+			}
+		});
 
 		HorizontalLayout playlistNameLayout = new HorizontalLayout();
 		playlistNameLayout.addComponent(playListNameLabel);
@@ -83,16 +93,20 @@ public class CurrentPlaylistPanel extends Panel {
 		playlistSongTable.setImmediate(true);
 		playlistSongTable.setWidth(100, Unit.PERCENTAGE);
 		playlistSongTable.setSortEnabled(false);
-		// TODO 200 clicklistener, double click
+		playlistSongTable.addItemClickListener(event -> {
+			if (event.isDoubleClick() && event.getItemId() != null) {
+				parent.playSong((SongDTO) event.getItemId());
+			}
+		});
 		playlistSongTable.setDragMode(TableDragMode.ROW);
 		playlistSongTable.setDropHandler(new DropHandler() {
 			private static final long serialVersionUID = 3989491152940554274L;
 
 			@Override
 			public AcceptCriterion getAcceptCriterion() {
-				return new Or(
-						new And(new SourceIs(playlistSongTable),AcceptItem.ALL), 
-						new And(new SourceIs(parent.getLibraryTable()), AcceptItem.ALL));
+				return new Or(new And(new SourceIs(playlistSongTable),
+						AcceptItem.ALL), new And(new SourceIs(parent
+						.getLibraryTable()), AcceptItem.ALL));
 			}
 
 			@Override
@@ -119,9 +133,15 @@ public class CurrentPlaylistPanel extends Panel {
 					AbstractSelectTargetDetails dropData = ((AbstractSelectTargetDetails) event
 							.getTargetDetails());
 					SongDTO targetItemId = (SongDTO) dropData.getItemIdOver();
-					if (sourceItemId != targetItemId && targetItemId != null && sourceItemId.getPlayListOrder() != targetItemId.getPlayListOrder())
-						parent.getJukeboxManager().addSong(sourceItemId,
-								targetItemId);
+					if (sourceItemId != targetItemId) {
+						if (targetItemId == null) {
+							parent.getJukeboxManager().addSong(sourceItemId);
+						} else if (sourceItemId.getPlayListOrder() != targetItemId
+								.getPlayListOrder()) {
+							parent.getJukeboxManager().addSong(sourceItemId,
+									targetItemId);
+						}
+					}
 					// TODO 600 handle multiple
 				}
 

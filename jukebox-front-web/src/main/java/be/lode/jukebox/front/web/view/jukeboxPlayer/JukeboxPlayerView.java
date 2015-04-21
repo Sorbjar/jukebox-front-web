@@ -7,13 +7,14 @@ import be.lode.jukebox.front.web.view.general.JukeboxCustomComponent;
 import be.lode.jukebox.front.web.view.general.MainLayout;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.CurrentJukeboxPanel;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.CurrentPlaylistPanel;
+import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.JPlayerPanel;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.LibraryPanel;
 import be.lode.jukebox.service.UpdateArgs;
+import be.lode.jukebox.service.dto.SongDTO;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
@@ -29,8 +30,9 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 	private CurrentJukeboxPanel currentJukeboxPanel;
 	private CurrentPlaylistPanel currentPlaylistPanel;
 	private LibraryPanel libraryPanel;
-	
+
 	private MainLayout ml;
+	private JPlayerPanel jPlayerPanel;
 
 	public JukeboxPlayerView() {
 		super();
@@ -71,7 +73,8 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 
 		currentJukeboxPanel = new CurrentJukeboxPanel(this);
 
-		Panel musicButtonPanel = new Panel("Music button panel");
+		jPlayerPanel = new JPlayerPanel(this);// new
+												// Panel("Music button panel");
 
 		HorizontalLayout topLayout = new HorizontalLayout();
 		topLayout.addComponent(currentJukeboxPanel);
@@ -81,7 +84,7 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 
 		HorizontalLayout bottomLayout = new HorizontalLayout();
 		bottomLayout.setSizeFull();
-		bottomLayout.addComponent(musicButtonPanel);
+		bottomLayout.addComponent(jPlayerPanel);
 
 		VerticalLayout vl = new VerticalLayout();
 		vl.setSizeFull();
@@ -98,5 +101,9 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		currentJukeboxPanel.update();
 		currentPlaylistPanel.update();
 		libraryPanel.update();
+	}
+
+	public void playSong(SongDTO song) {
+		jPlayerPanel.playSong(song);
 	}
 }
