@@ -4,11 +4,11 @@ jukebox-front-web
 - android
 - paypal
 - prettify
-- user rights
 - QR code
-- internationalisation
+- user rights
 - upload files
-- telmp playlist
+- temp playlist
+- internationalisation
 ---------
 
 Template for a simple Vaadin application that only requires a Servlet 3.0 container to run.

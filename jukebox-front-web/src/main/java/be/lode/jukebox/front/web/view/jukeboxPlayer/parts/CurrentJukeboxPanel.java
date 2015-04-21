@@ -49,10 +49,11 @@ public class CurrentJukeboxPanel extends Panel {
 		Button editJukeboxButton = new Button("Edit");
 
 		HorizontalLayout jukeboxNameLayout = new HorizontalLayout();
+		jukeboxNameLayout.setWidth(100, Unit.PERCENTAGE);
 		jukeboxNameLayout.addComponent(jukeboxNameLabel);
 		jukeboxNameLayout.addComponent(editJukeboxButton);
 		jukeboxNameLayout.setComponentAlignment(editJukeboxButton,
-				Alignment.MIDDLE_RIGHT);
+				Alignment.BOTTOM_RIGHT);
 
 		playlistTable = new Table();
 		updatePlaylistTable();
