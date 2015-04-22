@@ -1,5 +1,6 @@
 package be.lode.jukebox.front.web.view.jukeboxPlayer.parts;
 
+import be.lode.jukebox.front.web.view.jukebox.EditJukeboxView;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.service.dto.PlaylistDTO;
 import be.lode.jukebox.service.manager.JukeboxManager;
@@ -8,6 +9,8 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
@@ -45,8 +48,15 @@ public class CurrentJukeboxPanel extends Panel {
 	private void init() {
 		jukeboxNameLabel = new Label();
 		// TODO 600 change button to crotchet
-		// TODO 200 add listener
 		Button editJukeboxButton = new Button("Edit");
+		editJukeboxButton.addClickListener(new ClickListener() {
+			private static final long serialVersionUID = 5000011869857119573L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				parent.getMainUI().navigateTo(EditJukeboxView.getName());
+			}
+		});
 
 		HorizontalLayout jukeboxNameLayout = new HorizontalLayout();
 		jukeboxNameLayout.setWidth(100, Unit.PERCENTAGE);

@@ -8,6 +8,7 @@ import be.lode.jukebox.front.web.controller.ManageJukeboxClickListener;
 import be.lode.jukebox.front.web.controller.NewJukeboxButtonClickListener;
 import be.lode.jukebox.front.web.view.general.JukeboxCustomComponent;
 import be.lode.jukebox.front.web.view.general.MainLayout;
+import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.service.UpdateArgs;
 import be.lode.jukebox.service.dto.AccountDTO;
 import be.lode.jukebox.service.dto.JukeboxDTO;
@@ -96,6 +97,15 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 			else
 				selectedJukebox = null;
 			setButtonsActiveStatus();
+		});
+		jukeboxTable.addItemClickListener(event -> {
+			if (event.isDoubleClick() && event.getItemId() != null) {
+				if (getMainUI() != null) {
+					getJukeboxManager().setCurrentJukebox(
+							(JukeboxDTO) event.getItemId());
+					getMainUI().navigateTo(JukeboxPlayerView.getName());
+				}
+			}
 		});
 		jukeboxTableLayout.addComponent(jukeboxTable);
 

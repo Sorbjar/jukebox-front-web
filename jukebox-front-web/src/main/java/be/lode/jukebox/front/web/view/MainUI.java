@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import be.lode.jukebox.front.web.controller.LoggedInViewChangeListener;
 import be.lode.jukebox.front.web.view.account.EditAccountView;
 import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
+import be.lode.jukebox.front.web.view.jukebox.EditJukeboxView;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.front.web.view.login.LoginView;
 import be.lode.jukebox.service.manager.JukeboxManager;
@@ -63,18 +64,10 @@ public class MainUI extends UI {
 				ChooseJukeboxView.class);
 		this.getNavigator().addView(EditAccountView.getName(),
 				EditAccountView.class);
+		this.getNavigator().addView(EditJukeboxView.getName(),
+				EditJukeboxView.class);
 		this.getNavigator().addView(JukeboxPlayerView.getName(),
 				JukeboxPlayerView.class);
-		// this.getNavigator().addView(ChooseJukeboxView.getName(),
-		// ChooseJukeboxView.class);
-		/*
-		 * this.getNavigator().addView(LoginView.getName(), new
-		 * LoginView(jukeboxManager));
-		 * this.getNavigator().addView(ChooseJukeboxView.getName(), new
-		 * ChooseJukeboxView(jukeboxManager));
-		 * this.getNavigator().addView(JukeboxPlayerView
-		 * .getName(),JukeboxPlayerView.class);
-		 */
 		// Redirected user to the login view if the user is not logged in
 		this.getNavigator().addViewChangeListener(
 				new LoggedInViewChangeListener(this));

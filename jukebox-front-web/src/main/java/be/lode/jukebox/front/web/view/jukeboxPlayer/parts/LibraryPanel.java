@@ -76,7 +76,6 @@ public class LibraryPanel extends Panel {
 			if (event.isDoubleClick() && event.getItemId() != null) {
 				parent.getJukeboxManager().setNewCurrentPlaylist((SongDTO) event.getItemId());
 				parent.playSong((SongDTO) event.getItemId());
-				//TODO 200 create new playlist, set as current, add current song
 			}
 		});
 

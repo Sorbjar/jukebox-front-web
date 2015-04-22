@@ -58,7 +58,6 @@ public class CurrentPlaylistPanel extends Panel {
 	private void init() {
 		playListNameLabel = new Label();
 		// TODO 600 change button to disk icon
-		// TODO 200 add listener
 		Button savePlaylistButton = new Button("Save");
 		savePlaylistButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 4802873580639834918L;

@@ -46,16 +46,15 @@ public class MainLayout extends VerticalLayout {
 
 	public void update() {
 		hl.removeAllComponents();
-		
+
 		setJukeboxLabel();
-		
+
 		if (VaadinSessionManager.getLoggedInAccount() != null) {
 			MenuBar menu = getMenuBar();
 			hl.addComponent(menu);
 			hl.setComponentAlignment(menu, Alignment.MIDDLE_RIGHT);
 		} else {
 			// TODO 700 else add facebook button
-			// TODO 550 make sure the bar is not too wide
 		}
 
 		hl.setSizeFull();
