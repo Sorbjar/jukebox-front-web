@@ -10,11 +10,13 @@ import com.kbdunn.vaadin.addons.mediaelement.MediaComponentOptions;
 import com.kbdunn.vaadin.addons.mediaelement.MediaComponentOptions.Feature;
 import com.kbdunn.vaadin.addons.mediaelement.PlaybackEndedListener;
 import com.vaadin.server.FileResource;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
 
 public class MejsAudioComponentPanel extends Panel {
 	private static final long serialVersionUID = -4904541552593172280L;
@@ -43,9 +45,16 @@ public class MejsAudioComponentPanel extends Panel {
 	}
 
 	private void init() {
+		VerticalLayout vl = new VerticalLayout();
 		hl = new HorizontalLayout();
+		HorizontalLayout hlComp = new HorizontalLayout();
+		hl.setSizeFull();
 		audioPlayer = new MediaComponent(MediaComponent.Type.AUDIO);
 		hl.addComponent(audioPlayer);
+		audioPlayer.setSizeFull();
+		audioPlayer.setWidth(100, Unit.PERCENTAGE);
+		hlComp.setComponentAlignment(audioPlayer, Alignment.MIDDLE_CENTER);
+		vl.addComponent(hlComp);
 		MediaComponentOptions opts = audioPlayer.getOptions();
 		opts.setEnableKeyboard(true);
 		opts.setFeatures(new Feature[] { Feature.PROGRESS, Feature.CURRENT,
@@ -96,7 +105,8 @@ public class MejsAudioComponentPanel extends Panel {
 		hl.addComponent(playButton);
 		hl.addComponent(pauseButton);
 		hl.addComponent(stopButton);
-		this.setContent(hl);
+		vl.addComponent(hl);
+		this.setContent(vl);
 	}
 
 }
