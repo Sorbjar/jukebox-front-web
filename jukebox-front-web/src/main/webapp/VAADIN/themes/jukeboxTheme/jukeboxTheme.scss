@@ -32,19 +32,27 @@
 @import "../valo/valo.scss";
 
 @mixin jukeboxTheme {
-  @include valo;
+	@include valo;
   
-.headerbar
- {
-	background-color: yellow;
-	!
-	important
-}
-.errorLabel
- {
-	font-color: red;
-	!
-	important
-}
-  // Insert your own theme rules here
+	.headerbar
+	{
+		background-color: yellow;
+		!
+		important
+	}
+	
+	 .v-label-errorlabel
+	 {
+		font-color: red;
+		!
+		important
+	}
+	
+	.audioplayer
+	{
+		background-color: yellow;
+		!
+		important
+	}
+
 }

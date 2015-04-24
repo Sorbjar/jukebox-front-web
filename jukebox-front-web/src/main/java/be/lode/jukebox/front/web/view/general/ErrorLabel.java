@@ -7,7 +7,7 @@ public class ErrorLabel extends Label {
 
 	public ErrorLabel(String content) {
 		super(content);
-		this.setStyleName("errorLabel");
+		this.setStyleName("errorlabel");
 	}
 
 }

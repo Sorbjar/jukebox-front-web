@@ -7,8 +7,8 @@ import be.lode.jukebox.front.web.view.general.JukeboxCustomComponent;
 import be.lode.jukebox.front.web.view.general.MainLayout;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.CurrentJukeboxPanel;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.CurrentPlaylistPanel;
-import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.JPlayerPanel;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.LibraryPanel;
+import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.MejsAudioComponentPanel;
 import be.lode.jukebox.service.UpdateArgs;
 import be.lode.jukebox.service.dto.SongDTO;
 
@@ -32,7 +32,7 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 	private LibraryPanel libraryPanel;
 
 	private MainLayout ml;
-	private JPlayerPanel jPlayerPanel;
+	private MejsAudioComponentPanel jPlayerPanel;
 
 	public JukeboxPlayerView() {
 		super();
@@ -73,7 +73,7 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 
 		currentJukeboxPanel = new CurrentJukeboxPanel(this);
 
-		jPlayerPanel = new JPlayerPanel(this);// new
+		jPlayerPanel = new MejsAudioComponentPanel(this);// new
 												// Panel("Music button panel");
 
 		HorizontalLayout topLayout = new HorizontalLayout();

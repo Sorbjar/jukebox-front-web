@@ -11,6 +11,7 @@
 
 	<properties>
 		<vaadin.version>7.4.3</vaadin.version>
+		<gwt.version>2.7.0</gwt.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
 		<project.source.version>1.8</project.source.version>
@@ -49,6 +50,14 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<!-- <dependency> <groupId>org.vaadin.addons</groupId> <artifactId>mediaelementjs-player</artifactId> 
+			<version>1.2.4</version> </dependency> -->
+		<dependency>
+			<groupId>MEJS-Vaadin</groupId>
+			<artifactId>MEJS-Vaadin</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
