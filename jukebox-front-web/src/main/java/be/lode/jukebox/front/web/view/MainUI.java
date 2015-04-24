@@ -31,25 +31,50 @@ public class MainUI extends UI {
 		private static final long serialVersionUID = 826835517787166751L;
 	}
 
-	//TODO 300 seesion cookies etc
+	// TODO 300 session cookies etc
 	private static final long serialVersionUID = -4892783635443538479L;
-
+	private String currentNavigationState;
 	private JukeboxManager jukeboxManager;
 	private OAuthApiInfoManager oAuthManager;
-
 	private String previousNavigationState;
-
-	public String getPreviousNavigationState() {
-		return previousNavigationState;
-	}
-
-	private String currentNavigationState;
 
 	public MainUI() {
 		super();
 		jukeboxManager = new JukeboxManager();
 		oAuthManager = new OAuthApiInfoManager();
 		getPage().setTitle("Lode's Jukebox");
+	}
+
+	public JukeboxManager getJukeboxManager() {
+		return jukeboxManager;
+	}
+
+	public OAuthApiInfoManager getoAuthManager() {
+		return oAuthManager;
+	}
+
+	public String getPreviousNavigationState() {
+		return previousNavigationState;
+	}
+
+	public void navigateBack(String currentViewName) {
+		if (previousNavigationState != null
+				&& previousNavigationState != currentViewName
+				&& previousNavigationState != currentNavigationState)
+			this.getNavigator().navigateTo(previousNavigationState);
+		else
+			this.getNavigator().navigateTo("");
+	}
+
+	public void navigateTo(String navigationState) {
+		// use this in stead of getNavigator, so we can go back
+		// TODO 890 possibly save in ordered list
+		this.previousNavigationState = currentNavigationState;
+		this.currentNavigationState = navigationState;
+		if (navigationState != null)
+			this.getNavigator().navigateTo(navigationState);
+		else
+			this.getNavigator().navigateTo("");
 	}
 
 	@Override
@@ -71,33 +96,5 @@ public class MainUI extends UI {
 		// Redirected user to the login view if the user is not logged in
 		this.getNavigator().addViewChangeListener(
 				new LoggedInViewChangeListener(this));
-	}
-
-	public void navigateTo(String navigationState) {
-		// use this in stead of getNavigator, so we can go back
-		// TODO 890 possibly save in ordered list
-		this.previousNavigationState = currentNavigationState;
-		this.currentNavigationState = navigationState;
-		if (navigationState != null)
-			this.getNavigator().navigateTo(navigationState);
-		else
-			this.getNavigator().navigateTo("");
-	}
-
-	public void navigateBack(String currentViewName) {
-		if (previousNavigationState != null
-				&& previousNavigationState != currentViewName
-				&& previousNavigationState != currentNavigationState)
-			this.getNavigator().navigateTo(previousNavigationState);
-		else
-			this.getNavigator().navigateTo("");
-	}
-
-	public OAuthApiInfoManager getoAuthManager() {
-		return oAuthManager;
-	}
-
-	public JukeboxManager getJukeboxManager() {
-		return jukeboxManager;
 	}
 }

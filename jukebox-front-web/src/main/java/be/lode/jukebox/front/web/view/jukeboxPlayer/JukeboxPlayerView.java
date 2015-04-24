@@ -32,7 +32,7 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 	private LibraryPanel libraryPanel;
 
 	private MainLayout ml;
-	private MejsAudioComponentPanel jPlayerPanel;
+	private MejsAudioComponentPanel audioPlayerPanel;
 
 	public JukeboxPlayerView() {
 		super();
@@ -73,7 +73,7 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 
 		currentJukeboxPanel = new CurrentJukeboxPanel(this);
 
-		jPlayerPanel = new MejsAudioComponentPanel(this);// new
+		audioPlayerPanel = new MejsAudioComponentPanel(this);// new
 												// Panel("Music button panel");
 
 		HorizontalLayout topLayout = new HorizontalLayout();
@@ -84,7 +84,7 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 
 		HorizontalLayout bottomLayout = new HorizontalLayout();
 		bottomLayout.setSizeFull();
-		bottomLayout.addComponent(jPlayerPanel);
+		bottomLayout.addComponent(audioPlayerPanel);
 
 		VerticalLayout vl = new VerticalLayout();
 		vl.setSizeFull();
@@ -104,6 +104,6 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 	}
 
 	public void playSong(SongDTO song) {
-		jPlayerPanel.playSong(song);
+		audioPlayerPanel.playSong(song);
 	}
 }

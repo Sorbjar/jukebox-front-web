@@ -6,10 +6,7 @@ import be.lode.jukebox.service.manager.JukeboxManager;
 
 public interface IJukeboxView {
 	JukeboxManager getJukeboxManager();
-
 	MainUI getMainUI();
-
 	boolean isAccountLoggedIn();
-
 	AccountDTO loggedInAccount();
 }
