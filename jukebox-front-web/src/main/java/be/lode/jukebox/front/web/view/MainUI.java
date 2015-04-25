@@ -20,7 +20,6 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 //TODO 650 externalise Strings
 //TODO 650 internationalisation
-//TODO 850 solve lazy loading issue
 
 @Theme("jukeboxTheme")
 @Widgetset("be.lode.jukebox.front.web.JukeboxWidgetset")

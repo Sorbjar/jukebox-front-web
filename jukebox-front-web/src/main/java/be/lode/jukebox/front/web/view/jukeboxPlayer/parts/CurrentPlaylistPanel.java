@@ -1,5 +1,6 @@
 package be.lode.jukebox.front.web.view.jukeboxPlayer.parts;
 
+import be.lode.jukebox.front.web.view.general.EditLabel;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.service.dto.SongDTO;
 import be.lode.jukebox.service.manager.JukeboxManager;
@@ -7,6 +8,8 @@ import be.lode.jukebox.service.manager.JukeboxManager;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.DataBoundTransferable;
+import com.vaadin.event.FieldEvents.BlurEvent;
+import com.vaadin.event.FieldEvents.BlurListener;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
@@ -27,11 +30,15 @@ import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Table.TableDragMode;
 import com.vaadin.ui.VerticalLayout;
 
+//TODO 300 mandatory playlist
+//TODO 300 save playlist weirdness
+//TODO 400 delete playlist
+//TODO 400 delete song from playlist
 public class CurrentPlaylistPanel extends Panel {
 	private static final long serialVersionUID = -4053283653825728163L;
 
 	private JukeboxPlayerView parent;
-	private Label playListNameLabel;
+	private EditLabel playListNameComponent;
 	private Table playlistSongTable;
 
 	public CurrentPlaylistPanel(JukeboxPlayerView parent) {
@@ -56,7 +63,16 @@ public class CurrentPlaylistPanel extends Panel {
 	}
 
 	private void init() {
-		playListNameLabel = new Label();
+		playListNameComponent = new EditLabel();
+		playListNameComponent.addBlurListener(new BlurListener(){
+			private static final long serialVersionUID = -8222698381464476671L;
+
+			@Override
+			public void blur(BlurEvent event) {
+				parent.getJukeboxManager().setCurrentPlaylistName(playListNameComponent.getValue());
+				
+			}});
+
 		// TODO 600 change button to disk icon
 		Button savePlaylistButton = new Button("Save");
 		savePlaylistButton.addClickListener(new ClickListener() {
@@ -64,12 +80,13 @@ public class CurrentPlaylistPanel extends Panel {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				parent.getJukeboxManager().saveCurrentPlayListToJukebox();
+				parent.getJukeboxManager().saveCurrentPlayListToJukebox(playListNameComponent.getValue());
+				update();
 			}
 		});
 
 		HorizontalLayout playlistNameLayout = new HorizontalLayout();
-		playlistNameLayout.addComponent(playListNameLabel);
+		playlistNameLayout.addComponent(playListNameComponent);
 		playlistNameLayout.addComponent(savePlaylistButton);
 		playlistNameLayout.setComponentAlignment(savePlaylistButton,
 				Alignment.MIDDLE_RIGHT);
@@ -157,10 +174,10 @@ public class CurrentPlaylistPanel extends Panel {
 	private void updatePlayListName() {
 		if (parent.getJukeboxManager() != null
 				&& parent.getJukeboxManager().getCurrentPlaylistDTO().getName() != null)
-			playListNameLabel.setValue(parent.getJukeboxManager()
+			playListNameComponent.setValue(parent.getJukeboxManager()
 					.getCurrentPlaylistDTO().getName());
 		else
-			playListNameLabel.setValue("");
+			playListNameComponent.setValue("");
 	}
 
 	private void updatePlaylistSongTable() {

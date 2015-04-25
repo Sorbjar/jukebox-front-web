@@ -75,9 +75,9 @@ public class CurrentJukeboxPanel extends Panel {
 		playlistTable.addItemClickListener(event -> {
 			if (event.isDoubleClick() && event.getItemId() != null) {
 				JukeboxManager mgr = parent.getJukeboxManager();
-				if (mgr != null)
-					event.getItem();
-				mgr.setCurrentPlaylist((PlaylistDTO) event.getItemId());
+				if (mgr != null) {
+					mgr.setCurrentPlaylist((PlaylistDTO) event.getItemId());
+				}
 			}
 		});
 

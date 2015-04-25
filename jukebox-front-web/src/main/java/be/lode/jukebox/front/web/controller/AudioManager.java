@@ -80,4 +80,20 @@ public class AudioManager {
 			stop();
 		}
 	}
+
+	public void previous() {
+		boolean temp = paused;
+		stop();
+		SongDTO song = mejsAudioComponentPanel.getJukeboxManager()
+				.getPreviousSong();
+		if (song != null) {
+			getAudioPlayer().setSource(
+					new FileResource(new File(song.getPath())));
+			if (!temp)
+				play();
+		} else {
+			stop();
+		}
+		
+	}
 }
