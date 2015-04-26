@@ -50,6 +50,7 @@
 	</dependencyManagement>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>MEJS-Vaadin</groupId>
 			<artifactId>MEJS-Vaadin</artifactId>

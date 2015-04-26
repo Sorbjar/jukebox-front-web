@@ -7,6 +7,7 @@ import be.lode.jukebox.service.manager.JukeboxManager;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.Action;
 import com.vaadin.event.DataBoundTransferable;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.event.FieldEvents.BlurListener;
@@ -18,9 +19,9 @@ import com.vaadin.event.dd.acceptcriteria.Or;
 import com.vaadin.event.dd.acceptcriteria.SourceIs;
 import com.vaadin.ui.AbstractSelect.AbstractSelectTargetDetails;
 import com.vaadin.ui.AbstractSelect.AcceptItem;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -31,8 +32,6 @@ import com.vaadin.ui.Table.TableDragMode;
 import com.vaadin.ui.VerticalLayout;
 
 //TODO 300 mandatory playlist
-//TODO 300 save playlist weirdness
-//TODO 400 delete playlist
 //TODO 400 delete song from playlist
 public class CurrentPlaylistPanel extends Panel {
 	private static final long serialVersionUID = -4053283653825728163L;
@@ -64,14 +63,16 @@ public class CurrentPlaylistPanel extends Panel {
 
 	private void init() {
 		playListNameComponent = new EditLabel();
-		playListNameComponent.addBlurListener(new BlurListener(){
+		playListNameComponent.addBlurListener(new BlurListener() {
 			private static final long serialVersionUID = -8222698381464476671L;
 
 			@Override
 			public void blur(BlurEvent event) {
-				parent.getJukeboxManager().setCurrentPlaylistName(playListNameComponent.getValue());
-				
-			}});
+				parent.getJukeboxManager().setCurrentPlaylistName(
+						playListNameComponent.getValue());
+
+			}
+		});
 
 		// TODO 600 change button to disk icon
 		Button savePlaylistButton = new Button("Save");
@@ -80,7 +81,7 @@ public class CurrentPlaylistPanel extends Panel {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				parent.getJukeboxManager().saveCurrentPlayListToJukebox(playListNameComponent.getValue());
+				parent.getJukeboxManager().saveCurrentPlayListToJukebox();
 				update();
 			}
 		});
@@ -161,6 +162,29 @@ public class CurrentPlaylistPanel extends Panel {
 					// TODO 600 handle multiple
 				}
 
+			}
+		});
+
+		final Action removeAction = new Action("Remove from playlist");
+
+		playlistSongTable.addActionHandler(new Action.Handler() {
+			private static final long serialVersionUID = 7468376138899471634L;
+
+			@Override
+			public Action[] getActions(final Object target, final Object sender) {
+				return new Action[] { removeAction };
+			}
+
+			@Override
+			public void handleAction(final Action action, final Object sender,
+					final Object target) {
+				if (removeAction == action) {
+					JukeboxManager mgr = parent.getJukeboxManager();
+					if (mgr != null) {
+						mgr.removeSongFromCurrentPlaylist((SongDTO) target);
+					}
+				}
+				playlistSongTable.markAsDirtyRecursive();
 			}
 		});
 

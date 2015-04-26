@@ -17,6 +17,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
@@ -26,12 +27,14 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 	private AudioManager audioManager;
 	private MediaComponent audioPlayer;
+	private Button loopButton;
 	private JukeboxPlayerView parent;
+
 	private Button playPauseButton;
 
-	private Button loopButton;
-
 	private Button randomButton;
+
+	private Label songLabel;
 
 	public MejsAudioComponentPanel(JukeboxPlayerView parent) {
 		super();
@@ -40,8 +43,19 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		init();
 	}
 
+	@Override
+	public void attach() {
+		super.attach();
+		parent.getJukeboxManager().addObserver(this);
+		update();
+	}
+
 	public MediaComponent getAudioPlayer() {
 		return audioPlayer;
+	}
+
+	public JukeboxManager getJukeboxManager() {
+		return parent.getJukeboxManager();
 	}
 
 	public void playSong(SongDTO song) {
@@ -49,10 +63,40 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		audioManager.play(song);
 	}
 
+	public void update() {
+		// TODO 610 change to icons
+		playPauseButton.setCaption("Pause");
+		loopButton.setCaption("Loop");
+		randomButton.setCaption("Random");
+		if (audioManager.isPaused())
+			playPauseButton.setCaption("Play");
+		if (getJukeboxManager().isLooped())
+			loopButton.setCaption("Unloop");
+		if (getJukeboxManager().isRandom())
+			randomButton.setCaption("Unrandom");
+
+		if (parent.getJukeboxManager().getCurrentSongDTO() != null)
+			songLabel.setValue(parent.getJukeboxManager().getCurrentSongDTO()
+					.toString());
+		else
+			songLabel.setValue("");
+
+		playPauseButton.markAsDirty();
+		loopButton.markAsDirty();
+		randomButton.markAsDirty();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		update();
+	}
+
 	private void init() {
 		audioPlayer = new MediaComponent(MediaComponent.Type.AUDIO);
-
 		audioPlayer.setWidth(100, Unit.PERCENTAGE);
+
+		songLabel = new Label();
+		songLabel.setValue("");
 
 		MediaComponentOptions opts = audioPlayer.getOptions();
 		opts.setEnableKeyboard(true);
@@ -78,6 +122,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				audioManager.playPause();
+				update();
 			}
 		});
 
@@ -88,6 +133,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				audioManager.stop();
+				update();
 			}
 		});
 
@@ -98,9 +144,10 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				audioManager.next();
+				update();
 			}
 		});
-		
+
 		Button previousButton = new Button("Previous");
 		previousButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
@@ -108,6 +155,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				audioManager.previous();
+				update();
 			}
 		});
 
@@ -118,6 +166,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				parent.getJukeboxManager().changeLoopState();
+				update();
 			}
 		});
 
@@ -128,13 +177,15 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				parent.getJukeboxManager().changeRandomState();
+				update();
 			}
 		});
 
 		HorizontalLayout audioLayout = new HorizontalLayout();
 		audioLayout.setWidth(100, Unit.PERCENTAGE);
+		audioLayout.addComponent(songLabel);
 		audioLayout.addComponent(audioPlayer);
-		audioLayout.setComponentAlignment(audioPlayer, Alignment.BOTTOM_CENTER);
+		audioLayout.setComponentAlignment(audioPlayer, Alignment.TOP_CENTER);
 
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		buttonLayout.addComponent(previousButton);
@@ -151,38 +202,5 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		vl.addComponent(audioLayout);
 		vl.addComponent(buttonLayout);
 		this.setContent(vl);
-	}
-
-	public void update() {
-		// TODO 610 change to icons
-		playPauseButton.setCaption("Pause");
-		loopButton.setCaption("Loop");
-		randomButton.setCaption("Random");
-		if (audioManager.isPaused())
-			playPauseButton.setCaption("Play");
-		if (getJukeboxManager().isLooped())
-			loopButton.setCaption("Unloop");
-		if (getJukeboxManager().isRandom())
-			randomButton.setCaption("Unrandom");
-
-		playPauseButton.markAsDirty();
-		loopButton.markAsDirty();
-		randomButton.markAsDirty();
-	}
-
-	public JukeboxManager getJukeboxManager() {
-		return parent.getJukeboxManager();
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		update();
-	}
-
-	@Override
-	public void attach() {
-		super.attach();
-		parent.getJukeboxManager().addObserver(this);
-		update();
 	}
 }

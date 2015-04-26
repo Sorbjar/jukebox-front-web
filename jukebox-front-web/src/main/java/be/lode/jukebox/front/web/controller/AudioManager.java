@@ -23,8 +23,19 @@ public class AudioManager {
 		return paused;
 	}
 
-	public void setPaused(boolean paused) {
-		this.paused = paused;
+	public void next() {
+		boolean temp = paused;
+		stop();
+		SongDTO song = mejsAudioComponentPanel.getJukeboxManager()
+				.getNextSong();
+		if (song != null) {
+			getAudioPlayer().setSource(
+					new FileResource(new File(song.getPath())));
+			if (!temp)
+				play();
+		} else {
+			stop();
+		}
 	}
 
 	public void play(SongDTO song) {
@@ -40,6 +51,26 @@ public class AudioManager {
 		else
 			pause();
 		update();
+	}
+
+	public void previous() {
+		boolean temp = paused;
+		stop();
+		SongDTO song = mejsAudioComponentPanel.getJukeboxManager()
+				.getPreviousSong();
+		if (song != null) {
+			getAudioPlayer().setSource(
+					new FileResource(new File(song.getPath())));
+			if (!temp)
+				play();
+		} else {
+			stop();
+		}
+		
+	}
+
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 
 	public void stop() {
@@ -64,36 +95,5 @@ public class AudioManager {
 
 	private void update() {
 		mejsAudioComponentPanel.update();
-	}
-
-	public void next() {
-		boolean temp = paused;
-		stop();
-		SongDTO song = mejsAudioComponentPanel.getJukeboxManager()
-				.getNextSong();
-		if (song != null) {
-			getAudioPlayer().setSource(
-					new FileResource(new File(song.getPath())));
-			if (!temp)
-				play();
-		} else {
-			stop();
-		}
-	}
-
-	public void previous() {
-		boolean temp = paused;
-		stop();
-		SongDTO song = mejsAudioComponentPanel.getJukeboxManager()
-				.getPreviousSong();
-		if (song != null) {
-			getAudioPlayer().setSource(
-					new FileResource(new File(song.getPath())));
-			if (!temp)
-				play();
-		} else {
-			stop();
-		}
-		
 	}
 }
