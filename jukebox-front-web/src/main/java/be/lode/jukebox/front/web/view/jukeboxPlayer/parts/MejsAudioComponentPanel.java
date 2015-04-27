@@ -23,7 +23,6 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Slider;
 import com.vaadin.ui.VerticalLayout;
 
-// TODO 300 handle mandatory, set buttons not accesible
 public class MejsAudioComponentPanel extends Panel implements Observer {
 	private static final long serialVersionUID = -4904541552593172280L;
 
@@ -35,6 +34,10 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 	private Button randomButton;
 	private Label songLabel;
 	private Slider volumeSlider;
+
+	private Button nextButton;
+
+	private Button previousButton;
 
 	public MejsAudioComponentPanel(JukeboxPlayerView parent) {
 		super();
@@ -81,6 +84,13 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		else
 			songLabel.setValue("");
 
+		nextButton.setEnabled(true);
+		previousButton.setEnabled(true);
+		if (getJukeboxManager().isMandatory()) {
+			nextButton.setEnabled(false);
+			previousButton.setEnabled(false);
+		}
+
 		playPauseButton.markAsDirty();
 		loopButton.markAsDirty();
 		randomButton.markAsDirty();
@@ -97,22 +107,12 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		opts.setEnableKeyboard(true);
 		opts.setFeatures(new Feature[] { Feature.PROGRESS, Feature.CURRENT,
 				Feature.DURATION });
-		opts.setAudioWidth(600);
-		// opts.setEnableAutosize(true);
+		opts.setAudioWidth(800);
 
 		audioPlayer = new MediaComponent(MediaComponent.Type.AUDIO, opts);
-		// audioPlayer.setWidth(100, Unit.PERCENTAGE);
 
 		songLabel = new Label();
 		songLabel.setValue("");
-		/*
-		 * MediaComponentOptions opts =
-		 * MediaComponentOptions.getDefaultOptions();
-		 * opts.setEnableKeyboard(true); opts.setFeatures(new Feature[] {
-		 * Feature.PROGRESS, Feature.CURRENT, Feature.DURATION, });
-		 * //opts.setAudioWidth(800); //opts.setEnableAutosize(true);
-		 * audioPlayer.setOptions(opts);
-		 */
 		audioPlayer.setVolume(5);
 
 		audioPlayer.setStyleName("audioplayer");
@@ -149,7 +149,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
-		Button nextButton = new Button("Next");
+		nextButton = new Button("Next");
 		nextButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 
@@ -160,7 +160,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
-		Button previousButton = new Button("Previous");
+		previousButton = new Button("Previous");
 		previousButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 
@@ -205,7 +205,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			@Override
 			public void valueChange(ValueChangeEvent event) {
 				Double vol = (Double) event.getProperty().getValue();
-				audioPlayer.setVolume(vol.intValue() / 10);
+				audioPlayer.setVolume((vol.intValue() + 9) / 10);
 			}
 		});
 

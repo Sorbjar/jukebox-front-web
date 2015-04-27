@@ -74,8 +74,10 @@ public class LibraryPanel extends Panel {
 		// TODO 800 add drag-drop listener, to currentplaylisttable => multirow
 		libraryTable.addItemClickListener(event -> {
 			if (event.isDoubleClick() && event.getItemId() != null) {
-				parent.getJukeboxManager().setNewCurrentPlaylist((SongDTO) event.getItemId());
-				parent.playSong((SongDTO) event.getItemId());
+				parent.getJukeboxManager().setNewCurrentPlaylist(
+						(SongDTO) event.getItemId());
+				if (!parent.getJukeboxManager().isMandatory())
+					parent.playSong((SongDTO) event.getItemId());
 			}
 		});
 

@@ -102,7 +102,8 @@ public class CurrentPlaylistPanel extends Panel {
 		playlistSongTable.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
 		playlistSongTable.addItemClickListener(event -> {
 			if (event.isDoubleClick() && event.getItemId() != null) {
-				parent.playSong((SongDTO) event.getItemId());
+				if (!parent.getJukeboxManager().isMandatory())
+					parent.playSong((SongDTO) event.getItemId());
 			}
 		});
 		playlistSongTable.setDragMode(TableDragMode.ROW);
