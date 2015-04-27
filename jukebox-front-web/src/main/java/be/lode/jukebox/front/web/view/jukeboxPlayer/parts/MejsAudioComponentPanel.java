@@ -12,13 +12,15 @@ import com.kbdunn.vaadin.addons.mediaelement.MediaComponent;
 import com.kbdunn.vaadin.addons.mediaelement.MediaComponentOptions;
 import com.kbdunn.vaadin.addons.mediaelement.MediaComponentOptions.Feature;
 import com.kbdunn.vaadin.addons.mediaelement.PlaybackEndedListener;
-import com.vaadin.ui.Alignment;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.Slider;
 import com.vaadin.ui.VerticalLayout;
 
 // TODO 300 handle mandatory, set buttons not accesible
@@ -29,12 +31,10 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 	private MediaComponent audioPlayer;
 	private Button loopButton;
 	private JukeboxPlayerView parent;
-
 	private Button playPauseButton;
-
 	private Button randomButton;
-
 	private Label songLabel;
+	private Slider volumeSlider;
 
 	public MejsAudioComponentPanel(JukeboxPlayerView parent) {
 		super();
@@ -84,6 +84,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		playPauseButton.markAsDirty();
 		loopButton.markAsDirty();
 		randomButton.markAsDirty();
+		volumeSlider.markAsDirty();
 	}
 
 	@Override
@@ -92,24 +93,35 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 	}
 
 	private void init() {
-		audioPlayer = new MediaComponent(MediaComponent.Type.AUDIO);
-		audioPlayer.setWidth(100, Unit.PERCENTAGE);
+		MediaComponentOptions opts = MediaComponentOptions.getDefaultOptions();
+		opts.setEnableKeyboard(true);
+		opts.setFeatures(new Feature[] { Feature.PROGRESS, Feature.CURRENT,
+				Feature.DURATION });
+		opts.setAudioWidth(600);
+		// opts.setEnableAutosize(true);
+
+		audioPlayer = new MediaComponent(MediaComponent.Type.AUDIO, opts);
+		// audioPlayer.setWidth(100, Unit.PERCENTAGE);
 
 		songLabel = new Label();
 		songLabel.setValue("");
-
-		MediaComponentOptions opts = audioPlayer.getOptions();
-		opts.setEnableKeyboard(true);
-		opts.setFeatures(new Feature[] { Feature.PROGRESS, Feature.CURRENT,
-				Feature.DURATION, });
-		audioPlayer.setOptions(opts);
+		/*
+		 * MediaComponentOptions opts =
+		 * MediaComponentOptions.getDefaultOptions();
+		 * opts.setEnableKeyboard(true); opts.setFeatures(new Feature[] {
+		 * Feature.PROGRESS, Feature.CURRENT, Feature.DURATION, });
+		 * //opts.setAudioWidth(800); //opts.setEnableAutosize(true);
+		 * audioPlayer.setOptions(opts);
+		 */
+		audioPlayer.setVolume(5);
 
 		audioPlayer.setStyleName("audioplayer");
 		audioPlayer.addPlaybackEndedListener(new PlaybackEndedListener() {
 
 			@Override
 			public void playbackEnded(MediaComponent component) {
-				// TODO 100 somestuff
+				audioManager.next();
+				update();
 			}
 		});
 		audioPlayer.setFlashFallbackEnabled(true);
@@ -181,21 +193,38 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
+		// TODO 620 add volume icon
+		volumeSlider = new Slider();
+		volumeSlider.setImmediate(true);
+		volumeSlider.setMin(0.0);
+		volumeSlider.setMax(100.0);
+		volumeSlider.setValue(50.0);
+		volumeSlider.addValueChangeListener(new ValueChangeListener() {
+			private static final long serialVersionUID = -6882639799565748798L;
+
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				Double vol = (Double) event.getProperty().getValue();
+				audioPlayer.setVolume(vol.intValue() / 10);
+			}
+		});
+
 		HorizontalLayout audioLayout = new HorizontalLayout();
 		audioLayout.setWidth(100, Unit.PERCENTAGE);
 		audioLayout.addComponent(songLabel);
 		audioLayout.addComponent(audioPlayer);
-		audioLayout.setComponentAlignment(audioPlayer, Alignment.TOP_CENTER);
+		audioLayout.addComponent(new Label());
+		audioPlayer.setSizeFull();
+		// audioLayout.setComponentAlignment(audioPlayer, Alignment.TOP_CENTER);
 
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		buttonLayout.addComponent(previousButton);
 		buttonLayout.addComponent(playPauseButton);
 		buttonLayout.addComponent(stopButton);
 		buttonLayout.addComponent(nextButton);
-		// TODO 100 Volume
-		buttonLayout.addComponent(new Button("Volume"));
 		buttonLayout.addComponent(randomButton);
 		buttonLayout.addComponent(loopButton);
+		buttonLayout.addComponent(volumeSlider);
 
 		VerticalLayout vl = new VerticalLayout();
 

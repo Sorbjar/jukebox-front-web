@@ -36,8 +36,10 @@ import com.vaadin.ui.VerticalLayout;
 public class CurrentPlaylistPanel extends Panel {
 	private static final long serialVersionUID = -4053283653825728163L;
 
+	private Table mandatorySongTable;
 	private JukeboxPlayerView parent;
 	private EditLabel playListNameComponent;
+
 	private Table playlistSongTable;
 
 	public CurrentPlaylistPanel(JukeboxPlayerView parent) {
@@ -49,6 +51,143 @@ public class CurrentPlaylistPanel extends Panel {
 	public void update() {
 		updatePlayListName();
 		updatePlaylistSongTable();
+		updateMandatorySongTable();
+	}
+
+	private void createMandatorySongTable() {
+		// TODO 200 tablelengths
+		// TODO 700 current song bold
+		mandatorySongTable = new Table();
+		mandatorySongTable.addGeneratedColumn("Songs", new ColumnGenerator() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Object generateCell(final Table source, final Object itemId,
+					Object columnId) {
+				Label lbl = new Label(itemId.toString());
+				return lbl;
+			}
+		});
+		updateMandatorySongTable();
+		mandatorySongTable.setPageLength(15);
+		mandatorySongTable.setSelectable(true);
+		mandatorySongTable.setMultiSelect(false);
+		mandatorySongTable.setImmediate(true);
+		mandatorySongTable.setWidth(100, Unit.PERCENTAGE);
+		mandatorySongTable.setSortEnabled(false);
+		mandatorySongTable.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
+
+	}
+
+	private void createPlaylistSongTable() {
+		// TODO 700 current song bold
+		playlistSongTable = new Table();
+		playlistSongTable.addGeneratedColumn("Songs", new ColumnGenerator() {
+			private static final long serialVersionUID = -5803413248406541910L;
+
+			@Override
+			public Object generateCell(final Table source, final Object itemId,
+					Object columnId) {
+				Label lbl = new Label(itemId.toString());
+				return lbl;
+			}
+		});
+		updatePlaylistSongTable();
+		playlistSongTable.setPageLength(15);
+		playlistSongTable.setSelectable(true);
+		playlistSongTable.setMultiSelect(false);
+		playlistSongTable.setImmediate(true);
+		playlistSongTable.setWidth(100, Unit.PERCENTAGE);
+		playlistSongTable.setSortEnabled(false);
+		playlistSongTable.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
+		playlistSongTable.addItemClickListener(event -> {
+			if (event.isDoubleClick() && event.getItemId() != null) {
+				parent.playSong((SongDTO) event.getItemId());
+			}
+		});
+		playlistSongTable.setDragMode(TableDragMode.ROW);
+		playlistSongTable.setDropHandler(new DropHandler() {
+			private static final long serialVersionUID = 3989491152940554274L;
+
+			@Override
+			public void drop(DragAndDropEvent event) {
+				if (event.getTransferable().getSourceComponent()
+						.equals(playlistSongTable)) {
+					DataBoundTransferable t = (DataBoundTransferable) event
+							.getTransferable();
+					SongDTO sourceItemId = (SongDTO) t.getItemId();
+					AbstractSelectTargetDetails dropData = ((AbstractSelectTargetDetails) event
+							.getTargetDetails());
+					SongDTO targetItemId = (SongDTO) dropData.getItemIdOver();
+
+					// No move if source and target are the same, or there is no
+					// target
+					if (sourceItemId != targetItemId && targetItemId != null)
+						parent.getJukeboxManager().reorderPlaylist(
+								sourceItemId, targetItemId);
+				} else if (event.getTransferable().getSourceComponent()
+						.equals(parent.getLibraryTable())) {
+					DataBoundTransferable t = (DataBoundTransferable) event
+							.getTransferable();
+					SongDTO sourceItemId = (SongDTO) t.getItemId();
+					AbstractSelectTargetDetails dropData = ((AbstractSelectTargetDetails) event
+							.getTargetDetails());
+					SongDTO targetItemId = (SongDTO) dropData.getItemIdOver();
+					if (sourceItemId != targetItemId) {
+						if (targetItemId == null) {
+							parent.getJukeboxManager().addSong(sourceItemId);
+						} else if (sourceItemId.getPlayListOrder() != targetItemId
+								.getPlayListOrder()) {
+							parent.getJukeboxManager().addSong(sourceItemId,
+									targetItemId);
+						}
+					}
+					// TODO 600 handle multiple
+				}
+
+			}
+
+			@Override
+			public AcceptCriterion getAcceptCriterion() {
+				return new Or(new And(new SourceIs(playlistSongTable),
+						AcceptItem.ALL), new And(new SourceIs(parent
+						.getLibraryTable()), AcceptItem.ALL));
+			}
+		});
+
+		final Action removeAction = new Action("Remove from playlist");
+
+		playlistSongTable.addActionHandler(new Action.Handler() {
+			private static final long serialVersionUID = 7468376138899471634L;
+
+			@Override
+			public Action[] getActions(final Object target, final Object sender) {
+				return new Action[] { removeAction };
+			}
+
+			@Override
+			public void handleAction(final Action action, final Object sender,
+					final Object target) {
+				if (removeAction == action) {
+					JukeboxManager mgr = parent.getJukeboxManager();
+					if (mgr != null) {
+						mgr.removeSongFromCurrentPlaylist((SongDTO) target);
+					}
+				}
+				playlistSongTable.markAsDirtyRecursive();
+			}
+		});
+
+	}
+
+	private Container generateMandatorySongTableContent() {
+		BeanItemContainer<SongDTO> cont = new BeanItemContainer<SongDTO>(
+				SongDTO.class);
+		if (parent.isAccountLoggedIn() && parent.getMainUI() != null) {
+			JukeboxManager mgr = parent.getJukeboxManager();
+			cont.addAll(mgr.getSongs(mgr.getMandatoryPlaylistDTO()));
+		}
+		return cont;
 	}
 
 	private Container generatePlaylistSongTableContent() {
@@ -91,108 +230,22 @@ public class CurrentPlaylistPanel extends Panel {
 		playlistNameLayout.addComponent(savePlaylistButton);
 		playlistNameLayout.setComponentAlignment(savePlaylistButton,
 				Alignment.MIDDLE_RIGHT);
-		// TODO 700 current song bold
-		playlistSongTable = new Table();
-		playlistSongTable.addGeneratedColumn("Songs", new ColumnGenerator() {
-			private static final long serialVersionUID = -5803413248406541910L;
 
-			@Override
-			public Object generateCell(final Table source, final Object itemId,
-					Object columnId) {
-				Label lbl = new Label(itemId.toString());
-				return lbl;
-			}
-		});
-		updatePlaylistSongTable();
-		playlistSongTable.setPageLength(15);
-		playlistSongTable.setSelectable(true);
-		playlistSongTable.setMultiSelect(false);
-		playlistSongTable.setImmediate(true);
-		playlistSongTable.setWidth(100, Unit.PERCENTAGE);
-		playlistSongTable.setSortEnabled(false);
-		playlistSongTable.addItemClickListener(event -> {
-			if (event.isDoubleClick() && event.getItemId() != null) {
-				parent.playSong((SongDTO) event.getItemId());
-			}
-		});
-		playlistSongTable.setDragMode(TableDragMode.ROW);
-		playlistSongTable.setDropHandler(new DropHandler() {
-			private static final long serialVersionUID = 3989491152940554274L;
-
-			@Override
-			public AcceptCriterion getAcceptCriterion() {
-				return new Or(new And(new SourceIs(playlistSongTable),
-						AcceptItem.ALL), new And(new SourceIs(parent
-						.getLibraryTable()), AcceptItem.ALL));
-			}
-
-			@Override
-			public void drop(DragAndDropEvent event) {
-				if (event.getTransferable().getSourceComponent()
-						.equals(playlistSongTable)) {
-					DataBoundTransferable t = (DataBoundTransferable) event
-							.getTransferable();
-					SongDTO sourceItemId = (SongDTO) t.getItemId();
-					AbstractSelectTargetDetails dropData = ((AbstractSelectTargetDetails) event
-							.getTargetDetails());
-					SongDTO targetItemId = (SongDTO) dropData.getItemIdOver();
-
-					// No move if source and target are the same, or there is no
-					// target
-					if (sourceItemId != targetItemId && targetItemId != null)
-						parent.getJukeboxManager().reorderPlaylist(
-								sourceItemId, targetItemId);
-				} else if (event.getTransferable().getSourceComponent()
-						.equals(parent.getLibraryTable())) {
-					DataBoundTransferable t = (DataBoundTransferable) event
-							.getTransferable();
-					SongDTO sourceItemId = (SongDTO) t.getItemId();
-					AbstractSelectTargetDetails dropData = ((AbstractSelectTargetDetails) event
-							.getTargetDetails());
-					SongDTO targetItemId = (SongDTO) dropData.getItemIdOver();
-					if (sourceItemId != targetItemId) {
-						if (targetItemId == null) {
-							parent.getJukeboxManager().addSong(sourceItemId);
-						} else if (sourceItemId.getPlayListOrder() != targetItemId
-								.getPlayListOrder()) {
-							parent.getJukeboxManager().addSong(sourceItemId,
-									targetItemId);
-						}
-					}
-					// TODO 600 handle multiple
-				}
-
-			}
-		});
-
-		final Action removeAction = new Action("Remove from playlist");
-
-		playlistSongTable.addActionHandler(new Action.Handler() {
-			private static final long serialVersionUID = 7468376138899471634L;
-
-			@Override
-			public Action[] getActions(final Object target, final Object sender) {
-				return new Action[] { removeAction };
-			}
-
-			@Override
-			public void handleAction(final Action action, final Object sender,
-					final Object target) {
-				if (removeAction == action) {
-					JukeboxManager mgr = parent.getJukeboxManager();
-					if (mgr != null) {
-						mgr.removeSongFromCurrentPlaylist((SongDTO) target);
-					}
-				}
-				playlistSongTable.markAsDirtyRecursive();
-			}
-		});
+		createMandatorySongTable();
+		createPlaylistSongTable();
 
 		VerticalLayout currentPlaylistLayout = new VerticalLayout();
 		currentPlaylistLayout.addComponent(playlistNameLayout);
 		currentPlaylistLayout.addComponent(playlistSongTable);
 
 		this.setContent(currentPlaylistLayout);
+	}
+
+	private void updateMandatorySongTable() {
+		mandatorySongTable
+				.setContainerDataSource(generateMandatorySongTableContent());
+		mandatorySongTable.setVisibleColumns(new Object[] { "Songs" });
+		mandatorySongTable.setColumnHeaders("Songs");
 	}
 
 	private void updatePlayListName() {

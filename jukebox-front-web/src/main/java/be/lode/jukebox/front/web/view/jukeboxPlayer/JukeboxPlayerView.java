@@ -101,6 +101,7 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		currentJukeboxPanel.update();
 		currentPlaylistPanel.update();
 		libraryPanel.update();
+		audioPlayerPanel.update();
 	}
 
 	public void playSong(SongDTO song) {
