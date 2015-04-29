@@ -5,6 +5,7 @@ import be.lode.jukebox.service.dto.OAuthApiInfoDTO;
 import be.lode.jukebox.service.manager.OAuthApiInfoManager;
 import be.lode.oauth.FacebookButton;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.VerticalLayout;
 
 public class FacebookButtonLayout extends VerticalLayout {
@@ -20,9 +21,11 @@ public class FacebookButtonLayout extends VerticalLayout {
 		OAuthApiInfoManager OAuthManager = new OAuthApiInfoManager();
 		oAuthApiInfoDTO = OAuthManager.getOAuthApiInfo("Facebook");
 
-		btn = new FacebookButton("Login with facebook",
+		btn = new FacebookButton("Facebook",
 				oAuthApiInfoDTO.getApiKey(), oAuthApiInfoDTO.getApiSecret(),
 				oauthListener);
+		btn.setIcon(FontAwesome.FACEBOOK_SQUARE);
+		btn.setStyleName("facebookbutton");
 		this.addComponent(btn);
 	}
 

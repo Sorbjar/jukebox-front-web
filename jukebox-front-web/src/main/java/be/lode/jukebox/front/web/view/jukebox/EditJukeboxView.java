@@ -10,6 +10,7 @@ import be.lode.jukebox.front.web.view.general.MainLayout;
 import be.lode.jukebox.service.dto.JukeboxDTO;
 
 import com.vaadin.data.validator.NullValidator;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
@@ -88,6 +89,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		Button saveButton = new Button("Save");
 		saveButton.addClickListener(new SaveJukeboxListener(this));
+		saveButton.setClickShortcut(KeyCode.ENTER);
 		Button cancelButton = new Button("Cancel");
 		cancelListener = new CancelListener(getName());
 		cancelButton.addClickListener(cancelListener);

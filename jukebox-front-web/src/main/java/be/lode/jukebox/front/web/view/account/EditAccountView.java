@@ -12,6 +12,7 @@ import be.lode.jukebox.service.dto.AccountDTO;
 
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.NullValidator;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
@@ -58,6 +59,7 @@ public class EditAccountView extends CustomComponent implements View {
 		firstNameTF.setRequired(true);
 		firstNameTF.setImmediate(true);
 		firstNameTF.addValidator(new NullValidator("Cannot be empty!", false));
+		firstNameTF.setValidationVisible(true);
 		form.addComponent(firstNameTF);
 
 		lastNameTF = new TextField("Last name");
@@ -75,6 +77,7 @@ public class EditAccountView extends CustomComponent implements View {
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		Button saveButton = new Button("Save");
 		saveButton.addClickListener(new SaveAccountListener(this));
+		saveButton.setClickShortcut(KeyCode.ENTER);
 		Button cancelButton = new Button("Cancel");
 		cancelListener = new CancelListener(getName());
 		cancelButton.addClickListener(cancelListener);
