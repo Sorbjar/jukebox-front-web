@@ -13,9 +13,13 @@ import com.vaadin.data.validator.NullValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.combobox.FilteringMode;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -31,6 +35,9 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	private VerticalLayout errorMessageLayout;
 	private MainLayout ml;
 	private TextField nameTF;
+	private AbstractField<String> paymentEmailTF;
+	private ComboBox currencyCBox;
+	private TextField pricePerSongTF;
 
 	public EditJukeboxView() {
 		super();
@@ -85,6 +92,31 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		nameTF.setImmediate(true);
 		nameTF.addValidator(new NullValidator("Cannot be empty!", false));
 		form.addComponent(nameTF);
+		
+		Label paypalLabel = new Label("Payment information");
+		form.addComponent(paypalLabel);
+		
+		paymentEmailTF = new TextField("Paypal account email");
+		paymentEmailTF.setRequired(true);
+		paymentEmailTF.setImmediate(true);
+		paymentEmailTF.addValidator(new NullValidator("Cannot be empty!", false));
+		//TODO 100 validate on email
+		form.addComponent(paymentEmailTF);
+		
+		//TODO 080 dropdown with currencies
+		currencyCBox = new ComboBox("Currency");
+		currencyCBox.setFilteringMode(FilteringMode.CONTAINS);
+		//TODO 100 validate 
+		form.addComponent(currencyCBox);
+		
+		// TODO 080 setup as intbox
+		// TODO fill up boxes
+		pricePerSongTF = new TextField("Price per song");
+		pricePerSongTF.setRequired(true);
+		pricePerSongTF.setImmediate(true);
+		pricePerSongTF.addValidator(new NullValidator("Cannot be empty!", false));
+		//TODO 100 validate on double
+		form.addComponent(pricePerSongTF);
 
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		Button saveButton = new Button("Save");
