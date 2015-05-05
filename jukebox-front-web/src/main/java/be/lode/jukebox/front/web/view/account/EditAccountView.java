@@ -79,6 +79,7 @@ public class EditAccountView extends CustomComponent implements View {
 		saveButton.addClickListener(new SaveAccountListener(this));
 		saveButton.setClickShortcut(KeyCode.ENTER);
 		Button cancelButton = new Button("Cancel");
+		cancelButton.setClickShortcut(KeyCode.ESCAPE);
 		cancelListener = new CancelListener(getName());
 		cancelButton.addClickListener(cancelListener);
 		buttonLayout.addComponent(saveButton);

@@ -1,5 +1,7 @@
 package be.lode.jukebox.front.web.view;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.servlet.annotation.WebServlet;
 
 import be.lode.jukebox.front.web.controller.LoggedInViewChangeListener;
@@ -8,6 +10,7 @@ import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
 import be.lode.jukebox.front.web.view.jukebox.EditJukeboxView;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.front.web.view.login.LoginView;
+import be.lode.jukebox.service.manager.CurrencyManager;
 import be.lode.jukebox.service.manager.JukeboxManager;
 import be.lode.jukebox.service.manager.OAuthApiInfoManager;
 
@@ -36,12 +39,20 @@ public class MainUI extends UI {
 	private JukeboxManager jukeboxManager;
 	private OAuthApiInfoManager oAuthManager;
 	private String previousNavigationState;
+	private CurrencyManager currencyManager;
+	private EntityManagerFactory emf;
 
 	public MainUI() {
 		super();
-		jukeboxManager = new JukeboxManager();
-		oAuthManager = new OAuthApiInfoManager();
+		emf = Persistence.createEntityManagerFactory("jukebox-business");
+		jukeboxManager = new JukeboxManager(emf);
+		currencyManager = new CurrencyManager(emf);
+		oAuthManager = new OAuthApiInfoManager(emf);
 		getPage().setTitle("Lode's Jukebox");
+	}
+
+	public CurrencyManager getCurrencyManager() {
+		return currencyManager;
 	}
 
 	public JukeboxManager getJukeboxManager() {

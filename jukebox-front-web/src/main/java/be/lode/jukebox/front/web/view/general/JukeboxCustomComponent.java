@@ -3,6 +3,7 @@ package be.lode.jukebox.front.web.view.general;
 import be.lode.jukebox.front.web.view.MainUI;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.service.dto.AccountDTO;
+import be.lode.jukebox.service.manager.CurrencyManager;
 import be.lode.jukebox.service.manager.JukeboxManager;
 
 import com.vaadin.ui.CustomComponent;
@@ -15,6 +16,13 @@ public abstract class JukeboxCustomComponent extends CustomComponent implements
 	public JukeboxManager getJukeboxManager() {
 		if (getMainUI() != null)
 			return getMainUI().getJukeboxManager();
+		return null;
+	}
+
+	@Override
+	public CurrencyManager getCurrencyManager() {
+		if (getMainUI() != null)
+			return getMainUI().getCurrencyManager();
 		return null;
 	}
 

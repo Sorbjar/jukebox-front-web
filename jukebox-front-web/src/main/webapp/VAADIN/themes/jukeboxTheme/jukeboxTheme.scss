@@ -67,4 +67,11 @@ $v-component-group-spacing: 6px;
 		important
 	}
 
+	.v-textfield.numerical {
+    	text-align: right;
+	}
+	
+	.v-label.errorlabel {
+    	font-color: #ffb732;
+	}
 }

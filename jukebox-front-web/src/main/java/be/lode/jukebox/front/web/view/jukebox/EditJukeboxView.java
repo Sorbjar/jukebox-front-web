@@ -8,13 +8,13 @@ import be.lode.jukebox.front.web.view.general.ErrorLabel;
 import be.lode.jukebox.front.web.view.general.JukeboxCustomComponent;
 import be.lode.jukebox.front.web.view.general.MainLayout;
 import be.lode.jukebox.service.dto.JukeboxDTO;
+import be.lode.jukebox.service.dto.PayPalSettingsDTO;
 
 import com.vaadin.data.validator.NullValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.combobox.FilteringMode;
-import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
@@ -35,7 +35,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	private VerticalLayout errorMessageLayout;
 	private MainLayout ml;
 	private TextField nameTF;
-	private AbstractField<String> paymentEmailTF;
+	private TextField paymentEmailTF;
 	private ComboBox currencyCBox;
 	private TextField pricePerSongTF;
 
@@ -73,12 +73,33 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	}
 
 	private void fillFields() {
+		currencyCBox.removeAllItems();
+		currencyCBox.addItems(getCurrencyManager().getCurrencyList());
+		currencyCBox.setNullSelectionAllowed(false);
 		if (getJukeboxManager() != null
 				&& getJukeboxManager().getCurrentJukeboxDTO() != null) {
 			JukeboxDTO currentJukeboxDTO = getJukeboxManager()
 					.getCurrentJukeboxDTO();
+			PayPalSettingsDTO currentPayPalSettingsDTO = getJukeboxManager()
+					.getCurrentPayPalSettingsDTO();
 			nameTF.setValue(currentJukeboxDTO.getName());
+			paymentEmailTF.setValue(currentPayPalSettingsDTO.getEmail());
+			currencyCBox.setValue(getCurrencyManager().getCurrency(
+					currentPayPalSettingsDTO.getPayPalCurrencyCode()));
+			pricePerSongTF.setValue(currentPayPalSettingsDTO.getPricePerSong());
 		}
+	}
+
+	public TextField getPaymentEmailTF() {
+		return paymentEmailTF;
+	}
+
+	public ComboBox getCurrencyCBox() {
+		return currencyCBox;
+	}
+
+	public TextField getPricePerSongTF() {
+		return pricePerSongTF;
 	}
 
 	private void init() {
@@ -92,30 +113,36 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		nameTF.setImmediate(true);
 		nameTF.addValidator(new NullValidator("Cannot be empty!", false));
 		form.addComponent(nameTF);
-		
+
 		Label paypalLabel = new Label("Payment information");
 		form.addComponent(paypalLabel);
-		
+
 		paymentEmailTF = new TextField("Paypal account email");
 		paymentEmailTF.setRequired(true);
 		paymentEmailTF.setImmediate(true);
-		paymentEmailTF.addValidator(new NullValidator("Cannot be empty!", false));
-		//TODO 100 validate on email
+		paymentEmailTF
+				.addValidator(new NullValidator("Cannot be empty!", false));
+		// TODO 100 validate on email
 		form.addComponent(paymentEmailTF);
-		
-		//TODO 080 dropdown with currencies
+
+		// TODO 080 dropdown with currencies
 		currencyCBox = new ComboBox("Currency");
 		currencyCBox.setFilteringMode(FilteringMode.CONTAINS);
-		//TODO 100 validate 
+		currencyCBox.addItems(getCurrencyManager().getCurrencyList());
+		currencyCBox.setNullSelectionAllowed(false);
+		// TODO 100 validate
 		form.addComponent(currencyCBox);
-		
+
 		// TODO 080 setup as intbox
 		// TODO fill up boxes
 		pricePerSongTF = new TextField("Price per song");
 		pricePerSongTF.setRequired(true);
 		pricePerSongTF.setImmediate(true);
-		pricePerSongTF.addValidator(new NullValidator("Cannot be empty!", false));
-		//TODO 100 validate on double
+		pricePerSongTF
+				.addValidator(new NullValidator("Cannot be empty!", false));
+
+		pricePerSongTF.addStyleName("numerical");
+		// TODO 100 validate on double
 		form.addComponent(pricePerSongTF);
 
 		HorizontalLayout buttonLayout = new HorizontalLayout();
@@ -123,6 +150,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		saveButton.addClickListener(new SaveJukeboxListener(this));
 		saveButton.setClickShortcut(KeyCode.ENTER);
 		Button cancelButton = new Button("Cancel");
+		cancelButton.setClickShortcut(KeyCode.ESCAPE);
 		cancelListener = new CancelListener(getName());
 		cancelButton.addClickListener(cancelListener);
 		buttonLayout.addComponent(saveButton);
