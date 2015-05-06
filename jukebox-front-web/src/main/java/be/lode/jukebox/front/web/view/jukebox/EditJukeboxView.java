@@ -14,11 +14,13 @@ import com.vaadin.data.validator.NullValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.StreamResource;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -38,6 +40,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	private TextField paymentEmailTF;
 	private ComboBox currencyCBox;
 	private TextField pricePerSongTF;
+	private VerticalLayout security;
 
 	public EditJukeboxView() {
 		super();
@@ -70,6 +73,19 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		ml.update();
 		fillFields();
 		errorMessageLayout.removeAllComponents();
+		generateQR();
+	}
+
+	private void generateQR() {
+		//TODO 200 print QR code
+		//TODO 800 multiple options QR code
+		security.removeAllComponents();
+		StreamResource.StreamSource imagesource = getJukeboxManager().getQRImage();
+		StreamResource resource =
+		        new StreamResource(imagesource, "JukeboxQR.png");
+		Image qr = new Image("QR", resource);
+		security.addComponent(qr);
+		
 	}
 
 	private void fillFields() {
@@ -163,8 +179,16 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		vl.addComponent(buttonLayout);
 		vl.addComponent(errorMessageLayout);
 
+		security = new VerticalLayout();
+		
+		generateQR();
+		
+		HorizontalLayout hl = new HorizontalLayout();
+		hl.addComponent(vl);
+		hl.addComponent(security);
+		
 		ml = new MainLayout();
-		ml.addComponentToContainer(vl);
+		ml.addComponentToContainer(hl);
 		this.setCompositionRoot(ml);
 	}
 }
