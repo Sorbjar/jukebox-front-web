@@ -46,6 +46,7 @@ public class AudioManager {
 	}
 
 	public void playPause() {
+		//TODO 200 check if a song is available...
 		if (isPaused())
 			play();
 		else

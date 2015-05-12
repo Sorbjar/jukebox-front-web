@@ -19,6 +19,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Slider;
 import com.vaadin.ui.VerticalLayout;
@@ -28,16 +29,16 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 	private AudioManager audioManager;
 	private MediaComponent audioPlayer;
-	private Button loopButton;
+	private NativeButton loopButton;
 	private JukeboxPlayerView parent;
-	private Button playPauseButton;
+	private NativeButton playPauseButton;
 	private Button randomButton;
 	private Label songLabel;
 	private Slider volumeSlider;
 
-	private Button nextButton;
+	private NativeButton nextButton;
 
-	private Button previousButton;
+	private NativeButton previousButton;
 
 	public MejsAudioComponentPanel(JukeboxPlayerView parent) {
 		super();
@@ -68,11 +69,11 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 	public void update() {
 		// TODO 610 change to icons
-		playPauseButton.setCaption("Pause");
-		loopButton.setCaption("Loop");
+		playPauseButton.setStyleName("pausebutton");
+		loopButton.setStyleName("loopbutton");
 		randomButton.setCaption("Random");
 		if (audioManager.isPaused())
-			playPauseButton.setCaption("Play");
+			playPauseButton.setStyleName("playbutton");
 		if (getJukeboxManager().isLooped())
 			loopButton.setCaption("Unloop");
 		if (getJukeboxManager().isRandom())
@@ -127,7 +128,9 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		audioPlayer.setFlashFallbackEnabled(true);
 		audioPlayer.setSilverlightFallbackEnabled(true);
 
-		playPauseButton = new Button("Play");
+		//playPauseButton = new Button("Play");
+		playPauseButton = new NativeButton();
+		playPauseButton.setStyleName("playbutton");
 		playPauseButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 1479848859524217690L;
 
@@ -138,7 +141,8 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
-		Button stopButton = new Button("Stop");
+		NativeButton stopButton = new NativeButton();
+		stopButton.setStyleName("stopbutton");
 		stopButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 
@@ -149,7 +153,8 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
-		nextButton = new Button("Next");
+		nextButton = new NativeButton();
+		nextButton.setStyleName("nextbutton");
 		nextButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 
@@ -160,7 +165,8 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
-		previousButton = new Button("Previous");
+		previousButton = new NativeButton();
+		previousButton.setStyleName("previousbutton");
 		previousButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 
@@ -171,7 +177,8 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
-		loopButton = new Button("Loop");
+		loopButton = new NativeButton();
+		loopButton.setStyleName("loopbutton");
 		loopButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 

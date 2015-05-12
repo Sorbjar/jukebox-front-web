@@ -18,6 +18,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
+//TODO 300 solve refresh error
 public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		Observer {
 	private static final String NAME = "JukeboxPlayer";

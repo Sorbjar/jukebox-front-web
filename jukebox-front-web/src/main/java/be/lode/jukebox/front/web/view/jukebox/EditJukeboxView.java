@@ -149,8 +149,6 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		// TODO 100 validate
 		form.addComponent(currencyCBox);
 
-		// TODO 080 setup as intbox
-		// TODO fill up boxes
 		pricePerSongTF = new TextField("Price per song");
 		pricePerSongTF.setRequired(true);
 		pricePerSongTF.setImmediate(true);

@@ -61,17 +61,53 @@ $v-component-group-spacing: 6px;
 
 	.facebookbutton
 	{
-		background-color: #07a9ca;
+		background-color: #3b5998;
 		background-image:none;
 		!
 		important
+	}
+	
+	.v-nativebutton {
+		width: 114px;
+        height: 85px;
+        overflow: hidden;
+        padding: 0;
+        border: none;
+	}
+	
+	.loopbutton {
+        background: transparent url(Images/loopbuttonvinyl_113.5x85.png);
+	}
+	
+	.nextbutton {
+        background: transparent url(Images/nextbuttonvinyl_113.5x85.png);
+	}
+	
+	.pausebutton {
+        background: transparent url(Images/pausebuttonvinyl_113.5x85.png);
+	}
+	
+	.playbutton {
+	
+        background: transparent url(Images/playbuttonvinyl_113.5x85.png);
+        
+	}
+	
+	.previousbutton {
+        background: transparent url(Images/previousbuttonvinyl_113.5x85.png);
+        
+	}
+	
+	.stopbutton {
+        background: transparent url(Images/stopbuttonvinyl_113.5x85.png);
+        
 	}
 
 	.v-textfield.numerical {
     	text-align: right;
 	}
 	
-	.v-label.errorlabel {
+	.v-label .errorlabel {
     	font-color: #ffb732;
 	}
 }

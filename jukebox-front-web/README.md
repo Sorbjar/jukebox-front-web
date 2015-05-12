@@ -1,10 +1,11 @@
 jukebox-front-web
 ==============
-- music
-- android
-- paypal
+- QUESTIONS
+- emulator issue
+- QR scanner doesn't work well (emulator)
+- IP in android
+
 - prettify
-- QR code
 - user rights
 - upload files
 - temp playlist
