@@ -138,15 +138,12 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		paymentEmailTF.setImmediate(true);
 		paymentEmailTF
 				.addValidator(new NullValidator("Cannot be empty!", false));
-		// TODO 100 validate on email
 		form.addComponent(paymentEmailTF);
 
-		// TODO 080 dropdown with currencies
 		currencyCBox = new ComboBox("Currency");
 		currencyCBox.setFilteringMode(FilteringMode.CONTAINS);
 		currencyCBox.addItems(getCurrencyManager().getCurrencyList());
 		currencyCBox.setNullSelectionAllowed(false);
-		// TODO 100 validate
 		form.addComponent(currencyCBox);
 
 		pricePerSongTF = new TextField("Price per song");
@@ -156,7 +153,6 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 				.addValidator(new NullValidator("Cannot be empty!", false));
 
 		pricePerSongTF.addStyleName("numerical");
-		// TODO 100 validate on double
 		form.addComponent(pricePerSongTF);
 
 		HorizontalLayout buttonLayout = new HorizontalLayout();
