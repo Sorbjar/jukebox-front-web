@@ -14,6 +14,7 @@ import com.kbdunn.vaadin.addons.mediaelement.MediaComponentOptions.Feature;
 import com.kbdunn.vaadin.addons.mediaelement.PlaybackEndedListener;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -35,9 +36,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 	private Button randomButton;
 	private Label songLabel;
 	private Slider volumeSlider;
-
 	private NativeButton nextButton;
-
 	private NativeButton previousButton;
 
 	public MejsAudioComponentPanel(JukeboxPlayerView parent) {
@@ -128,7 +127,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		audioPlayer.setFlashFallbackEnabled(true);
 		audioPlayer.setSilverlightFallbackEnabled(true);
 
-		//playPauseButton = new Button("Play");
+		// playPauseButton = new Button("Play");
 		playPauseButton = new NativeButton();
 		playPauseButton.setStyleName("playbutton");
 		playPauseButton.addClickListener(new ClickListener() {
@@ -136,9 +135,24 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				audioManager.playPause();
-				update();
+				if (getAudioSource() == null) {
+					setAudioSourceFromPlaylist();
+				}
+				// it is still null if ther is no song in playlist
+				if (getAudioSource() != null) {
+					audioManager.playPause();
+					update();
+				}
 			}
+
+			private void setAudioSourceFromPlaylist() {
+				audioManager.first();
+			}
+
+			private Resource getAudioSource() {
+				return getAudioPlayer().getSource();
+			}
+			
 		});
 
 		NativeButton stopButton = new NativeButton();

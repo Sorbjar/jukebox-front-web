@@ -77,15 +77,34 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	}
 
 	private void generateQR() {
-		//TODO 200 print QR code
-		//TODO 800 multiple options QR code
+		// TODO 200 print QR code
+		// TODO 800 multiple options QR code eg download app from marketplace,
+		// open app, ....
 		security.removeAllComponents();
-		StreamResource.StreamSource imagesource = getJukeboxManager().getQRImage();
-		StreamResource resource =
-		        new StreamResource(imagesource, "JukeboxQR.png");
+		StreamResource.StreamSource imagesource = getJukeboxManager()
+				.getQRImage(450, 450);
+		StreamResource resource = new StreamResource(imagesource,
+				"JukeboxQR.png");
 		Image qr = new Image("QR", resource);
 		security.addComponent(qr);
-		
+
+		// TODO print QR code
+		Button printQRButton = new Button("Print the QR code");
+		security.addComponent(printQRButton);
+
+		/*
+		 * printQRButton.addClickListener(new ClickListener() {
+		 * 
+		 * @Override public void buttonClick(ClickEvent event) {
+		 * StreamResource.StreamSource pdfImagesource = getJukeboxManager()
+		 * .getQRImage(450, 450); StreamResource pdfResource = new
+		 * StreamResource(pdfImagesource, "JukeboxQR.png"); Image img = new
+		 * Image("QR", pdfResource); PDFStream pdfStream = new PDFStream();
+		 * 
+		 * }
+		 * 
+		 * });
+		 */
 	}
 
 	private void fillFields() {
@@ -174,13 +193,13 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		vl.addComponent(errorMessageLayout);
 
 		security = new VerticalLayout();
-		
+
 		generateQR();
-		
+
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.addComponent(vl);
 		hl.addComponent(security);
-		
+
 		ml = new MainLayout();
 		ml.addComponentToContainer(hl);
 		this.setCompositionRoot(ml);

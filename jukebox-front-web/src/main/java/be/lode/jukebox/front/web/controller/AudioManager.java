@@ -46,7 +46,6 @@ public class AudioManager {
 	}
 
 	public void playPause() {
-		//TODO 200 check if a song is available...
 		if (isPaused())
 			play();
 		else
@@ -67,7 +66,7 @@ public class AudioManager {
 		} else {
 			stop();
 		}
-		
+
 	}
 
 	public void setPaused(boolean paused) {
@@ -96,5 +95,15 @@ public class AudioManager {
 
 	private void update() {
 		mejsAudioComponentPanel.update();
+	}
+
+	public void first() {
+		stop();
+		SongDTO song = mejsAudioComponentPanel.getJukeboxManager()
+				.getFirstSong();
+		if (song != null) {
+			getAudioPlayer().setSource(
+					new FileResource(new File(song.getPath())));
+		}
 	}
 }
