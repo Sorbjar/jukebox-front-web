@@ -14,7 +14,9 @@ import com.vaadin.data.validator.NullValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.server.StreamResource;
+import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -77,34 +79,33 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	}
 
 	private void generateQR() {
-		// TODO 200 print QR code
 		// TODO 800 multiple options QR code eg download app from marketplace,
 		// open app, ....
 		security.removeAllComponents();
 		StreamResource.StreamSource imagesource = getJukeboxManager()
-				.getQRImage(450, 450);
-		StreamResource resource = new StreamResource(imagesource,
-				"JukeboxQR.png");
-		Image qr = new Image("QR", resource);
+				.getQRStream(300, 300);
+		StreamResource resource = new StreamResource(imagesource, "QR "
+				+ getJukeboxManager().getCurrentJukeboxDTO().getName() + ".png");
+		Image qr = new Image("QR "
+				+ getJukeboxManager().getCurrentJukeboxDTO().getName(),
+				resource);
 		security.addComponent(qr);
 
-		// TODO print QR code
 		Button printQRButton = new Button("Print the QR code");
 		security.addComponent(printQRButton);
+		BrowserWindowOpener opener = new BrowserWindowOpener(generatePDF());
+		opener.extend(printQRButton);
+	}
 
-		/*
-		 * printQRButton.addClickListener(new ClickListener() {
-		 * 
-		 * @Override public void buttonClick(ClickEvent event) {
-		 * StreamResource.StreamSource pdfImagesource = getJukeboxManager()
-		 * .getQRImage(450, 450); StreamResource pdfResource = new
-		 * StreamResource(pdfImagesource, "JukeboxQR.png"); Image img = new
-		 * Image("QR", pdfResource); PDFStream pdfStream = new PDFStream();
-		 * 
-		 * }
-		 * 
-		 * });
-		 */
+	private StreamResource generatePDF() {
+		StreamSource pdfSource = getJukeboxManager().getPDFStream();
+		String pdfFilename = "QR "
+				+ getJukeboxManager().getCurrentJukeboxDTO().getName() + ".pdf";
+		StreamResource pdfresource = new StreamResource(pdfSource, pdfFilename);
+		pdfresource.setMIMEType("application/pdf");
+		pdfresource.getStream().setParameter("Content-Disposition",
+				"attachment; filename=" + pdfFilename);
+		return pdfresource;
 	}
 
 	private void fillFields() {

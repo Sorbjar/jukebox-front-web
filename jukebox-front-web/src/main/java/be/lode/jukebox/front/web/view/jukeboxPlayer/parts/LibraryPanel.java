@@ -92,5 +92,42 @@ public class LibraryPanel extends Panel {
 	private void updateSongLibraryTable() {
 		// TODO 300 setup correct columns
 		libraryTable.setContainerDataSource(generateLibraryTableContent());
+		libraryTable.setVisibleColumns(new Object[] { "artist", "title",
+				"album", "albumArtist", "duration", "trackNumber",
+				"discNumber", "genre", "releaseDate", "audioChannelType",
+				"audioCompressor", "author", "channels", "composer",
+				"contentType", "creator", "samplerate", "version" });
+		
+		libraryTable.setColumnHeader("artist", "Artist");
+		libraryTable.setColumnHeader("title", "Title");
+		libraryTable.setColumnHeader("album", "Album");
+		libraryTable.setColumnHeader("albumArtist", "Album artist");
+		libraryTable.setColumnHeader("duration", "Duration");
+		libraryTable.setColumnHeader("trackNumber", "Track number");
+		libraryTable.setColumnHeader("discNumber", "Disc number");
+		libraryTable.setColumnHeader("genre", "Genre");
+		libraryTable.setColumnHeader("releaseDate", "Release date");
+		libraryTable.setColumnHeader("audioChannelType", "Audio channel type");
+		libraryTable.setColumnHeader("audioCompressor", "Audio compressor");
+		libraryTable.setColumnHeader("author", "Author");
+		libraryTable.setColumnHeader("channels", "Channels");
+		libraryTable.setColumnHeader("composer", "Composer");
+		libraryTable.setColumnHeader("contentType", "Content type");
+		libraryTable.setColumnHeader("creator", "Creator");
+		libraryTable.setColumnHeader("samplerate", "Samplerate");
+		libraryTable.setColumnHeader("version", "Version");
+
+		libraryTable.setColumnCollapsingAllowed(true);
+		libraryTable.setColumnCollapsed("audioChannelType", true);
+		libraryTable.setColumnCollapsed("audioCompressor", true);
+		libraryTable.setColumnCollapsed("author", true);
+		libraryTable.setColumnCollapsed("channels", true);
+		libraryTable.setColumnCollapsed("composer", true);
+		libraryTable.setColumnCollapsed("samplerate", true);
+		libraryTable.setColumnCollapsed("version", true);
+		
+		libraryTable.setColumnCollapsingAllowed(true);
+		libraryTable.setColumnReorderingAllowed(true);
+		libraryTable.setImmediate(true);
 	}
 }

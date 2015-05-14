@@ -31,8 +31,7 @@ import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Table.TableDragMode;
 import com.vaadin.ui.VerticalLayout;
 
-//TODO 300 mandatory playlist
-//TODO 400 delete song from playlist
+//TODO 300 mandatory playlist, remmber adding songs and removing etc
 public class CurrentPlaylistPanel extends Panel {
 	private static final long serialVersionUID = -4053283653825728163L;
 
