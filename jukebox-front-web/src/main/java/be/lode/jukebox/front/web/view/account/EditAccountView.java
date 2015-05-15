@@ -50,9 +50,6 @@ public class EditAccountView extends CustomComponent implements View {
 	}
 
 	private void init() {
-		// TODO 800 sql injection
-		// TODO 750 validate on back end
-		// TODO 750 validate on front end
 		FormLayout form = new FormLayout();
 
 		firstNameTF = new TextField("First name");

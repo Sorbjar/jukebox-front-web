@@ -1,6 +1,5 @@
 package be.lode.jukebox.front.web.view.jukeboxPlayer.parts;
 
-
 import be.lode.jukebox.front.web.view.jukebox.EditJukeboxView;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.service.dto.PlaylistDTO;
@@ -51,7 +50,7 @@ public class CurrentJukeboxPanel extends Panel {
 
 	private void init() {
 		jukeboxNameLabel = new Label();
-		// TODO 600 change button to crotchet
+		// TODO 610 change button to crotchet
 		Button editJukeboxButton = new Button("Edit");
 		editJukeboxButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 5000011869857119573L;
@@ -70,13 +69,14 @@ public class CurrentJukeboxPanel extends Panel {
 				Alignment.BOTTOM_RIGHT);
 
 		playlistTable = new Table();
+
 		updatePlaylistTable();
 		playlistTable.setPageLength(15);
 		playlistTable.setSelectable(true);
 		playlistTable.setMultiSelect(false);
 		playlistTable.setImmediate(true);
 		playlistTable.setWidth(100, Unit.PERCENTAGE);
-		playlistTable.addItemClickListener(new ItemClickListener(){
+		playlistTable.addItemClickListener(new ItemClickListener() {
 			private static final long serialVersionUID = -7620499927420782545L;
 
 			@Override
@@ -87,32 +87,32 @@ public class CurrentJukeboxPanel extends Panel {
 						mgr.setCurrentPlaylist((PlaylistDTO) event.getItemId());
 					}
 				}
-				
+
 			}
 		});
-		
+
 		final Action deleteAction = new Action("Delete");
- 
-        playlistTable.addActionHandler(new Action.Handler() {
+
+		playlistTable.addActionHandler(new Action.Handler() {
 			private static final long serialVersionUID = 7468376138899471634L;
 
 			@Override
-            public Action[] getActions(final Object target, final Object sender) {
-                    return new Action[] { deleteAction };
-            }
- 
-            @Override
-            public void handleAction(final Action action, final Object sender,
-                    final Object target) {
-                if (deleteAction == action) {
-                	JukeboxManager mgr = parent.getJukeboxManager();
+			public Action[] getActions(final Object target, final Object sender) {
+				return new Action[] { deleteAction };
+			}
+
+			@Override
+			public void handleAction(final Action action, final Object sender,
+					final Object target) {
+				if (deleteAction == action) {
+					JukeboxManager mgr = parent.getJukeboxManager();
 					if (mgr != null) {
 						mgr.deletePlaylist((PlaylistDTO) target);
 					}
-                } 
-                playlistTable.markAsDirtyRecursive();
-            }
-        });
+				}
+				playlistTable.markAsDirtyRecursive();
+			}
+		});
 
 		VerticalLayout currentJukeboxLayout = new VerticalLayout();
 		currentJukeboxLayout.addComponent(jukeboxNameLayout);
@@ -134,5 +134,6 @@ public class CurrentJukeboxPanel extends Panel {
 		playlistTable.setContainerDataSource(generatePlaylistTableContent());
 		playlistTable.setVisibleColumns(new Object[] { "name" });
 		playlistTable.setColumnHeaders("Playlists");
+
 	}
 }

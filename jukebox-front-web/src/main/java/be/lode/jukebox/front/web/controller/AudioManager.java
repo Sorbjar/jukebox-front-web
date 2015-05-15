@@ -102,6 +102,7 @@ public class AudioManager {
 		SongDTO song = mejsAudioComponentPanel.getJukeboxManager()
 				.getFirstSong();
 		if (song != null) {
+			mejsAudioComponentPanel.getJukeboxManager().setCurrentSong(song);
 			getAudioPlayer().setSource(
 					new FileResource(new File(song.getPath())));
 		}

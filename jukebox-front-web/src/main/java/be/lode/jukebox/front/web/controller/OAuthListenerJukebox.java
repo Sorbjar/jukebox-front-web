@@ -3,16 +3,16 @@ package be.lode.jukebox.front.web.controller;
 import be.lode.jukebox.front.web.view.MainUI;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
+import be.lode.jukebox.front.web.view.login.LoginView;
 import be.lode.oauth.OAuthButton.IOAuthUser;
 import be.lode.oauth.OAuthButton.OAuthListener;
 
-//TODO 400 issue with error message
 public class OAuthListenerJukebox implements OAuthListener {
 	private MainUI mainUI;
 
 	@Override
 	public void failed(String reason) {
-		// TODO 400 something when failed
+		mainUI.navigateTo(LoginView.getName());
 	}
 
 	@Override

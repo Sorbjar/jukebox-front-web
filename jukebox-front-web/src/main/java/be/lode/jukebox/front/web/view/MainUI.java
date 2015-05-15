@@ -14,6 +14,7 @@ import be.lode.jukebox.service.manager.CurrencyManager;
 import be.lode.jukebox.service.manager.JukeboxManager;
 import be.lode.jukebox.service.manager.OAuthApiInfoManager;
 
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
@@ -26,6 +27,7 @@ import com.vaadin.ui.UI;
 
 @Theme("jukeboxTheme")
 @Widgetset("be.lode.jukebox.front.web.JukeboxWidgetset")
+@PreserveOnRefresh
 public class MainUI extends UI {
 	@WebServlet(urlPatterns = "/*", name = "MainUIServlet", asyncSupported = true)
 	@VaadinServletConfiguration(ui = MainUI.class, productionMode = false)

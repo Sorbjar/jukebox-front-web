@@ -139,9 +139,6 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	}
 
 	private void init() {
-		// TODO 800 sql injection
-		// TODO 750 validate on back end
-		// TODO 750 validate on front end
 		FormLayout form = new FormLayout();
 
 		nameTF = new TextField("Jukebox name");

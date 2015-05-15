@@ -53,9 +53,7 @@ public class MainLayout extends VerticalLayout {
 			MenuBar menu = getMenuBar();
 			hl.addComponent(menu);
 			hl.setComponentAlignment(menu, Alignment.MIDDLE_RIGHT);
-		} else {
-			// TODO 700 else add facebook button
-		}
+		} 
 
 		hl.setSizeFull();
 

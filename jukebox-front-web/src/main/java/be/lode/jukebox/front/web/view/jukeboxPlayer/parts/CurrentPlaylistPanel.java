@@ -31,7 +31,6 @@ import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Table.TableDragMode;
 import com.vaadin.ui.VerticalLayout;
 
-//TODO 300 mandatory playlist, remmber adding songs and removing etc
 public class CurrentPlaylistPanel extends Panel {
 	private static final long serialVersionUID = -4053283653825728163L;
 
@@ -41,6 +40,8 @@ public class CurrentPlaylistPanel extends Panel {
 
 	private Table playlistSongTable;
 
+	private int mandatoryPageLength;
+
 	public CurrentPlaylistPanel(JukeboxPlayerView parent) {
 		super();
 		this.parent = parent;
@@ -49,14 +50,13 @@ public class CurrentPlaylistPanel extends Panel {
 
 	public void update() {
 		updatePlayListName();
-		updatePlaylistSongTable();
 		updateMandatorySongTable();
+		updatePlaylistSongTable();
 	}
 
 	private void createMandatorySongTable() {
-		// TODO 200 tablelengths
-		// TODO 700 current song bold
 		mandatorySongTable = new Table();
+		mandatorySongTable.setStyleName("mandatoryplaylist");
 		mandatorySongTable.addGeneratedColumn("Songs", new ColumnGenerator() {
 			private static final long serialVersionUID = 1L;
 
@@ -68,7 +68,6 @@ public class CurrentPlaylistPanel extends Panel {
 			}
 		});
 		updateMandatorySongTable();
-		mandatorySongTable.setPageLength(15);
 		mandatorySongTable.setSelectable(true);
 		mandatorySongTable.setMultiSelect(false);
 		mandatorySongTable.setImmediate(true);
@@ -79,7 +78,6 @@ public class CurrentPlaylistPanel extends Panel {
 	}
 
 	private void createPlaylistSongTable() {
-		// TODO 700 current song bold
 		playlistSongTable = new Table();
 		playlistSongTable.addGeneratedColumn("Songs", new ColumnGenerator() {
 			private static final long serialVersionUID = -5803413248406541910L;
@@ -92,7 +90,6 @@ public class CurrentPlaylistPanel extends Panel {
 			}
 		});
 		updatePlaylistSongTable();
-		playlistSongTable.setPageLength(15);
 		playlistSongTable.setSelectable(true);
 		playlistSongTable.setMultiSelect(false);
 		playlistSongTable.setImmediate(true);
@@ -101,8 +98,10 @@ public class CurrentPlaylistPanel extends Panel {
 		playlistSongTable.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
 		playlistSongTable.addItemClickListener(event -> {
 			if (event.isDoubleClick() && event.getItemId() != null) {
-				if (!parent.getJukeboxManager().isMandatory())
+				if (!parent.getJukeboxManager().isMandatory() && parent.getJukeboxManager().mandatoryEmpty())
 					parent.playSong((SongDTO) event.getItemId());
+				else
+					parent.playMandatorySong();
 			}
 		});
 		playlistSongTable.setDragMode(TableDragMode.ROW);
@@ -142,7 +141,6 @@ public class CurrentPlaylistPanel extends Panel {
 									targetItemId);
 						}
 					}
-					// TODO 600 handle multiple
 				}
 
 			}
@@ -183,11 +181,18 @@ public class CurrentPlaylistPanel extends Panel {
 	private Container generateMandatorySongTableContent() {
 		BeanItemContainer<SongDTO> cont = new BeanItemContainer<SongDTO>(
 				SongDTO.class);
+		mandatoryPageLength = min(cont.size(), 5);
 		if (parent.isAccountLoggedIn() && parent.getMainUI() != null) {
 			JukeboxManager mgr = parent.getJukeboxManager();
-			cont.addAll(mgr.getSongs(mgr.getMandatoryPlaylistDTO()));
+			cont.addAll(mgr.getMandatorySongs());
 		}
 		return cont;
+	}
+
+	private int min(int i1, int i2) {
+		if (i1 > i2)
+			return i2;
+		return i1;
 	}
 
 	private Container generatePlaylistSongTableContent() {
@@ -213,7 +218,7 @@ public class CurrentPlaylistPanel extends Panel {
 			}
 		});
 
-		// TODO 600 change button to disk icon
+		// TODO 610 change button to disk icon
 		Button savePlaylistButton = new Button("Save");
 		savePlaylistButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 4802873580639834918L;
@@ -236,6 +241,7 @@ public class CurrentPlaylistPanel extends Panel {
 
 		VerticalLayout currentPlaylistLayout = new VerticalLayout();
 		currentPlaylistLayout.addComponent(playlistNameLayout);
+		currentPlaylistLayout.addComponent(mandatorySongTable);
 		currentPlaylistLayout.addComponent(playlistSongTable);
 
 		this.setContent(currentPlaylistLayout);
@@ -246,6 +252,7 @@ public class CurrentPlaylistPanel extends Panel {
 				.setContainerDataSource(generateMandatorySongTableContent());
 		mandatorySongTable.setVisibleColumns(new Object[] { "Songs" });
 		mandatorySongTable.setColumnHeaders("Songs");
+		mandatorySongTable.setPageLength(mandatoryPageLength);
 	}
 
 	private void updatePlayListName() {
@@ -262,5 +269,6 @@ public class CurrentPlaylistPanel extends Panel {
 				.setContainerDataSource(generatePlaylistSongTableContent());
 		playlistSongTable.setVisibleColumns(new Object[] { "Songs" });
 		playlistSongTable.setColumnHeaders("Songs");
+		playlistSongTable.setPageLength(15 - mandatoryPageLength);
 	}
 }

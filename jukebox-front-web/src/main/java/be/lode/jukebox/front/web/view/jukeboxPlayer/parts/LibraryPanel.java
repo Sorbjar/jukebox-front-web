@@ -62,7 +62,6 @@ public class LibraryPanel extends Panel {
 		syncLayout.setComponentAlignment(syncLibraryButton,
 				Alignment.MIDDLE_RIGHT);
 
-		// TODO 700 current song bold
 		libraryTable = new Table();
 		updateSongLibraryTable();
 		libraryTable.setPageLength(15);
@@ -71,7 +70,6 @@ public class LibraryPanel extends Panel {
 		libraryTable.setImmediate(true);
 		libraryTable.setWidth(100, Unit.PERCENTAGE);
 		libraryTable.setDragMode(TableDragMode.ROW);
-		// TODO 800 add drag-drop listener, to currentplaylisttable => multirow
 		libraryTable.addItemClickListener(event -> {
 			if (event.isDoubleClick() && event.getItemId() != null) {
 				parent.getJukeboxManager().setNewCurrentPlaylist(
@@ -90,14 +88,13 @@ public class LibraryPanel extends Panel {
 	}
 
 	private void updateSongLibraryTable() {
-		// TODO 300 setup correct columns
 		libraryTable.setContainerDataSource(generateLibraryTableContent());
 		libraryTable.setVisibleColumns(new Object[] { "artist", "title",
 				"album", "albumArtist", "duration", "trackNumber",
 				"discNumber", "genre", "releaseDate", "audioChannelType",
 				"audioCompressor", "author", "channels", "composer",
 				"contentType", "creator", "samplerate", "version" });
-		
+
 		libraryTable.setColumnHeader("artist", "Artist");
 		libraryTable.setColumnHeader("title", "Title");
 		libraryTable.setColumnHeader("album", "Album");
@@ -124,10 +121,13 @@ public class LibraryPanel extends Panel {
 		libraryTable.setColumnCollapsed("channels", true);
 		libraryTable.setColumnCollapsed("composer", true);
 		libraryTable.setColumnCollapsed("samplerate", true);
+		libraryTable.setColumnCollapsed("creator", true);
+		libraryTable.setColumnCollapsed("contentType", true);
 		libraryTable.setColumnCollapsed("version", true);
-		
+
 		libraryTable.setColumnCollapsingAllowed(true);
 		libraryTable.setColumnReorderingAllowed(true);
+
 		libraryTable.setImmediate(true);
 	}
 }

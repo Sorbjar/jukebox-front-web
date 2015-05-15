@@ -67,7 +67,6 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 	}
 
 	public void update() {
-		// TODO 610 change to icons
 		playPauseButton.setStyleName("pausebutton");
 		loopButton.setStyleName("loopbutton");
 		randomButton.setCaption("Random");
@@ -86,6 +85,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 		nextButton.setEnabled(true);
 		previousButton.setEnabled(true);
+		//TODO 100 change disabled buttons so it's visual
 		if (getJukeboxManager().isMandatory()) {
 			nextButton.setEnabled(false);
 			previousButton.setEnabled(false);
@@ -152,7 +152,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			private Resource getAudioSource() {
 				return getAudioPlayer().getSource();
 			}
-			
+
 		});
 
 		NativeButton stopButton = new NativeButton();
@@ -252,5 +252,13 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		vl.addComponent(audioLayout);
 		vl.addComponent(buttonLayout);
 		this.setContent(vl);
+	}
+
+	public void playMandatorySong() {
+		if(audioManager.isPaused())
+		{
+			audioManager.first();
+			audioManager.playPause();
+		}
 	}
 }

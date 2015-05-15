@@ -6,11 +6,10 @@ import be.lode.jukebox.front.web.view.login.LoginView;
 import be.lode.jukebox.front.web.view.temp.TempView;
 
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.UI;
 
 public class LoggedInViewChangeListener implements ViewChangeListener {
 	private static final long serialVersionUID = -2242355441353421389L;
-	private UI mainUI;
+	private MainUI mainUI;
 
 	public LoggedInViewChangeListener(MainUI mainUI) {
 		super();
