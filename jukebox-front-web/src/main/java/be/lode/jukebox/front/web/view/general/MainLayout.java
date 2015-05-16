@@ -86,6 +86,7 @@ public class MainLayout extends VerticalLayout {
 		this.addComponent(headerBar);
 		container = new VerticalLayout();
 		container.setSizeFull();
+		container.setWidth(100, Unit.PERCENTAGE);
 		this.addComponent(container);
 	}
 }

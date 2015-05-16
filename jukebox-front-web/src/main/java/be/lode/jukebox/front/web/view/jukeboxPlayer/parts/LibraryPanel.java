@@ -74,8 +74,12 @@ public class LibraryPanel extends Panel {
 			if (event.isDoubleClick() && event.getItemId() != null) {
 				parent.getJukeboxManager().setNewCurrentPlaylist(
 						(SongDTO) event.getItemId());
-				if (!parent.getJukeboxManager().isMandatory())
+				if (!parent.getJukeboxManager().isMandatory()
+						&& parent.getJukeboxManager().mandatoryEmpty())
 					parent.playSong((SongDTO) event.getItemId());
+				else {
+					parent.playMandatorySong();
+				}
 			}
 		});
 

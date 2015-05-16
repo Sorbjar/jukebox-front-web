@@ -15,10 +15,12 @@ import com.vaadin.data.validator.NullValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -50,18 +52,20 @@ public class EditAccountView extends CustomComponent implements View {
 	}
 
 	private void init() {
+		
+		Label titleLabel = new Label("Edit account");
+		titleLabel.setStyleName("titlelabel");	
+		
 		FormLayout form = new FormLayout();
 
 		firstNameTF = new TextField("First name");
 		firstNameTF.setRequired(true);
 		firstNameTF.setImmediate(true);
 		firstNameTF.addValidator(new NullValidator("Cannot be empty!", false));
-		firstNameTF.setValidationVisible(true);
 		form.addComponent(firstNameTF);
 
 		lastNameTF = new TextField("Last name");
 		lastNameTF.setRequired(true);
-		lastNameTF.setValidationVisible(true);
 		lastNameTF.addValidator(new NullValidator("Cannot be empty!", false));
 		form.addComponent(lastNameTF);
 
@@ -81,12 +85,20 @@ public class EditAccountView extends CustomComponent implements View {
 		cancelButton.addClickListener(cancelListener);
 		buttonLayout.addComponent(saveButton);
 		buttonLayout.addComponent(cancelButton);
+		
+		HorizontalLayout buttonContainer = new HorizontalLayout();
+		buttonContainer.setWidth(100, Unit.PERCENTAGE);
+		buttonContainer.addComponent(buttonLayout);
+		buttonContainer.setComponentAlignment(buttonLayout, Alignment.TOP_RIGHT);
 
 		errorMessageLayout = new VerticalLayout();
 
 		VerticalLayout vl = new VerticalLayout();
+		vl.setMargin(true);
+		vl.setWidth(23, Unit.PERCENTAGE);
+		vl.addComponent(titleLabel);
 		vl.addComponent(form);
-		vl.addComponent(buttonLayout);
+		vl.addComponent(buttonContainer);
 		vl.addComponent(errorMessageLayout);
 
 		ml = new MainLayout();

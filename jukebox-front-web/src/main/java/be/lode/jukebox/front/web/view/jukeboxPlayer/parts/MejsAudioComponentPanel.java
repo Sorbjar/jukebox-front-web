@@ -85,7 +85,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 		nextButton.setEnabled(true);
 		previousButton.setEnabled(true);
-		//TODO 100 change disabled buttons so it's visual
+		// TODO 100 change disabled buttons so it's visual
 		if (getJukeboxManager().isMandatory()) {
 			nextButton.setEnabled(false);
 			previousButton.setEnabled(false);
@@ -255,8 +255,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 	}
 
 	public void playMandatorySong() {
-		if(audioManager.isPaused())
-		{
+		if (audioManager.isPaused()) {
 			audioManager.first();
 			audioManager.playPause();
 		}

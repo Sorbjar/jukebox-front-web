@@ -3,9 +3,12 @@ package be.lode.jukebox.front.web.view.chooseJukebox;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.vaadin.dialogs.ConfirmDialog;
+
 import be.lode.jukebox.front.web.controller.DeleteJukeboxListener;
 import be.lode.jukebox.front.web.controller.ManageJukeboxClickListener;
 import be.lode.jukebox.front.web.controller.NewJukeboxButtonClickListener;
+import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.front.web.view.general.JukeboxCustomComponent;
 import be.lode.jukebox.front.web.view.general.MainLayout;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
@@ -16,15 +19,16 @@ import be.lode.jukebox.service.manager.JukeboxManager;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.Action;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
-//TODO 610 prettify
 public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		Observer {
 
@@ -38,7 +42,7 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 	private VerticalLayout buttonsLayout;
 	private Button deleteButton;
 	private Table jukeboxTable;
-	private VerticalLayout jukeboxTableLayout;
+	private HorizontalLayout jukeboxTableLayout;
 	private Button manageButton;
 	private MainLayout ml;
 	private JukeboxDTO selectedJukebox;
@@ -79,18 +83,20 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		deleteButton = new Button("Delete jukebox");
 		deleteButton.addClickListener(new DeleteJukeboxListener(this));
 		buttonsLayout.addComponent(deleteButton);
+		deleteButton.setVisible(false);
 	}
 
 	private void addJukeboxTable() {
 		jukeboxTable = new Table();
 		jukeboxTable.setContainerDataSource(generateTableContent());
-		jukeboxTable.setPageLength(20);
+		jukeboxTable.setPageLength(21);
 		jukeboxTable.setSelectable(true);
 		jukeboxTable.setMultiSelect(false);
 		jukeboxTable.setImmediate(true);
 		jukeboxTable.setVisibleColumns(new Object[] { "name" });
 		jukeboxTable.setColumnHeaders("Your jukeboxes");
-		jukeboxTable.setWidth(1000, Unit.PIXELS);
+		//jukeboxTable.setWidth(750, Unit.PIXELS);
+		jukeboxTable.setWidth(100, Unit.PERCENTAGE);
 		jukeboxTable.addValueChangeListener(event -> {
 			if (event.getProperty().getValue() != null)
 				selectedJukebox = (JukeboxDTO) event.getProperty().getValue();
@@ -107,7 +113,67 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 				}
 			}
 		});
+
+		final Action newAction = new Action("New jukebox");
+		final Action removeAction = new Action("Delete jukebox");
+		final Action openAction = new Action("Open jukebox");
+
+		jukeboxTable.addActionHandler(new Action.Handler() {
+			private static final long serialVersionUID = 7468376138899471634L;
+
+			@Override
+			public Action[] getActions(final Object target, final Object sender) {
+				JukeboxDTO item = (JukeboxDTO) target;
+				if (item != null) {
+					return new Action[] { openAction, removeAction };
+				}
+				return new Action[] { newAction };
+			}
+
+			@Override
+			public void handleAction(final Action action, final Object sender,
+					final Object target) {
+
+				if (removeAction == action) {
+					if (getJukeboxManager() != null) {
+						JukeboxDTO toDelete = (JukeboxDTO) target;
+						ConfirmDialog.show(
+								getMainUI(),
+								"Confirm delete",
+								"Are you sure you wish to delete: "
+										+ toDelete.getName(), "Yes", "No",
+								new ConfirmDialog.Listener() {
+									private static final long serialVersionUID = -8020518088629472261L;
+
+									public void onClose(ConfirmDialog dialog) {
+										if (dialog.isConfirmed()) {
+											getJukeboxManager().deleteJukebox(
+													toDelete);
+										}
+									}
+								});
+					}
+				} else if (openAction == action) {
+					JukeboxDTO selectedJukebox = (JukeboxDTO) target;
+					if (getMainUI() != null) {
+						getJukeboxManager().setCurrentJukebox(selectedJukebox);
+						getMainUI().navigateTo(JukeboxPlayerView.getName());
+					}
+				} else if (newAction == action) {
+					if (VaadinSessionManager.getLoggedInAccount() != null
+							&& getMainUI() != null) {
+						getJukeboxManager().createNewJukebox(
+								VaadinSessionManager.getLoggedInAccount());
+						VaadinSessionManager.getMainUI().navigateTo(
+								JukeboxPlayerView.getName());
+					}
+				}
+				jukeboxTable.markAsDirtyRecursive();
+			}
+		});
+		jukeboxTableLayout.setWidth(100, Unit.PERCENTAGE);
 		jukeboxTableLayout.addComponent(jukeboxTable);
+		jukeboxTableLayout.setComponentAlignment(jukeboxTable,Alignment.TOP_CENTER);
 
 	}
 
@@ -115,6 +181,7 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		manageButton = new Button("Manage jukebox");
 		manageButton.addClickListener(new ManageJukeboxClickListener(this));
 		buttonsLayout.addComponent(manageButton);
+		manageButton.setVisible(false);
 	}
 
 	private void addNewJukeboxButton() {
@@ -136,8 +203,7 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 	}
 
 	private void init() {
-
-		jukeboxTableLayout = new VerticalLayout();
+		jukeboxTableLayout = new HorizontalLayout();
 
 		addJukeboxTable();
 
@@ -150,11 +216,16 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		addDeleteButton();
 
 		HorizontalLayout hl = new HorizontalLayout();
-		hl.addComponent(new Label());
+		hl.setWidth(100, Unit.PERCENTAGE);
+		Label fluff = new Label();
+		hl.addComponent(fluff);
+		hl.setExpandRatio(fluff, 1);
 		hl.addComponent(jukeboxTableLayout);
-		hl.addComponent(new Label());
+		hl.setComponentAlignment(jukeboxTableLayout, Alignment.TOP_CENTER);
+		hl.setExpandRatio(jukeboxTableLayout, 1);
+		buttonsLayout.setWidth(100, Unit.PERCENTAGE);
 		hl.addComponent(buttonsLayout);
-		hl.addComponent(new Label());
+		hl.setExpandRatio(buttonsLayout, 1);
 
 		VerticalLayout vl = new VerticalLayout();
 		vl.addComponent(hl);
@@ -162,7 +233,6 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		ml = new MainLayout();
 		ml.addComponentToContainer(vl);
 		this.setCompositionRoot(ml);
-
 	}
 
 	private void setButtonsActiveStatus() {

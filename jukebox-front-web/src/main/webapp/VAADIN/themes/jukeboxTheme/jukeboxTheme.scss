@@ -74,6 +74,21 @@ $v-component-group-spacing: 6px;
 		important
 	}
 	
+	.v-button
+	{
+        margin: 6px;
+    }
+    
+    .v-textfield
+	{
+        margin: 6px;
+    }
+    
+    .v-table
+	{
+        margin: 6px;
+    }
+    
 	.v-nativebutton {
 		width: 114px;
         height: 85px;
@@ -112,6 +127,10 @@ $v-component-group-spacing: 6px;
 
 	.v-textfield.numerical {
     	text-align: right;
+	}
+	
+	.titlelabel {
+		font-size: 250%;
 	}
 	
 	.errorlabel {

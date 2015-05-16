@@ -37,9 +37,7 @@ public class CurrentPlaylistPanel extends Panel {
 	private Table mandatorySongTable;
 	private JukeboxPlayerView parent;
 	private EditLabel playListNameComponent;
-
 	private Table playlistSongTable;
-
 	private int mandatoryPageLength;
 
 	public CurrentPlaylistPanel(JukeboxPlayerView parent) {
@@ -98,7 +96,8 @@ public class CurrentPlaylistPanel extends Panel {
 		playlistSongTable.setColumnHeaderMode(Table.ColumnHeaderMode.HIDDEN);
 		playlistSongTable.addItemClickListener(event -> {
 			if (event.isDoubleClick() && event.getItemId() != null) {
-				if (!parent.getJukeboxManager().isMandatory() && parent.getJukeboxManager().mandatoryEmpty())
+				if (!parent.getJukeboxManager().isMandatory()
+						&& parent.getJukeboxManager().mandatoryEmpty())
 					parent.playSong((SongDTO) event.getItemId());
 				else
 					parent.playMandatorySong();
@@ -181,11 +180,11 @@ public class CurrentPlaylistPanel extends Panel {
 	private Container generateMandatorySongTableContent() {
 		BeanItemContainer<SongDTO> cont = new BeanItemContainer<SongDTO>(
 				SongDTO.class);
-		mandatoryPageLength = min(cont.size(), 5);
 		if (parent.isAccountLoggedIn() && parent.getMainUI() != null) {
 			JukeboxManager mgr = parent.getJukeboxManager();
 			cont.addAll(mgr.getMandatorySongs());
 		}
+		mandatoryPageLength = min(cont.size(), 5);
 		return cont;
 	}
 
@@ -253,6 +252,9 @@ public class CurrentPlaylistPanel extends Panel {
 		mandatorySongTable.setVisibleColumns(new Object[] { "Songs" });
 		mandatorySongTable.setColumnHeaders("Songs");
 		mandatorySongTable.setPageLength(mandatoryPageLength);
+		mandatorySongTable.setVisible(true);
+		if(mandatoryPageLength<= 0)
+			mandatorySongTable.setVisible(false);
 	}
 
 	private void updatePlayListName() {

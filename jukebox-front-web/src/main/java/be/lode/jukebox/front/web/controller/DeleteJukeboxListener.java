@@ -24,9 +24,8 @@ public class DeleteJukeboxListener implements ClickListener {
 		JukeboxDTO jbDto = chooseJukeboxView.getSelectedJukebox();
 		if (VaadinSessionManager.getMainUI() != null) {
 			MainUI mainUI = VaadinSessionManager.getMainUI();
-			//TODO 610 prettify
 			ConfirmDialog.show(mainUI, "Confirm delete",
-					"Are you sure you wish to delete"
+					"Are you sure you wish to delete: "
 							+ chooseJukeboxView.getSelectedJukebox().getName(),
 					"Yes", "No", new ConfirmDialog.Listener() {
 						private static final long serialVersionUID = -8020518088629472261L;
