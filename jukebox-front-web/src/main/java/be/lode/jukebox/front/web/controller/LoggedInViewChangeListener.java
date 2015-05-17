@@ -2,8 +2,8 @@ package be.lode.jukebox.front.web.controller;
 
 import be.lode.jukebox.front.web.view.MainUI;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
+import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
 import be.lode.jukebox.front.web.view.login.LoginView;
-import be.lode.jukebox.front.web.view.temp.TempView;
 
 import com.vaadin.navigator.ViewChangeListener;
 
@@ -28,7 +28,7 @@ public class LoggedInViewChangeListener implements ViewChangeListener {
 		} else if (VaadinSessionManager.isAccountLoggedIn() && isLoginView) {
 			// If someone tries to access to login view while logged in, then go
 			// to default view
-			((MainUI) mainUI).navigateTo(TempView.getName());
+			((MainUI) mainUI).navigateTo(ChooseJukeboxView.getName());
 			return false;
 		}
 
