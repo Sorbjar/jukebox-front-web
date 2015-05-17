@@ -83,6 +83,7 @@ public class MainLayout extends VerticalLayout {
 		Panel headerBar = new Panel();
 		headerBar.setContent(hl);
 		headerBar.setStyleName("headerbar");
+		headerBar.setWidth(100, Unit.PERCENTAGE);
 		this.addComponent(headerBar);
 		container = new VerticalLayout();
 		container.setSizeFull();

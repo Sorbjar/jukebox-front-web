@@ -18,6 +18,7 @@ import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.shared.ui.combobox.FilteringMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
@@ -82,19 +83,30 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		// TODO 800 multiple options QR code eg download app from marketplace,
 		// open app, ....
 		security.removeAllComponents();
-		StreamResource.StreamSource imagesource = getJukeboxManager()
-				.getQRStream(300, 300);
-		StreamResource resource = new StreamResource(imagesource, "QR "
-				+ getJukeboxManager().getCurrentJukeboxDTO().getName() + ".png");
-		Image qr = new Image("QR "
-				+ getJukeboxManager().getCurrentJukeboxDTO().getName(),
-				resource);
-		security.addComponent(qr);
+		try {
+			StreamResource.StreamSource imagesource = getJukeboxManager()
+					.getQRStream(300, 300);
+			StreamResource resource = new StreamResource(imagesource, "QR "
+					+ getJukeboxManager().getCurrentJukeboxDTO().getName()
+					+ ".png");
+			Image qr = new Image("QR "
+					+ getJukeboxManager().getCurrentJukeboxDTO().getName(),
+					resource);
+			security.addComponent(qr);
+		} catch (NullPointerException e) {
+			// do nothing
+		}
 
-		Button printQRButton = new Button("Print the QR code");
-		security.addComponent(printQRButton);
-		BrowserWindowOpener opener = new BrowserWindowOpener(generatePDF());
-		opener.extend(printQRButton);
+		try {
+			Button printQRButton = new Button("Print the QR code");
+			BrowserWindowOpener opener = new BrowserWindowOpener(generatePDF());
+			opener.extend(printQRButton);
+			security.addComponent(printQRButton);
+			security.setComponentAlignment(printQRButton,
+					Alignment.BOTTOM_RIGHT);
+		} catch (NullPointerException e) {
+			// do nothing
+		}
 	}
 
 	private StreamResource generatePDF() {
@@ -139,6 +151,10 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	}
 
 	private void init() {
+
+		Label titleLabel = new Label("Edit jukebox");
+		titleLabel.setStyleName("titlelabel");
+
 		FormLayout form = new FormLayout();
 
 		nameTF = new TextField("Jukebox name");
@@ -147,11 +163,12 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		nameTF.addValidator(new NullValidator("Cannot be empty!", false));
 		form.addComponent(nameTF);
 
+		form.addComponent(new Label());
 		Label paypalLabel = new Label("Payment information");
+		paypalLabel.setStyleName("subtitlelabel");
 		form.addComponent(paypalLabel);
 
 		paymentEmailTF = new TextField("Paypal account email");
-		paymentEmailTF.setRequired(true);
 		paymentEmailTF.setImmediate(true);
 		paymentEmailTF
 				.addValidator(new NullValidator("Cannot be empty!", false));
@@ -164,7 +181,6 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		form.addComponent(currencyCBox);
 
 		pricePerSongTF = new TextField("Price per song");
-		pricePerSongTF.setRequired(true);
 		pricePerSongTF.setImmediate(true);
 		pricePerSongTF
 				.addValidator(new NullValidator("Cannot be empty!", false));
@@ -188,18 +204,36 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		VerticalLayout vl = new VerticalLayout();
 		vl.addComponent(form);
 		vl.addComponent(buttonLayout);
+		vl.setComponentAlignment(buttonLayout, Alignment.TOP_RIGHT);
 		vl.addComponent(errorMessageLayout);
+		vl.setComponentAlignment(errorMessageLayout, Alignment.TOP_RIGHT);
 
 		security = new VerticalLayout();
+		security.setSpacing(true);
 
 		generateQR();
 
 		HorizontalLayout hl = new HorizontalLayout();
+		hl.setSpacing(true);
+		Label l1 = new Label();
+		hl.addComponent(l1);
+		hl.setExpandRatio(l1, 4);
 		hl.addComponent(vl);
+		hl.setExpandRatio(vl, 3);
+		Label l2 = new Label();
+		hl.addComponent(l2);
+		hl.setExpandRatio(l2, 2);
 		hl.addComponent(security);
+		Label l3 = new Label();
+		hl.addComponent(l3);
+		hl.setExpandRatio(l3, 1);
+
+		VerticalLayout rootLayout = new VerticalLayout();
+		rootLayout.addComponent(titleLabel);
+		rootLayout.addComponent(hl);
 
 		ml = new MainLayout();
-		ml.addComponentToContainer(hl);
+		ml.addComponentToContainer(rootLayout);
 		this.setCompositionRoot(ml);
 	}
 }

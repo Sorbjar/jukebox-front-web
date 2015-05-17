@@ -89,7 +89,7 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 	private void addJukeboxTable() {
 		jukeboxTable = new Table();
 		jukeboxTable.setContainerDataSource(generateTableContent());
-		jukeboxTable.setPageLength(21);
+		jukeboxTable.setPageLength(20);
 		jukeboxTable.setSelectable(true);
 		jukeboxTable.setMultiSelect(false);
 		jukeboxTable.setImmediate(true);
@@ -208,6 +208,7 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		addJukeboxTable();
 
 		buttonsLayout = new VerticalLayout();
+		buttonsLayout.setSpacing(true);
 
 		addNewJukeboxButton();
 		buttonsLayout.addComponent(new Label());
@@ -216,13 +217,14 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		addDeleteButton();
 
 		HorizontalLayout hl = new HorizontalLayout();
+		hl.setSpacing(true);
 		hl.setWidth(100, Unit.PERCENTAGE);
 		Label fluff = new Label();
 		hl.addComponent(fluff);
 		hl.setExpandRatio(fluff, 1);
 		hl.addComponent(jukeboxTableLayout);
 		hl.setComponentAlignment(jukeboxTableLayout, Alignment.TOP_CENTER);
-		hl.setExpandRatio(jukeboxTableLayout, 1);
+		hl.setExpandRatio(jukeboxTableLayout, 2);
 		buttonsLayout.setWidth(100, Unit.PERCENTAGE);
 		hl.addComponent(buttonsLayout);
 		hl.setExpandRatio(buttonsLayout, 1);

@@ -52,12 +52,14 @@ $v-component-group-spacing: 6px;
 @mixin jukeboxTheme {
 	@include valo;
   
+  
 	.headerbar
 	{
 		background-color: #07a9ca;
-		!
-		important
+		margin: 0px !important;
 	}
+	
+	
 
 	.facebookbutton
 	{
@@ -84,7 +86,27 @@ $v-component-group-spacing: 6px;
         margin: 6px;
     }
     
+    .v-combobox
+	{
+        margin: 6px;
+    }
+    
+    .v-filterselect
+	{
+        margin: 6px;
+    }
+    
     .v-table
+	{
+        margin: 6px;
+    }
+    
+    .v-label
+	{
+        margin: 6px;
+    }
+    
+    .v-panel
 	{
         margin: 6px;
     }
@@ -131,6 +153,12 @@ $v-component-group-spacing: 6px;
 	
 	.titlelabel {
 		font-size: 250%;
+	}
+	
+	.subtitlelabel {
+		font-size: 120%;
+		font-style: italic;
+		text-decoration:underline;
 	}
 	
 	.errorlabel {

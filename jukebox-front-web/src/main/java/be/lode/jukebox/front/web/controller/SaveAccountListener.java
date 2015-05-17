@@ -52,7 +52,7 @@ public class SaveAccountListener implements ClickListener {
 		JukeboxManager mgr = VaadinSessionManager.getMainUI()
 				.getJukeboxManager();
 		if (!mgr.isValidEmailAddress(editAccountView.getEmailTF().getValue())) {
-			errors.add("A valid emailaddress must be presented!");
+			errors.add("A valid emailaddress must be filled in!");
 		}
 		return errors.size() == 0;
 
