@@ -16,18 +16,17 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
 //TODO 610 prettify
-public class CurrentJukeboxPanel extends Panel {
+public class CurrentJukeboxLayout extends VerticalLayout {
 	private static final long serialVersionUID = -2978450768039658888L;
 	private Label jukeboxNameLabel;
 	private JukeboxPlayerView parent;
 	private Table playlistTable;
 
-	public CurrentJukeboxPanel(JukeboxPlayerView parent) {
+	public CurrentJukeboxLayout(JukeboxPlayerView parent) {
 		super();
 		this.parent = parent;
 		init();
@@ -116,9 +115,13 @@ public class CurrentJukeboxPanel extends Panel {
 
 		VerticalLayout currentJukeboxLayout = new VerticalLayout();
 		currentJukeboxLayout.addComponent(jukeboxNameLayout);
+		playlistTable.setWidth(99, Unit.PERCENTAGE);
 		currentJukeboxLayout.addComponent(playlistTable);
+		currentJukeboxLayout.setComponentAlignment(playlistTable,
+				Alignment.TOP_CENTER);
+		currentJukeboxLayout.setWidth(99, Unit.PERCENTAGE);
 
-		this.setContent(currentJukeboxLayout);
+		this.addComponent(currentJukeboxLayout);
 	}
 
 	private void updateJukeboxName() {

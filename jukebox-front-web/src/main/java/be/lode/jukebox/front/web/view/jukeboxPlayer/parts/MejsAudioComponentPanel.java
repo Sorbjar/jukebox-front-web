@@ -15,6 +15,7 @@ import com.kbdunn.vaadin.addons.mediaelement.PlaybackEndedListener;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.server.Resource;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -239,6 +240,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		// audioLayout.setComponentAlignment(audioPlayer, Alignment.TOP_CENTER);
 
 		HorizontalLayout buttonLayout = new HorizontalLayout();
+		buttonLayout.setSpacing(false);
 		buttonLayout.addComponent(previousButton);
 		buttonLayout.addComponent(playPauseButton);
 		buttonLayout.addComponent(stopButton);
@@ -246,11 +248,16 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		buttonLayout.addComponent(randomButton);
 		buttonLayout.addComponent(loopButton);
 		buttonLayout.addComponent(volumeSlider);
+		HorizontalLayout buttonContainer = new HorizontalLayout();
+		buttonContainer.addComponent(buttonLayout);
+		buttonContainer.setWidth(99, Unit.PERCENTAGE);
 
 		VerticalLayout vl = new VerticalLayout();
 
 		vl.addComponent(audioLayout);
+		vl.setComponentAlignment(audioLayout, Alignment.TOP_CENTER);
 		vl.addComponent(buttonLayout);
+		vl.setComponentAlignment(buttonLayout, Alignment.TOP_CENTER);
 		this.setContent(vl);
 	}
 

@@ -21,6 +21,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -52,10 +53,10 @@ public class EditAccountView extends CustomComponent implements View {
 	}
 
 	private void init() {
-		
+
 		Label titleLabel = new Label("Edit account");
-		titleLabel.setStyleName("titlelabel");	
-		
+		titleLabel.setStyleName("titlelabel");
+
 		FormLayout form = new FormLayout();
 
 		firstNameTF = new TextField("First name");
@@ -85,11 +86,12 @@ public class EditAccountView extends CustomComponent implements View {
 		cancelButton.addClickListener(cancelListener);
 		buttonLayout.addComponent(saveButton);
 		buttonLayout.addComponent(cancelButton);
-		
+
 		HorizontalLayout buttonContainer = new HorizontalLayout();
 		buttonContainer.setWidth(100, Unit.PERCENTAGE);
 		buttonContainer.addComponent(buttonLayout);
-		buttonContainer.setComponentAlignment(buttonLayout, Alignment.TOP_RIGHT);
+		buttonContainer
+				.setComponentAlignment(buttonLayout, Alignment.TOP_RIGHT);
 
 		errorMessageLayout = new VerticalLayout();
 
@@ -99,10 +101,20 @@ public class EditAccountView extends CustomComponent implements View {
 		vl.addComponent(titleLabel);
 		vl.addComponent(form);
 		vl.addComponent(buttonContainer);
+		vl.setComponentAlignment(buttonContainer, Alignment.TOP_CENTER);
 		vl.addComponent(errorMessageLayout);
 
+		HorizontalLayout centerLayout = new HorizontalLayout();
+		Panel centerPanel = new Panel();
+		centerPanel.setStyleName("centerpanel");
+		centerPanel.setSizeUndefined();
+		centerPanel.setContent(vl);
+		centerLayout.setWidth(100, Unit.PERCENTAGE);
+		centerLayout.addComponent(centerPanel);
+		centerLayout.setComponentAlignment(centerPanel, Alignment.TOP_CENTER);
+
 		ml = new MainLayout();
-		ml.addComponentToContainer(vl);
+		ml.addComponentToContainer(centerLayout);
 		this.setCompositionRoot(ml);
 	}
 

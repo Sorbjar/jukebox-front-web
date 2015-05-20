@@ -25,6 +25,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
@@ -83,16 +84,22 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		// TODO 800 multiple options QR code eg download app from marketplace,
 		// open app, ....
 		security.removeAllComponents();
+		//security.addComponent(new Label());
 		try {
 			StreamResource.StreamSource imagesource = getJukeboxManager()
-					.getQRStream(300, 300);
+					.getQRStream(263, 263);
 			StreamResource resource = new StreamResource(imagesource, "QR "
 					+ getJukeboxManager().getCurrentJukeboxDTO().getName()
 					+ ".png");
-			Image qr = new Image("QR "
-					+ getJukeboxManager().getCurrentJukeboxDTO().getName(),
-					resource);
-			security.addComponent(qr);
+
+			Image qr = new Image("", resource);
+			qr.setStyleName("qrcode");
+			HorizontalLayout local = new HorizontalLayout();
+			local.setWidth(100, Unit.PERCENTAGE);
+			local.addComponent(qr);
+			local.setComponentAlignment(qr, Alignment.TOP_CENTER);
+			security.addComponent(local);
+			security.setWidth(100, Unit.PERCENTAGE);
 		} catch (NullPointerException e) {
 			// do nothing
 		}
@@ -102,8 +109,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 			BrowserWindowOpener opener = new BrowserWindowOpener(generatePDF());
 			opener.extend(printQRButton);
 			security.addComponent(printQRButton);
-			security.setComponentAlignment(printQRButton,
-					Alignment.BOTTOM_RIGHT);
+			security.setComponentAlignment(printQRButton, Alignment.TOP_CENTER);
 		} catch (NullPointerException e) {
 			// do nothing
 		}
@@ -201,10 +207,14 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 
 		errorMessageLayout = new VerticalLayout();
 
+		HorizontalLayout buttonContainer = new HorizontalLayout();
+		buttonContainer.setWidth(100, Unit.PERCENTAGE);
+		buttonContainer.addComponent(buttonLayout);
+		buttonContainer
+				.setComponentAlignment(buttonLayout, Alignment.TOP_RIGHT);
+
 		VerticalLayout vl = new VerticalLayout();
 		vl.addComponent(form);
-		vl.addComponent(buttonLayout);
-		vl.setComponentAlignment(buttonLayout, Alignment.TOP_RIGHT);
 		vl.addComponent(errorMessageLayout);
 		vl.setComponentAlignment(errorMessageLayout, Alignment.TOP_RIGHT);
 
@@ -214,26 +224,27 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		generateQR();
 
 		HorizontalLayout hl = new HorizontalLayout();
-		hl.setSpacing(true);
-		Label l1 = new Label();
-		hl.addComponent(l1);
-		hl.setExpandRatio(l1, 4);
 		hl.addComponent(vl);
-		hl.setExpandRatio(vl, 3);
-		Label l2 = new Label();
-		hl.addComponent(l2);
-		hl.setExpandRatio(l2, 2);
 		hl.addComponent(security);
-		Label l3 = new Label();
-		hl.addComponent(l3);
-		hl.setExpandRatio(l3, 1);
+		
+		VerticalLayout vl1 = new VerticalLayout();
+		vl1.addComponent(titleLabel);
+		vl1.addComponent(hl);
+		vl1.addComponent(buttonContainer);
+		vl1.setComponentAlignment(buttonContainer, Alignment.TOP_CENTER);
+		vl1.addComponent(new Label());
 
-		VerticalLayout rootLayout = new VerticalLayout();
-		rootLayout.addComponent(titleLabel);
-		rootLayout.addComponent(hl);
+		HorizontalLayout centerLayout = new HorizontalLayout();
+		Panel centerPanel = new Panel();
+		centerPanel.setStyleName("centerpanel");
+		centerPanel.setSizeUndefined();
+		centerPanel.setContent(vl1);
+		centerLayout.setWidth(100, Unit.PERCENTAGE);
+		centerLayout.addComponent(centerPanel);
+		centerLayout.setComponentAlignment(centerPanel, Alignment.TOP_CENTER);
 
 		ml = new MainLayout();
-		ml.addComponentToContainer(rootLayout);
+		ml.addComponentToContainer(centerLayout);
 		this.setCompositionRoot(ml);
 	}
 }

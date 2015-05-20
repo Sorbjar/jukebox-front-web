@@ -5,16 +5,19 @@ import java.util.Observer;
 
 import be.lode.jukebox.front.web.view.general.JukeboxCustomComponent;
 import be.lode.jukebox.front.web.view.general.MainLayout;
-import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.CurrentJukeboxPanel;
-import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.CurrentPlaylistPanel;
-import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.LibraryPanel;
+import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.CurrentJukeboxLayout;
+import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.CurrentPlaylistLayout;
+import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.LibraryLayout;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.parts.MejsAudioComponentPanel;
 import be.lode.jukebox.service.UpdateArgs;
 import be.lode.jukebox.service.dto.SongDTO;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
@@ -27,9 +30,9 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		return NAME;
 	}
 
-	private CurrentJukeboxPanel currentJukeboxPanel;
-	private CurrentPlaylistPanel currentPlaylistPanel;
-	private LibraryPanel libraryPanel;
+	private CurrentJukeboxLayout currentJukeboxLayout;
+	private CurrentPlaylistLayout currentPlaylistLayout;
+	private LibraryLayout libraryLayout;
 
 	private MainLayout ml;
 	private MejsAudioComponentPanel audioPlayerPanel;
@@ -52,44 +55,59 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 	}
 
 	public Table getLibraryTable() {
-		return libraryPanel.getLibraryTable();
+		return libraryLayout.getLibraryTable();
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg.equals(UpdateArgs.CURRENT_JUKEBOX)) {
-			currentJukeboxPanel.update();
-			currentPlaylistPanel.update();
+			currentJukeboxLayout.update();
+			currentPlaylistLayout.update();
 		}
 		if (arg.equals(UpdateArgs.CURRENT_PLAYLIST)) {
-			currentPlaylistPanel.update();
+			currentPlaylistLayout.update();
 		}
 	}
 
 	private void init() {
-		currentPlaylistPanel = new CurrentPlaylistPanel(this);
 
-		libraryPanel = new LibraryPanel(this);
+		currentPlaylistLayout = new CurrentPlaylistLayout(this);
 
-		currentJukeboxPanel = new CurrentJukeboxPanel(this);
+		libraryLayout = new LibraryLayout(this);
 
-		audioPlayerPanel = new MejsAudioComponentPanel(this);// new
-		// Panel("Music button panel");
+		currentJukeboxLayout = new CurrentJukeboxLayout(this);
 
+		audioPlayerPanel = new MejsAudioComponentPanel(this);
+
+		HorizontalSplitPanel leftSplitPanel = new HorizontalSplitPanel();
+		leftSplitPanel.setFirstComponent(currentJukeboxLayout);
+		leftSplitPanel.setSecondComponent(libraryLayout);
+		leftSplitPanel.setSplitPosition(36, Unit.PERCENTAGE);
+		HorizontalSplitPanel rightSplitPanel = new HorizontalSplitPanel();
+		rightSplitPanel.setFirstComponent(leftSplitPanel);
+		rightSplitPanel.setSecondComponent(currentPlaylistLayout);
+		rightSplitPanel.setSplitPosition(67, Unit.PERCENTAGE);
 		HorizontalLayout topLayout = new HorizontalLayout();
-		topLayout.addComponent(currentJukeboxPanel);
-		topLayout.addComponent(libraryPanel);
-		topLayout.addComponent(currentPlaylistPanel);
+		Panel topContainerPanel = new Panel();
+		topContainerPanel.setContent(rightSplitPanel);
+		topContainerPanel.setWidth(99, Unit.PERCENTAGE);
+		topLayout.addComponent(topContainerPanel);
+		topLayout.setComponentAlignment(topContainerPanel, Alignment.TOP_CENTER);
 		topLayout.setSizeFull();
 
 		HorizontalLayout bottomLayout = new HorizontalLayout();
 		bottomLayout.setSizeFull();
+		audioPlayerPanel.setWidth(99, Unit.PERCENTAGE);
 		bottomLayout.addComponent(audioPlayerPanel);
+		bottomLayout.setComponentAlignment(audioPlayerPanel,
+				Alignment.TOP_CENTER);
 
 		VerticalLayout vl = new VerticalLayout();
 		vl.setSizeFull();
 		vl.addComponent(topLayout);
+		vl.setComponentAlignment(topLayout, Alignment.TOP_CENTER);
 		vl.addComponent(bottomLayout);
+		vl.setComponentAlignment(bottomLayout, Alignment.TOP_CENTER);
 
 		ml = new MainLayout();
 		ml.addComponentToContainer(vl);
@@ -98,9 +116,9 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 
 	private void update() {
 		ml.update();
-		currentJukeboxPanel.update();
-		currentPlaylistPanel.update();
-		libraryPanel.update();
+		currentJukeboxLayout.update();
+		currentPlaylistLayout.update();
+		libraryLayout.update();
 		audioPlayerPanel.update();
 	}
 

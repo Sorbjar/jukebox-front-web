@@ -11,18 +11,17 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.TableDragMode;
 import com.vaadin.ui.VerticalLayout;
 
-public class LibraryPanel extends Panel {
+public class LibraryLayout extends VerticalLayout {
 	private static final long serialVersionUID = 1363346584892497032L;
 
 	private Table libraryTable;
 	private JukeboxPlayerView parent;
 
-	public LibraryPanel(JukeboxPlayerView parent) {
+	public LibraryLayout(JukeboxPlayerView parent) {
 		super();
 		this.parent = parent;
 		init();
@@ -64,7 +63,7 @@ public class LibraryPanel extends Panel {
 
 		libraryTable = new Table();
 		updateSongLibraryTable();
-		libraryTable.setPageLength(15);
+		libraryTable.setPageLength(16);
 		libraryTable.setSelectable(true);
 		libraryTable.setMultiSelect(true);
 		libraryTable.setImmediate(true);
@@ -84,11 +83,14 @@ public class LibraryPanel extends Panel {
 		});
 
 		VerticalLayout songPanelLayout = new VerticalLayout();
+		libraryTable.setWidth(99, Unit.PERCENTAGE);
 		songPanelLayout.addComponent(libraryTable);
-		songPanelLayout.addComponent(syncLayout);
+		//no sync button since ugly
+		//songPanelLayout.addComponent(syncLayout);
 		songPanelLayout.setSizeFull();
+		songPanelLayout.setWidth(99, Unit.PERCENTAGE);
 
-		this.setContent(songPanelLayout);
+		this.addComponent(songPanelLayout);
 	}
 
 	private void updateSongLibraryTable() {

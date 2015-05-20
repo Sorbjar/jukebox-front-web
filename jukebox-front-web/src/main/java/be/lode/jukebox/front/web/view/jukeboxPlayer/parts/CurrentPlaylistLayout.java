@@ -25,13 +25,12 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Table.TableDragMode;
 import com.vaadin.ui.VerticalLayout;
 
-public class CurrentPlaylistPanel extends Panel {
+public class CurrentPlaylistLayout extends VerticalLayout {
 	private static final long serialVersionUID = -4053283653825728163L;
 
 	private Table mandatorySongTable;
@@ -40,7 +39,7 @@ public class CurrentPlaylistPanel extends Panel {
 	private Table playlistSongTable;
 	private int mandatoryPageLength;
 
-	public CurrentPlaylistPanel(JukeboxPlayerView parent) {
+	public CurrentPlaylistLayout(JukeboxPlayerView parent) {
 		super();
 		this.parent = parent;
 		init();
@@ -77,6 +76,8 @@ public class CurrentPlaylistPanel extends Panel {
 
 	private void createPlaylistSongTable() {
 		playlistSongTable = new Table();
+
+		playlistSongTable.setStyleName("currentplaylist");
 		playlistSongTable.addGeneratedColumn("Songs", new ColumnGenerator() {
 			private static final long serialVersionUID = -5803413248406541910L;
 
@@ -240,10 +241,13 @@ public class CurrentPlaylistPanel extends Panel {
 
 		VerticalLayout currentPlaylistLayout = new VerticalLayout();
 		currentPlaylistLayout.addComponent(playlistNameLayout);
+		mandatorySongTable.setWidth(99, Unit.PERCENTAGE);
+		playlistSongTable.setWidth(99, Unit.PERCENTAGE);
 		currentPlaylistLayout.addComponent(mandatorySongTable);
 		currentPlaylistLayout.addComponent(playlistSongTable);
+		currentPlaylistLayout.setWidth(99, Unit.PERCENTAGE);
 
-		this.setContent(currentPlaylistLayout);
+		this.addComponent(currentPlaylistLayout);
 	}
 
 	private void updateMandatorySongTable() {
@@ -253,7 +257,7 @@ public class CurrentPlaylistPanel extends Panel {
 		mandatorySongTable.setColumnHeaders("Songs");
 		mandatorySongTable.setPageLength(mandatoryPageLength);
 		mandatorySongTable.setVisible(true);
-		if(mandatoryPageLength<= 0)
+		if (mandatoryPageLength <= 0)
 			mandatorySongTable.setVisible(false);
 	}
 
@@ -271,6 +275,6 @@ public class CurrentPlaylistPanel extends Panel {
 				.setContainerDataSource(generatePlaylistSongTableContent());
 		playlistSongTable.setVisibleColumns(new Object[] { "Songs" });
 		playlistSongTable.setColumnHeaders("Songs");
-		playlistSongTable.setPageLength(15 - mandatoryPageLength);
+		playlistSongTable.setPageLength(16 - mandatoryPageLength);
 	}
 }
