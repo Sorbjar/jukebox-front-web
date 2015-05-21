@@ -231,13 +231,21 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
+		VerticalLayout audioPlayercontainer = new VerticalLayout();
+		audioPlayercontainer.setWidth(99, Unit.PERCENTAGE);
+		audioPlayercontainer.addComponent(audioPlayer);
+		audioPlayercontainer.setComponentAlignment(audioPlayer, Alignment.TOP_CENTER);
+		
 		HorizontalLayout audioLayout = new HorizontalLayout();
-		audioLayout.setWidth(100, Unit.PERCENTAGE);
+		audioLayout.setWidth(99, Unit.PERCENTAGE);
 		audioLayout.addComponent(songLabel);
-		audioLayout.addComponent(audioPlayer);
-		audioLayout.addComponent(new Label());
-		audioPlayer.setSizeFull();
-		// audioLayout.setComponentAlignment(audioPlayer, Alignment.TOP_CENTER);
+		audioLayout.setExpandRatio(songLabel, 1);
+		audioLayout.addComponent(audioPlayercontainer);
+		audioLayout.setExpandRatio(audioPlayercontainer, 10);
+		Label fluff = new Label();
+		audioLayout.addComponent(fluff);
+		audioLayout.setExpandRatio(fluff, 1);
+		audioLayout.setComponentAlignment(audioPlayercontainer, Alignment.TOP_CENTER);
 
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		buttonLayout.setSpacing(false);

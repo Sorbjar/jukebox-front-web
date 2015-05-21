@@ -95,7 +95,6 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		jukeboxTable.setImmediate(true);
 		jukeboxTable.setVisibleColumns(new Object[] { "name" });
 		jukeboxTable.setColumnHeaders("Your jukeboxes");
-		//jukeboxTable.setWidth(750, Unit.PIXELS);
 		jukeboxTable.setWidth(100, Unit.PERCENTAGE);
 		jukeboxTable.addValueChangeListener(event -> {
 			if (event.getProperty().getValue() != null)
