@@ -151,7 +151,17 @@ $v-component-group-spacing: 6px;
 	}
 	
 	.loopbutton {
-        background: transparent url(Images/loopbuttonvinyl_113.5x85.png);
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/loopbutton_80x80.png);
+	}
+	
+	.loopbuttonlooped {
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/loopbutton_focus_80x80.png);
 	}
 	
 	.nextbutton {

@@ -74,7 +74,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		if (audioManager.isPaused())
 			playPauseButton.setStyleName("playbutton");
 		if (getJukeboxManager().isLooped())
-			loopButton.setCaption("Unloop");
+			loopButton.setStyleName("loopbuttonlooped");
 		if (getJukeboxManager().isRandom())
 			randomButton.setCaption("Unrandom");
 
