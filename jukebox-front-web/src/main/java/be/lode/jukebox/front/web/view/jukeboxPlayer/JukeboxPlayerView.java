@@ -60,7 +60,7 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (arg.equals(UpdateArgs.CURRENT_JUKEBOX)) {
+		if (arg.equals(UpdateArgs.CURRENT_JUKEBOX) || arg.equals(UpdateArgs.CURRENT_ACCOUNT)) {
 			currentJukeboxLayout.update();
 			currentPlaylistLayout.update();
 		}

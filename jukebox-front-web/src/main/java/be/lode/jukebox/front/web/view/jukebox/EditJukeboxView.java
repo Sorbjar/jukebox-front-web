@@ -236,6 +236,13 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		vl1.setComponentAlignment(buttonContainer, Alignment.TOP_CENTER);
 		vl1.addComponent(new Label());
 
+		
+		sl = new SecurityLayout(this);
+		vl1.addComponent(sl);
+		vl1.setComponentAlignment(sl, Alignment.TOP_CENTER);
+		
+		
+		
 		HorizontalLayout centerLayout = new HorizontalLayout();
 		Panel centerPanel = new Panel();
 		centerPanel.setStyleName("centerpanel");
@@ -244,10 +251,6 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		centerLayout.setWidth(100, Unit.PERCENTAGE);
 		centerLayout.addComponent(centerPanel);
 		centerLayout.setComponentAlignment(centerPanel, Alignment.TOP_CENTER);
-
-		
-		sl = new SecurityLayout(this);
-		centerLayout.addComponent(sl);
 		
 		ml = new MainLayout();
 		ml.addComponentToContainer(centerLayout);

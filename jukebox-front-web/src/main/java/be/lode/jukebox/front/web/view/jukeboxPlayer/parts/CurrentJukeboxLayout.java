@@ -1,5 +1,7 @@
 package be.lode.jukebox.front.web.view.jukeboxPlayer.parts;
 
+import be.lode.jukebox.business.model.enums.Role;
+import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.front.web.view.jukebox.EditJukeboxView;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.service.dto.PlaylistDTO;
@@ -11,11 +13,11 @@ import com.vaadin.event.Action;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
@@ -25,6 +27,7 @@ public class CurrentJukeboxLayout extends VerticalLayout {
 	private Label jukeboxNameLabel;
 	private JukeboxPlayerView parent;
 	private Table playlistTable;
+	private NativeButton editJukeboxButton;
 
 	public CurrentJukeboxLayout(JukeboxPlayerView parent) {
 		super();
@@ -33,8 +36,21 @@ public class CurrentJukeboxLayout extends VerticalLayout {
 	}
 
 	public void update() {
+		updateEditButton();
 		updateJukeboxName();
 		updatePlaylistTable();
+	}
+
+	private void updateEditButton() {
+		editJukeboxButton.setVisible(false);
+		try {
+			editJukeboxButton.setVisible(false);
+			if (parent.getJukeboxManager().getCurrentAccountRole(
+					VaadinSessionManager.getLoggedInAccount()) == Role.Administrator)
+				editJukeboxButton.setVisible(true);
+		} catch (NullPointerException ex) {
+			// do nothing
+		}
 	}
 
 	private Container generatePlaylistTableContent() {
@@ -50,7 +66,8 @@ public class CurrentJukeboxLayout extends VerticalLayout {
 	private void init() {
 		jukeboxNameLabel = new Label();
 		// TODO 610 change button to crotchet
-		Button editJukeboxButton = new Button("Edit");
+		editJukeboxButton = new NativeButton();
+		editJukeboxButton.setStyleName("editbutton");
 		editJukeboxButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 5000011869857119573L;
 

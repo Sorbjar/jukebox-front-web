@@ -162,6 +162,13 @@ $v-component-group-spacing: 6px;
         border: none;
 	}
 	
+	.editbutton {
+		width: 25px !important;
+        height: 25px !important;
+        margin: 3px !important;
+        background: transparent url(Images/settings_25x25.png);
+	}
+	
 	.loopbutton {
 		width: 80px !important;
         height: 80px !important;
