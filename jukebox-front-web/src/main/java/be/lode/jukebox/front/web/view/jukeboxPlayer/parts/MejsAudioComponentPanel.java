@@ -69,14 +69,26 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 	public void update() {
 		playPauseButton.setStyleName("pausebutton");
+		playPauseButton.setDescription("Pause");
+		
 		loopButton.setStyleName("loopbutton");
+		loopButton.setDescription("Loop");
+		
 		randomButton.setCaption("Random");
-		if (audioManager.isPaused())
+		randomButton.setDescription("Random");
+		
+		if (audioManager.isPaused()) {
 			playPauseButton.setStyleName("playbutton");
-		if (getJukeboxManager().isLooped())
+			playPauseButton.setDescription("Play");
+		}
+		if (getJukeboxManager().isLooped()) {
 			loopButton.setStyleName("loopbuttonlooped");
-		if (getJukeboxManager().isRandom())
+			loopButton.setDescription("Unloop");
+		}
+		if (getJukeboxManager().isRandom()){
 			randomButton.setCaption("Unrandom");
+			randomButton.setDescription("Unrandom");
+		}
 
 		if (parent.getJukeboxManager().getCurrentSongDTO() != null)
 			songLabel.setValue(parent.getJukeboxManager().getCurrentSongDTO()
@@ -158,6 +170,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 		NativeButton stopButton = new NativeButton();
 		stopButton.setStyleName("stopbutton");
+		stopButton.setDescription("Stop");
 		stopButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 
@@ -170,6 +183,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 		nextButton = new NativeButton();
 		nextButton.setStyleName("nextbutton");
+		nextButton.setDescription("Next");
 		nextButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 
@@ -182,6 +196,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 		previousButton = new NativeButton();
 		previousButton.setStyleName("previousbutton");
+		previousButton.setDescription("Previous");
 		previousButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 
@@ -217,6 +232,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 
 		// TODO 620 add volume icon
 		volumeSlider = new Slider();
+		volumeSlider.setDescription("Volume");
 		volumeSlider.setImmediate(true);
 		volumeSlider.setMin(0.0);
 		volumeSlider.setMax(100.0);
@@ -234,8 +250,9 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		VerticalLayout audioPlayercontainer = new VerticalLayout();
 		audioPlayercontainer.setWidth(99, Unit.PERCENTAGE);
 		audioPlayercontainer.addComponent(audioPlayer);
-		audioPlayercontainer.setComponentAlignment(audioPlayer, Alignment.TOP_CENTER);
-		
+		audioPlayercontainer.setComponentAlignment(audioPlayer,
+				Alignment.TOP_CENTER);
+
 		HorizontalLayout audioLayout = new HorizontalLayout();
 		audioLayout.setWidth(99, Unit.PERCENTAGE);
 		audioLayout.addComponent(songLabel);
@@ -245,7 +262,8 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		Label fluff = new Label();
 		audioLayout.addComponent(fluff);
 		audioLayout.setExpandRatio(fluff, 1);
-		audioLayout.setComponentAlignment(audioPlayercontainer, Alignment.TOP_CENTER);
+		audioLayout.setComponentAlignment(audioPlayercontainer,
+				Alignment.TOP_CENTER);
 
 		HorizontalLayout buttonLayout = new HorizontalLayout();
 		buttonLayout.setSpacing(false);
