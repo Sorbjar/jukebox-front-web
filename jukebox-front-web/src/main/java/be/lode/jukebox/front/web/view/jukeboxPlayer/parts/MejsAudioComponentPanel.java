@@ -14,7 +14,9 @@ import com.kbdunn.vaadin.addons.mediaelement.MediaComponentOptions.Feature;
 import com.kbdunn.vaadin.addons.mediaelement.PlaybackEndedListener;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
+import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -70,13 +72,13 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 	public void update() {
 		playPauseButton.setStyleName("pausebutton");
 		playPauseButton.setDescription("Pause");
-		
+
 		loopButton.setStyleName("loopbutton");
 		loopButton.setDescription("Loop");
-		
-		randomButton.setCaption("Random");
+
+		randomButton.setStyleName("randombutton");
 		randomButton.setDescription("Random");
-		
+
 		if (audioManager.isPaused()) {
 			playPauseButton.setStyleName("playbutton");
 			playPauseButton.setDescription("Play");
@@ -85,8 +87,8 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			loopButton.setStyleName("loopbuttonlooped");
 			loopButton.setDescription("Unloop");
 		}
-		if (getJukeboxManager().isRandom()){
-			randomButton.setCaption("Unrandom");
+		if (getJukeboxManager().isRandom()) {
+			randomButton.setStyleName("randombuttonlooped");
 			randomButton.setDescription("Unrandom");
 		}
 
@@ -97,11 +99,15 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			songLabel.setValue("");
 
 		nextButton.setEnabled(true);
+		nextButton.setStyleName("nextbutton");
 		previousButton.setEnabled(true);
+		previousButton.setStyleName("previousbutton");
 		// TODO 100 change disabled buttons so it's visual
 		if (getJukeboxManager().isMandatory()) {
 			nextButton.setEnabled(false);
+			nextButton.setStyleName("nextbuttondisabled");
 			previousButton.setEnabled(false);
+			previousButton.setStyleName("previousbuttondisabled");
 		}
 
 		playPauseButton.markAsDirty();
@@ -219,7 +225,8 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
-		randomButton = new Button("Random");
+		randomButton = new NativeButton();
+		randomButton.setStyleName("randombutton");
 		randomButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -847246503778518028L;
 
@@ -231,8 +238,13 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		});
 
 		// TODO 620 add volume icon
+		Label volumeSliderLabel = new Label();
+		volumeSliderLabel.setIcon(FontAwesome.VOLUME_UP);
+		volumeSliderLabel.setStyleName("volumeicon");
 		volumeSlider = new Slider();
+		volumeSlider.setStyleName("volumeslider");
 		volumeSlider.setDescription("Volume");
+		volumeSlider.setOrientation(SliderOrientation.VERTICAL);
 		volumeSlider.setImmediate(true);
 		volumeSlider.setMin(0.0);
 		volumeSlider.setMax(100.0);
@@ -244,8 +256,18 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			public void valueChange(ValueChangeEvent event) {
 				Double vol = (Double) event.getProperty().getValue();
 				audioPlayer.setVolume((vol.intValue() + 9) / 10);
+				volumeSliderLabel.setIcon(FontAwesome.VOLUME_DOWN);
+				if (vol >= 50) {
+					volumeSliderLabel.setIcon(FontAwesome.VOLUME_UP);
+				} else if (vol < 10) {
+					volumeSliderLabel.setIcon(FontAwesome.VOLUME_OFF);
+				}
 			}
 		});
+
+		HorizontalLayout volumeLayout = new HorizontalLayout();
+		volumeLayout.addComponent(volumeSliderLabel);
+		volumeLayout.addComponent(volumeSlider);
 
 		VerticalLayout audioPlayercontainer = new VerticalLayout();
 		audioPlayercontainer.setWidth(99, Unit.PERCENTAGE);
@@ -258,7 +280,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		audioLayout.addComponent(songLabel);
 		audioLayout.setExpandRatio(songLabel, 1);
 		audioLayout.addComponent(audioPlayercontainer);
-		audioLayout.setExpandRatio(audioPlayercontainer, 10);
+		audioLayout.setExpandRatio(audioPlayercontainer, 3);
 		Label fluff = new Label();
 		audioLayout.addComponent(fluff);
 		audioLayout.setExpandRatio(fluff, 1);
@@ -273,7 +295,7 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		buttonLayout.addComponent(nextButton);
 		buttonLayout.addComponent(randomButton);
 		buttonLayout.addComponent(loopButton);
-		buttonLayout.addComponent(volumeSlider);
+		buttonLayout.addComponent(volumeLayout);
 		HorizontalLayout buttonContainer = new HorizontalLayout();
 		buttonContainer.addComponent(buttonLayout);
 		buttonContainer.setWidth(99, Unit.PERCENTAGE);

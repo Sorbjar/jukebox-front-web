@@ -60,6 +60,18 @@ $v-component-group-spacing: 6px;
         margin: 20px !important;
     }
     
+    .volumeicon
+    {
+        margin: 0px !important;
+        width: 0px !important;
+        height: 0px !important;
+    }
+    
+    .volumeslider
+    {
+        margin: 0px !important;
+    }
+    
     .qrcode
     {
         margin: 20px !important;
@@ -164,28 +176,67 @@ $v-component-group-spacing: 6px;
         background: transparent url(Images/loopbutton_focus_80x80.png);
 	}
 	
+	.randombutton {
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/randombutton_80x80.png);
+	}
+	
+	.randombuttonlooped {
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/randombutton_focus_80x80.png);
+	}
+	
 	.nextbutton {
-        background: transparent url(Images/nextbuttonvinyl_113.5x85.png);
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/nextbutton_80x80.png);
+	}
+	
+	.nextbuttondisabled {
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/nextbutton_disabled_80x80.png);
 	}
 	
 	.pausebutton {
-        background: transparent url(Images/pausebuttonvinyl_113.5x85.png);
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/pausebutton_80x80.png);
 	}
 	
 	.playbutton {
-	
-        background: transparent url(Images/playbuttonvinyl_113.5x85.png);
-        
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/playbutton_80x80.png);  
 	}
 	
 	.previousbutton {
-        background: transparent url(Images/previousbuttonvinyl_113.5x85.png);
-        
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/previousbutton_80x80.png);
+	}
+	
+	.previousbuttondisabled {
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/previousbutton_disabled_80x80.png);
 	}
 	
 	.stopbutton {
-        background: transparent url(Images/stopbuttonvinyl_113.5x85.png);
-        
+		width: 80px !important;
+        height: 80px !important;
+        margin: 6px !important;
+        background: transparent url(Images/stopbutton_80x80.png);
 	}
 
 	.v-textfield.numerical {

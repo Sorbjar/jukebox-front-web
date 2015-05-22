@@ -73,8 +73,6 @@ public class MainUI extends UI {
 				&& previousNavigationState != currentViewName
 				&& previousNavigationState != currentNavigationState)
 			this.navigateTo(previousNavigationState);
-			//this.getNavigator().navigateTo(previousNavigationState);
-		
 		else
 			this.getNavigator().navigateTo("");
 	}

@@ -82,11 +82,11 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		HorizontalSplitPanel leftSplitPanel = new HorizontalSplitPanel();
 		leftSplitPanel.setFirstComponent(currentJukeboxLayout);
 		leftSplitPanel.setSecondComponent(libraryLayout);
-		leftSplitPanel.setSplitPosition(36, Unit.PERCENTAGE);
+		leftSplitPanel.setSplitPosition(33, Unit.PERCENTAGE);
 		HorizontalSplitPanel rightSplitPanel = new HorizontalSplitPanel();
 		rightSplitPanel.setFirstComponent(leftSplitPanel);
 		rightSplitPanel.setSecondComponent(currentPlaylistLayout);
-		rightSplitPanel.setSplitPosition(67, Unit.PERCENTAGE);
+		rightSplitPanel.setSplitPosition(70, Unit.PERCENTAGE);
 		HorizontalLayout topLayout = new HorizontalLayout();
 		Panel topContainerPanel = new Panel();
 		topContainerPanel.setContent(rightSplitPanel);

@@ -243,6 +243,10 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		centerLayout.addComponent(centerPanel);
 		centerLayout.setComponentAlignment(centerPanel, Alignment.TOP_CENTER);
 
+		
+		SecurityLayout sl = new SecurityLayout(this);
+		centerLayout.addComponent(sl);
+		
 		ml = new MainLayout();
 		ml.addComponentToContainer(centerLayout);
 		this.setCompositionRoot(ml);
