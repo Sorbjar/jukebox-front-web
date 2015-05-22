@@ -60,7 +60,7 @@ public class MainLayout extends VerticalLayout {
 	}
 
 	private void setJukeboxLabel() {
-		Label jbLabel = new Label("Lode's Jukebox");
+		Label jbLabel = new Label("Nyimbox");
 		hl.addComponent(jbLabel);
 		hl.setComponentAlignment(jbLabel, Alignment.MIDDLE_LEFT);
 	}

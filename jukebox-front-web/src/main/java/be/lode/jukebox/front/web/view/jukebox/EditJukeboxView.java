@@ -45,6 +45,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	private ComboBox currencyCBox;
 	private TextField pricePerSongTF;
 	private VerticalLayout security;
+	private SecurityLayout sl;
 
 	public EditJukeboxView() {
 		super();
@@ -78,6 +79,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		fillFields();
 		errorMessageLayout.removeAllComponents();
 		generateQR();
+		sl.update();
 	}
 
 	private void generateQR() {
@@ -244,7 +246,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		centerLayout.setComponentAlignment(centerPanel, Alignment.TOP_CENTER);
 
 		
-		SecurityLayout sl = new SecurityLayout(this);
+		sl = new SecurityLayout(this);
 		centerLayout.addComponent(sl);
 		
 		ml = new MainLayout();

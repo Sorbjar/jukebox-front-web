@@ -49,7 +49,7 @@ public class MainUI extends UI {
 		jukeboxManager = new JukeboxManager(emf);
 		currencyManager = new CurrencyManager(emf);
 		oAuthManager = new OAuthApiInfoManager(emf);
-		getPage().setTitle("Lode's Jukebox");
+		getPage().setTitle("Nyimbox");
 	}
 
 	public CurrencyManager getCurrencyManager() {

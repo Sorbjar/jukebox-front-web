@@ -1,4 +1,4 @@
-package be.lode.jukebox.front.web.view.general;
+package be.lode.jukebox.front.web.view.login;
 
 import be.lode.jukebox.front.web.controller.OAuthListenerJukebox;
 import be.lode.jukebox.service.dto.OAuthApiInfoDTO;

@@ -4,6 +4,7 @@ import org.vaadin.dialogs.ConfirmDialog;
 
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.front.web.view.chooseJukebox.ChooseJukeboxView;
+import be.lode.jukebox.service.dto.AccountDTO;
 import be.lode.jukebox.service.dto.SecurityAccountDTO;
 import be.lode.jukebox.service.manager.JukeboxManager;
 
@@ -19,8 +20,9 @@ import com.vaadin.ui.VerticalLayout;
 
 public class SecurityLayout extends VerticalLayout {
 	private static final long serialVersionUID = -7586412676903468219L;
-	private Table securityTable;
+	private Table addAccountTable;
 	private EditJukeboxView parent;
+	private Table securityTable;
 
 	public SecurityLayout(EditJukeboxView parent) {
 		super();
@@ -28,18 +30,39 @@ public class SecurityLayout extends VerticalLayout {
 		init();
 	}
 
-	private void init() {
-		createSecurityTable();
+	private void addAddAccountActions() {
+		final Action addAction = new Action("Add this account");
+
+		addAccountTable.addActionHandler(new Action.Handler() {
+			private static final long serialVersionUID = 1879059980213418192L;
+
+			@Override
+			public Action[] getActions(final Object target, final Object sender) {
+				AccountDTO item = (AccountDTO) target;
+				if (item != null) {
+					return new Action[] { addAction };
+				}
+				return null;
+			}
+
+			@Override
+			public void handleAction(final Action action, final Object sender,
+					final Object target) {
+				if (addAction == action) {
+					AccountDTO toAdd = (AccountDTO) target;
+					parent.getJukeboxManager().addAccount(toAdd);
+					update();
+					securityTable.setVisible(true);
+					addAccountTable.setVisible(false);
+				}
+				addAccountTable.markAsDirtyRecursive();
+			}
+
+		});
+
 	}
 
-	private void createSecurityTable() {
-		securityTable = new Table();
-		addActions();
-		updateSecurityTable();
-		this.addComponent(securityTable);
-	}
-
-	private void addActions() {
+	private void addSecurityActions() {
 		final Action addAction = new Action("Add an account");
 		final Action deleteAction = new Action("Delete account");
 
@@ -75,6 +98,7 @@ public class SecurityLayout extends VerticalLayout {
 											if (dialog.isConfirmed()) {
 												parent.getJukeboxManager()
 														.deleteAccount(toDelete);
+												update();
 												if (parent
 														.getJukeboxManager()
 														.isCurrentAccount(
@@ -91,7 +115,8 @@ public class SecurityLayout extends VerticalLayout {
 						}
 					}
 				} else if (addAction == action) {
-					// TODO 100 addAction
+					securityTable.setVisible(false);
+					addAccountTable.setVisible(true);
 				}
 				securityTable.markAsDirtyRecursive();
 
@@ -105,6 +130,62 @@ public class SecurityLayout extends VerticalLayout {
 		return parent.getJukeboxManager().canRemove(toDelete);
 	}
 
+	private void createAddAccountTable() {
+		addAccountTable = new Table();
+		addAddAccountActions();
+		updateAddAccountTable();
+		this.addComponent(addAccountTable);
+	}
+
+	private void createSecurityTable() {
+		securityTable = new Table();
+		addSecurityActions();
+		updateSecurityTable();
+		this.addComponent(securityTable);
+
+	}
+
+	private Container generateAddAccountTableContent() {
+		BeanItemContainer<AccountDTO> cont = new BeanItemContainer<AccountDTO>(
+				AccountDTO.class);
+		if (parent.isAccountLoggedIn() && parent.getMainUI() != null) {
+			JukeboxManager mgr = parent.getJukeboxManager();
+			cont.addAll(mgr.getAllNonPermittedAccounts());
+		}
+		return cont;
+	}
+
+	private Container generateSecurityTableContent() {
+		BeanItemContainer<SecurityAccountDTO> cont = new BeanItemContainer<SecurityAccountDTO>(
+				SecurityAccountDTO.class);
+		if (parent.isAccountLoggedIn() && parent.getMainUI() != null) {
+			JukeboxManager mgr = parent.getJukeboxManager();
+			cont.addAll(mgr.getAllSecurityAccounts());
+		}
+		return cont;
+	}
+
+	private void init() {
+		createSecurityTable();
+		createAddAccountTable();
+		securityTable.setVisible(true);
+		addAccountTable.setVisible(false);
+	}
+
+	private void updateAddAccountTable() {
+		addAccountTable
+				.setContainerDataSource(generateAddAccountTableContent());
+
+		addAccountTable.setVisibleColumns(new Object[] { "fullName",
+				"emailAddress", });
+		addAccountTable.setColumnHeader("fullName", "Name");
+		addAccountTable.setColumnHeader("emailAddress", "Email");
+
+		addAccountTable.setColumnCollapsingAllowed(false);
+		addAccountTable.setColumnReorderingAllowed(false);
+		addAccountTable.setImmediate(true);
+	}
+
 	private void updateSecurityTable() {
 		securityTable.setContainerDataSource(generateSecurityTableContent());
 
@@ -112,6 +193,7 @@ public class SecurityLayout extends VerticalLayout {
 				"emailAddress", });
 		securityTable.setColumnHeader("fullName", "Name");
 		securityTable.setColumnHeader("emailAddress", "Email");
+		securityTable.removeGeneratedColumn("Role");
 		securityTable.addGeneratedColumn("Role", new Table.ColumnGenerator() {
 			private static final long serialVersionUID = 8506780937035396964L;
 
@@ -132,10 +214,9 @@ public class SecurityLayout extends VerticalLayout {
 							parent.getJukeboxManager().updateAccount(
 									(SecurityAccountDTO) itemId,
 									(String) cbox.getValue());
-						}
-						else
-						{
-							cbox.setValue(((SecurityAccountDTO) itemId).getRole());
+						} else {
+							cbox.setValue(((SecurityAccountDTO) itemId)
+									.getRole());
 						}
 					}
 				});
@@ -149,15 +230,11 @@ public class SecurityLayout extends VerticalLayout {
 		securityTable.setImmediate(true);
 
 	}
-
-	private Container generateSecurityTableContent() {
-		BeanItemContainer<SecurityAccountDTO> cont = new BeanItemContainer<SecurityAccountDTO>(
-				SecurityAccountDTO.class);
-		if (parent.isAccountLoggedIn() && parent.getMainUI() != null) {
-			JukeboxManager mgr = parent.getJukeboxManager();
-			cont.addAll(mgr.getAllSecurityAccounts());
-		}
-		return cont;
+	
+	public void update()
+	{
+		this.updateAddAccountTable();
+		this.updateSecurityTable();
 	}
 
 }
