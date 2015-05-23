@@ -6,10 +6,12 @@ import be.lode.jukebox.front.web.view.general.MainLayout;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 
@@ -26,7 +28,6 @@ public class LoginView extends CustomComponent implements View {
 	private MainLayout mainLayout;
 	private OAuthListenerJukebox oauthListener;
 
-	// https://vaadin.com/wiki/-/wiki/Main/Creating%20a%20simple%20login%20view
 	public LoginView() {
 		super();
 		init();
@@ -45,13 +46,19 @@ public class LoginView extends CustomComponent implements View {
 
 	private Layout getFacebookLayout() {
 
+		ThemeResource resource = new ThemeResource("Images/portalpic_958x491.png");
+		Image img = new Image(null, resource);
+		
 		fbBtnLayout = new FacebookButtonLayout();
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.setSpacing(true);
 		hl.addComponent(fbBtnLayout);
+		hl.setComponentAlignment(fbBtnLayout, Alignment.TOP_RIGHT);
 
 		VerticalLayout vl = new VerticalLayout();
+		vl.addComponent(img);
 		vl.addComponent(hl);
+		vl.setComponentAlignment(hl, Alignment.TOP_RIGHT);
 		vl.setSpacing(true);
 		vl.setMargin(new MarginInfo(true, true, true, false));
 		vl.setSizeUndefined();

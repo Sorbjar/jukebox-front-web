@@ -6,9 +6,11 @@ import be.lode.jukebox.front.web.controller.LogoutCommand;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.service.dto.AccountDTO;
 
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -53,16 +55,37 @@ public class MainLayout extends VerticalLayout {
 			MenuBar menu = getMenuBar();
 			hl.addComponent(menu);
 			hl.setComponentAlignment(menu, Alignment.MIDDLE_RIGHT);
-		} 
+		}
 
 		hl.setSizeFull();
 
 	}
 
 	private void setJukeboxLabel() {
+
+		ThemeResource resource = new ThemeResource("Images/icon_24x24.png");
+		hl.setSpacing(false);
+		Image img = new Image(null, resource);
+		img.setStyleName("icon");
+
+		HorizontalLayout labelLayout = new HorizontalLayout();
+
+		VerticalLayout vl = new VerticalLayout();
+		vl.setHeight(100, Unit.PERCENTAGE);
+		vl.setWidth(26, Unit.PIXELS);
+		vl.addComponent(img);
+		vl.setComponentAlignment(img, Alignment.MIDDLE_LEFT);
+
 		Label jbLabel = new Label("Nyimbox");
-		hl.addComponent(jbLabel);
-		hl.setComponentAlignment(jbLabel, Alignment.MIDDLE_LEFT);
+
+		labelLayout.addComponent(vl);
+		labelLayout.setComponentAlignment(vl, Alignment.MIDDLE_LEFT);
+		labelLayout.addComponent(jbLabel);
+		labelLayout.setComponentAlignment(jbLabel, Alignment.MIDDLE_LEFT);
+
+		hl.addComponent(labelLayout);
+		hl.setComponentAlignment(labelLayout, Alignment.MIDDLE_LEFT);
+
 	}
 
 	private MenuBar getMenuBar() {

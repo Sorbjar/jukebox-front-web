@@ -20,11 +20,11 @@ import com.vaadin.event.dd.acceptcriteria.SourceIs;
 import com.vaadin.ui.AbstractSelect.AbstractSelectTargetDetails;
 import com.vaadin.ui.AbstractSelect.AcceptItem;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.ColumnGenerator;
 import com.vaadin.ui.Table.TableDragMode;
@@ -219,7 +219,8 @@ public class CurrentPlaylistLayout extends VerticalLayout {
 		});
 
 		// TODO 610 change button to disk icon
-		Button savePlaylistButton = new Button("Save");
+		NativeButton savePlaylistButton = new NativeButton();
+		savePlaylistButton.setStyleName("savebutton");
 		savePlaylistButton.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = 4802873580639834918L;
 
