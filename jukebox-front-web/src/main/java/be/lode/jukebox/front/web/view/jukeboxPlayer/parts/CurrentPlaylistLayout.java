@@ -218,7 +218,6 @@ public class CurrentPlaylistLayout extends VerticalLayout {
 			}
 		});
 
-		// TODO 610 change button to disk icon
 		NativeButton savePlaylistButton = new NativeButton();
 		savePlaylistButton.setStyleName("savebutton");
 		savePlaylistButton.addClickListener(new ClickListener() {

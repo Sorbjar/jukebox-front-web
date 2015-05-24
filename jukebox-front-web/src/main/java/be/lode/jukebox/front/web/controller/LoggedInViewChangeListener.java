@@ -17,6 +17,11 @@ public class LoggedInViewChangeListener implements ViewChangeListener {
 	}
 
 	@Override
+	public void afterViewChange(ViewChangeEvent event) {
+
+	}
+
+	@Override
 	public boolean beforeViewChange(ViewChangeEvent event) {
 		// Check if a user has logged in
 		boolean isLoginView = event.getNewView() instanceof LoginView;
@@ -33,11 +38,6 @@ public class LoggedInViewChangeListener implements ViewChangeListener {
 		}
 
 		return true;
-	}
-
-	@Override
-	public void afterViewChange(ViewChangeEvent event) {
-
 	}
 
 }

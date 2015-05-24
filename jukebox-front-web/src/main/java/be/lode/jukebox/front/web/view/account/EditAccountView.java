@@ -34,22 +34,69 @@ public class EditAccountView extends CustomComponent implements View {
 		return NAME;
 	}
 
+	private CancelListener cancelListener;
+
 	private AccountDTO currentAccount;
+
+	private TextField emailTF;
+	private VerticalLayout errorMessageLayout;
+	private TextField firstNameTF;
+	private TextField lastNameTF;
+	private MainLayout ml;
+
+	public EditAccountView() {
+		super();
+		init();
+	}
+
+	@Override
+	public void attach() {
+		super.attach();
+		update();
+	}
+
+	@Override
+	public void enter(ViewChangeEvent event) {
+		update();
+	}
 
 	public AccountDTO getCurrentAccount() {
 		return currentAccount;
 	}
 
-	private MainLayout ml;
-	private TextField firstNameTF;
-	private TextField lastNameTF;
-	private TextField emailTF;
-	private CancelListener cancelListener;
-	private VerticalLayout errorMessageLayout;
+	public TextField getEmailTF() {
+		return emailTF;
+	}
 
-	public EditAccountView() {
-		super();
-		init();
+	public TextField getFirstNameTF() {
+		return firstNameTF;
+	}
+
+	public TextField getLastNameTF() {
+		return lastNameTF;
+	}
+
+	public void showErrors(ArrayList<String> errors) {
+		errorMessageLayout.removeAllComponents();
+		for (String error : errors) {
+			errorMessageLayout.addComponent(new ErrorLabel(error));
+		}
+	}
+
+	public void update() {
+		MainUI ui = (MainUI) UI.getCurrent();
+		currentAccount = ui.getJukeboxManager().getAccount(
+				VaadinSessionManager.getLoggedInAccount());
+		ml.update();
+		fillFields();
+		errorMessageLayout.removeAllComponents();
+	}
+
+	private void fillFields() {
+		if (currentAccount != null)
+			firstNameTF.setValue(currentAccount.getFirstName());
+		lastNameTF.setValue(currentAccount.getLastName());
+		emailTF.setValue(currentAccount.getEmailAddress());
 	}
 
 	private void init() {
@@ -116,51 +163,5 @@ public class EditAccountView extends CustomComponent implements View {
 		ml = new MainLayout();
 		ml.addComponentToContainer(centerLayout);
 		this.setCompositionRoot(ml);
-	}
-
-	public TextField getFirstNameTF() {
-		return firstNameTF;
-	}
-
-	public TextField getLastNameTF() {
-		return lastNameTF;
-	}
-
-	public TextField getEmailTF() {
-		return emailTF;
-	}
-
-	@Override
-	public void attach() {
-		super.attach();
-		update();
-	}
-
-	@Override
-	public void enter(ViewChangeEvent event) {
-		update();
-	}
-
-	public void update() {
-		MainUI ui = (MainUI) UI.getCurrent();
-		currentAccount = ui.getJukeboxManager().getAccount(
-				VaadinSessionManager.getLoggedInAccount());
-		ml.update();
-		fillFields();
-		errorMessageLayout.removeAllComponents();
-	}
-
-	private void fillFields() {
-		if (currentAccount != null)
-			firstNameTF.setValue(currentAccount.getFirstName());
-		lastNameTF.setValue(currentAccount.getLastName());
-		emailTF.setValue(currentAccount.getEmailAddress());
-	}
-
-	public void showErrors(ArrayList<String> errors) {
-		errorMessageLayout.removeAllComponents();
-		for (String error : errors) {
-			errorMessageLayout.addComponent(new ErrorLabel(error));
-		}
 	}
 }

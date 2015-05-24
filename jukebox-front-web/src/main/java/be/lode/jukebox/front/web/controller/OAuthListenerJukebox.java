@@ -15,19 +15,19 @@ public class OAuthListenerJukebox implements OAuthListener {
 		mainUI.navigateTo(LoginView.getName());
 	}
 
-	@Override
-	public void userAuthenticated(IOAuthUser user) {
-		VaadinSessionManager.setLoggedInAccount(mainUI.getJukeboxManager()
-				.getUser(user));
-		mainUI.navigateTo(ChooseJukeboxView.getName());
-	}
-
 	public MainUI getMainUI() {
 		return mainUI;
 	}
 
 	public void setMainUI(MainUI mainUI) {
 		this.mainUI = mainUI;
+	}
+
+	@Override
+	public void userAuthenticated(IOAuthUser user) {
+		VaadinSessionManager.setLoggedInAccount(mainUI.getJukeboxManager()
+				.getUser(user));
+		mainUI.navigateTo(ChooseJukeboxView.getName());
 	}
 
 }

@@ -30,12 +30,12 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		return NAME;
 	}
 
+	private MejsAudioComponentPanel audioPlayerPanel;
 	private CurrentJukeboxLayout currentJukeboxLayout;
 	private CurrentPlaylistLayout currentPlaylistLayout;
-	private LibraryLayout libraryLayout;
 
+	private LibraryLayout libraryLayout;
 	private MainLayout ml;
-	private MejsAudioComponentPanel audioPlayerPanel;
 
 	public JukeboxPlayerView() {
 		super();
@@ -58,9 +58,18 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		return libraryLayout.getLibraryTable();
 	}
 
+	public void playMandatorySong() {
+		audioPlayerPanel.playMandatorySong();
+	}
+
+	public void playSong(SongDTO song) {
+		audioPlayerPanel.playSong(song);
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
-		if (arg.equals(UpdateArgs.CURRENT_JUKEBOX) || arg.equals(UpdateArgs.CURRENT_ACCOUNT)) {
+		if (arg.equals(UpdateArgs.CURRENT_JUKEBOX)
+				|| arg.equals(UpdateArgs.CURRENT_ACCOUNT)) {
 			currentJukeboxLayout.update();
 			currentPlaylistLayout.update();
 		}
@@ -92,7 +101,8 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		topContainerPanel.setContent(rightSplitPanel);
 		topContainerPanel.setWidth(99, Unit.PERCENTAGE);
 		topLayout.addComponent(topContainerPanel);
-		topLayout.setComponentAlignment(topContainerPanel, Alignment.TOP_CENTER);
+		topLayout
+				.setComponentAlignment(topContainerPanel, Alignment.TOP_CENTER);
 		topLayout.setSizeFull();
 
 		HorizontalLayout bottomLayout = new HorizontalLayout();
@@ -120,13 +130,5 @@ public class JukeboxPlayerView extends JukeboxCustomComponent implements View,
 		currentPlaylistLayout.update();
 		libraryLayout.update();
 		audioPlayerPanel.update();
-	}
-
-	public void playSong(SongDTO song) {
-		audioPlayerPanel.playSong(song);
-	}
-
-	public void playMandatorySong() {
-		audioPlayerPanel.playMandatorySong();
 	}
 }

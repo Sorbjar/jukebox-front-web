@@ -17,7 +17,6 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
-//TODO 610 prettify
 public class MainLayout extends VerticalLayout {
 	private static final long serialVersionUID = 5257805110680869966L;
 	// The container is what the application will interact with.
@@ -61,6 +60,32 @@ public class MainLayout extends VerticalLayout {
 
 	}
 
+	private MenuBar getMenuBar() {
+		MenuBar ret = new MenuBar();
+		AccountDTO acc = VaadinSessionManager.getLoggedInAccount();
+		MenuItem userItem = ret.addItem(acc.getFirstName(), null);
+		MenuItem editProfileItem = userItem.addItem("Edit profile", null);
+		editProfileItem.setCommand(new EditProfileCommand());
+		MenuItem chooseJukebox = userItem.addItem("Choose jukebox", null);
+		chooseJukebox.setCommand(new ChooseJukeboxCommand());
+		MenuItem logoutItem = userItem.addItem("Logout", null);
+		logoutItem.setCommand(new LogoutCommand());
+		return ret;
+	}
+
+	private void init() {
+		hl = new HorizontalLayout();
+		Panel headerBar = new Panel();
+		headerBar.setContent(hl);
+		headerBar.setStyleName("headerbar");
+		headerBar.setWidth(100, Unit.PERCENTAGE);
+		this.addComponent(headerBar);
+		container = new VerticalLayout();
+		container.setSizeFull();
+		container.setWidth(100, Unit.PERCENTAGE);
+		this.addComponent(container);
+	}
+
 	private void setJukeboxLabel() {
 
 		ThemeResource resource = new ThemeResource("Images/icon_24x24.png");
@@ -86,31 +111,5 @@ public class MainLayout extends VerticalLayout {
 		hl.addComponent(labelLayout);
 		hl.setComponentAlignment(labelLayout, Alignment.MIDDLE_LEFT);
 
-	}
-
-	private MenuBar getMenuBar() {
-		MenuBar ret = new MenuBar();
-		AccountDTO acc = VaadinSessionManager.getLoggedInAccount();
-		MenuItem userItem = ret.addItem(acc.getFirstName(), null);
-		MenuItem editProfileItem = userItem.addItem("Edit profile", null);
-		editProfileItem.setCommand(new EditProfileCommand());
-		MenuItem chooseJukebox = userItem.addItem("Choose jukebox", null);
-		chooseJukebox.setCommand(new ChooseJukeboxCommand());
-		MenuItem logoutItem = userItem.addItem("Logout", null);
-		logoutItem.setCommand(new LogoutCommand());
-		return ret;
-	}
-
-	private void init() {
-		hl = new HorizontalLayout();
-		Panel headerBar = new Panel();
-		headerBar.setContent(hl);
-		headerBar.setStyleName("headerbar");
-		headerBar.setWidth(100, Unit.PERCENTAGE);
-		this.addComponent(headerBar);
-		container = new VerticalLayout();
-		container.setSizeFull();
-		container.setWidth(100, Unit.PERCENTAGE);
-		this.addComponent(container);
 	}
 }

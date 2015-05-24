@@ -19,6 +19,17 @@ public class AudioManager {
 		this.paused = true;
 	}
 
+	public void first() {
+		stop();
+		SongDTO song = mejsAudioComponentPanel.getJukeboxManager()
+				.getFirstSong();
+		if (song != null) {
+			mejsAudioComponentPanel.getJukeboxManager().setCurrentSong(song);
+			getAudioPlayer().setSource(
+					new FileResource(new File(song.getPath())));
+		}
+	}
+
 	public boolean isPaused() {
 		return paused;
 	}
@@ -95,16 +106,5 @@ public class AudioManager {
 
 	private void update() {
 		mejsAudioComponentPanel.update();
-	}
-
-	public void first() {
-		stop();
-		SongDTO song = mejsAudioComponentPanel.getJukeboxManager()
-				.getFirstSong();
-		if (song != null) {
-			mejsAudioComponentPanel.getJukeboxManager().setCurrentSong(song);
-			getAudioPlayer().setSource(
-					new FileResource(new File(song.getPath())));
-		}
 	}
 }

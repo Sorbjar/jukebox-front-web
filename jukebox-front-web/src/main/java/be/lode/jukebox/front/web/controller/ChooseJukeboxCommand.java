@@ -11,7 +11,8 @@ public class ChooseJukeboxCommand implements Command {
 
 	@Override
 	public void menuSelected(MenuItem selectedItem) {
-		VaadinSessionManager.getMainUI().navigateTo(ChooseJukeboxView.getName());
+		VaadinSessionManager.getMainUI()
+				.navigateTo(ChooseJukeboxView.getName());
 	}
 
 }

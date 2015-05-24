@@ -35,6 +35,10 @@ public class VaadinSessionManager {
 		// return null;
 	}
 
+	public static MainUI getMainUI() {
+		return (MainUI) UI.getCurrent();
+	}
+
 	public static boolean isAccountLoggedIn() {
 		Cookie idCookie = getCookieByName(ID_COOKIE);
 		Cookie nameCookie = getCookieByName(NAME_COOKIE);
@@ -54,6 +58,29 @@ public class VaadinSessionManager {
 		return VaadinSession.getCurrent().getAttribute("user") != null;
 		// return false;
 		// return VaadinSession.getCurrent().getAttribute("user") != null;
+	}
+
+	public static void logOutAccount() {
+		Cookie idCookie = getCookieByName(ID_COOKIE);
+		Cookie nameCookie = getCookieByName(NAME_COOKIE);
+
+		if (idCookie != null) {
+			idCookie.setValue("");
+		}
+		if (nameCookie != null) {
+			nameCookie.setValue("");
+		}
+
+		idCookie.setMaxAge(1);
+		nameCookie.setMaxAge(1);
+
+		idCookie.setPath(VaadinService.getCurrentRequest().getContextPath());
+		nameCookie.setPath(VaadinService.getCurrentRequest().getContextPath());
+
+		VaadinService.getCurrentResponse().addCookie(idCookie);
+		VaadinService.getCurrentResponse().addCookie(nameCookie);
+
+		VaadinSession.getCurrent().setAttribute("user", null);
 	}
 
 	public static void setLoggedInAccount(AccountDTO user) {
@@ -96,32 +123,5 @@ public class VaadinSessionManager {
 			}
 		}
 		return null;
-	}
-
-	public static void logOutAccount() {
-		Cookie idCookie = getCookieByName(ID_COOKIE);
-		Cookie nameCookie = getCookieByName(NAME_COOKIE);
-
-		if (idCookie != null) {
-			idCookie.setValue("");
-		}
-		if (nameCookie != null) {
-			nameCookie.setValue("");
-		}
-
-		idCookie.setMaxAge(1);
-		nameCookie.setMaxAge(1);
-
-		idCookie.setPath(VaadinService.getCurrentRequest().getContextPath());
-		nameCookie.setPath(VaadinService.getCurrentRequest().getContextPath());
-
-		VaadinService.getCurrentResponse().addCookie(idCookie);
-		VaadinService.getCurrentResponse().addCookie(nameCookie);
-
-		VaadinSession.getCurrent().setAttribute("user", null);
-	}
-
-	public static MainUI getMainUI() {
-		return (MainUI) UI.getCurrent();
 	}
 }

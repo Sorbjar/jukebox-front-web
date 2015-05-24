@@ -38,11 +38,11 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 	}
 
 	private CancelListener cancelListener;
+	private ComboBox currencyCBox;
 	private VerticalLayout errorMessageLayout;
 	private MainLayout ml;
 	private TextField nameTF;
 	private TextField paymentEmailTF;
-	private ComboBox currencyCBox;
 	private TextField pricePerSongTF;
 	private VerticalLayout security;
 	private SecurityLayout sl;
@@ -63,8 +63,20 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		update();
 	}
 
+	public ComboBox getCurrencyCBox() {
+		return currencyCBox;
+	}
+
 	public TextField getNameTF() {
 		return nameTF;
+	}
+
+	public TextField getPaymentEmailTF() {
+		return paymentEmailTF;
+	}
+
+	public TextField getPricePerSongTF() {
+		return pricePerSongTF;
 	}
 
 	public void showErrors(ArrayList<String> errors) {
@@ -82,11 +94,39 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		sl.update();
 	}
 
+	private void fillFields() {
+		currencyCBox.removeAllItems();
+		currencyCBox.addItems(getCurrencyManager().getCurrencyList());
+		currencyCBox.setNullSelectionAllowed(false);
+		if (getJukeboxManager() != null
+				&& getJukeboxManager().getCurrentJukeboxDTO() != null) {
+			JukeboxDTO currentJukeboxDTO = getJukeboxManager()
+					.getCurrentJukeboxDTO();
+			PayPalSettingsDTO currentPayPalSettingsDTO = getJukeboxManager()
+					.getCurrentPayPalSettingsDTO();
+			nameTF.setValue(currentJukeboxDTO.getName());
+			paymentEmailTF.setValue(currentPayPalSettingsDTO.getEmail());
+			currencyCBox.setValue(getCurrencyManager().getCurrency(
+					currentPayPalSettingsDTO.getPayPalCurrencyCode()));
+			pricePerSongTF.setValue(currentPayPalSettingsDTO.getPricePerSong());
+		}
+	}
+
+	private StreamResource generatePDF() {
+		StreamSource pdfSource = getJukeboxManager().getPDFStream();
+		String pdfFilename = "QR "
+				+ getJukeboxManager().getCurrentJukeboxDTO().getName() + ".pdf";
+		StreamResource pdfresource = new StreamResource(pdfSource, pdfFilename);
+		pdfresource.setMIMEType("application/pdf");
+		pdfresource.getStream().setParameter("Content-Disposition",
+				"attachment; filename=" + pdfFilename);
+		return pdfresource;
+	}
+
 	private void generateQR() {
-		// TODO 800 multiple options QR code eg download app from marketplace,
 		// open app, ....
 		security.removeAllComponents();
-		//security.addComponent(new Label());
+		// security.addComponent(new Label());
 		try {
 			StreamResource.StreamSource imagesource = getJukeboxManager()
 					.getQRStream(263, 263);
@@ -115,47 +155,6 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		} catch (NullPointerException e) {
 			// do nothing
 		}
-	}
-
-	private StreamResource generatePDF() {
-		StreamSource pdfSource = getJukeboxManager().getPDFStream();
-		String pdfFilename = "QR "
-				+ getJukeboxManager().getCurrentJukeboxDTO().getName() + ".pdf";
-		StreamResource pdfresource = new StreamResource(pdfSource, pdfFilename);
-		pdfresource.setMIMEType("application/pdf");
-		pdfresource.getStream().setParameter("Content-Disposition",
-				"attachment; filename=" + pdfFilename);
-		return pdfresource;
-	}
-
-	private void fillFields() {
-		currencyCBox.removeAllItems();
-		currencyCBox.addItems(getCurrencyManager().getCurrencyList());
-		currencyCBox.setNullSelectionAllowed(false);
-		if (getJukeboxManager() != null
-				&& getJukeboxManager().getCurrentJukeboxDTO() != null) {
-			JukeboxDTO currentJukeboxDTO = getJukeboxManager()
-					.getCurrentJukeboxDTO();
-			PayPalSettingsDTO currentPayPalSettingsDTO = getJukeboxManager()
-					.getCurrentPayPalSettingsDTO();
-			nameTF.setValue(currentJukeboxDTO.getName());
-			paymentEmailTF.setValue(currentPayPalSettingsDTO.getEmail());
-			currencyCBox.setValue(getCurrencyManager().getCurrency(
-					currentPayPalSettingsDTO.getPayPalCurrencyCode()));
-			pricePerSongTF.setValue(currentPayPalSettingsDTO.getPricePerSong());
-		}
-	}
-
-	public TextField getPaymentEmailTF() {
-		return paymentEmailTF;
-	}
-
-	public ComboBox getCurrencyCBox() {
-		return currencyCBox;
-	}
-
-	public TextField getPricePerSongTF() {
-		return pricePerSongTF;
 	}
 
 	private void init() {
@@ -228,7 +227,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.addComponent(vl);
 		hl.addComponent(security);
-		
+
 		VerticalLayout vl1 = new VerticalLayout();
 		vl1.addComponent(titleLabel);
 		vl1.addComponent(hl);
@@ -236,13 +235,10 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		vl1.setComponentAlignment(buttonContainer, Alignment.TOP_CENTER);
 		vl1.addComponent(new Label());
 
-		
 		sl = new SecurityLayout(this);
 		vl1.addComponent(sl);
 		vl1.setComponentAlignment(sl, Alignment.TOP_CENTER);
-		
-		
-		
+
 		HorizontalLayout centerLayout = new HorizontalLayout();
 		Panel centerPanel = new Panel();
 		centerPanel.setStyleName("centerpanel");
@@ -251,7 +247,7 @@ public class EditJukeboxView extends JukeboxCustomComponent implements View {
 		centerLayout.setWidth(100, Unit.PERCENTAGE);
 		centerLayout.addComponent(centerPanel);
 		centerLayout.setComponentAlignment(centerPanel, Alignment.TOP_CENTER);
-		
+
 		ml = new MainLayout();
 		ml.addComponentToContainer(centerLayout);
 		this.setCompositionRoot(ml);

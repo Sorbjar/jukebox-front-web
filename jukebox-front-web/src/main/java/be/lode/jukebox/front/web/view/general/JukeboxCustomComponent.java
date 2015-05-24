@@ -13,16 +13,16 @@ public abstract class JukeboxCustomComponent extends CustomComponent implements
 	private static final long serialVersionUID = 3369786400854669264L;
 
 	@Override
-	public JukeboxManager getJukeboxManager() {
+	public CurrencyManager getCurrencyManager() {
 		if (getMainUI() != null)
-			return getMainUI().getJukeboxManager();
+			return getMainUI().getCurrencyManager();
 		return null;
 	}
 
 	@Override
-	public CurrencyManager getCurrencyManager() {
+	public JukeboxManager getJukeboxManager() {
 		if (getMainUI() != null)
-			return getMainUI().getCurrencyManager();
+			return getMainUI().getJukeboxManager();
 		return null;
 	}
 

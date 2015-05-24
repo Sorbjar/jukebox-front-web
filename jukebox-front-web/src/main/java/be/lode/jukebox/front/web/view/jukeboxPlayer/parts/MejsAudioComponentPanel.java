@@ -102,7 +102,6 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 		nextButton.setStyleName("nextbutton");
 		previousButton.setEnabled(true);
 		previousButton.setStyleName("previousbutton");
-		// TODO 100 change disabled buttons so it's visual
 		if (getJukeboxManager().isMandatory()) {
 			nextButton.setEnabled(false);
 			nextButton.setStyleName("nextbuttondisabled");
@@ -237,7 +236,6 @@ public class MejsAudioComponentPanel extends Panel implements Observer {
 			}
 		});
 
-		// TODO 620 add volume icon
 		Label volumeSliderLabel = new Label();
 		volumeSliderLabel.setIcon(FontAwesome.VOLUME_UP);
 		volumeSliderLabel.setStyleName("volumeicon");

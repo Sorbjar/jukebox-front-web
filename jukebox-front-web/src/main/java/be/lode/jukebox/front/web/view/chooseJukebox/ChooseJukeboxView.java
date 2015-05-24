@@ -172,7 +172,8 @@ public class ChooseJukeboxView extends JukeboxCustomComponent implements View,
 		});
 		jukeboxTableLayout.setWidth(100, Unit.PERCENTAGE);
 		jukeboxTableLayout.addComponent(jukeboxTable);
-		jukeboxTableLayout.setComponentAlignment(jukeboxTable,Alignment.TOP_CENTER);
+		jukeboxTableLayout.setComponentAlignment(jukeboxTable,
+				Alignment.TOP_CENTER);
 
 	}
 

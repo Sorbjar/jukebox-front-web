@@ -15,7 +15,6 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 
-//TODO 610 prettify
 public class LoginView extends CustomComponent implements View {
 	private static final String NAME = "Login";
 	private static final long serialVersionUID = 3684376934342087722L;
@@ -46,9 +45,10 @@ public class LoginView extends CustomComponent implements View {
 
 	private Layout getFacebookLayout() {
 
-		ThemeResource resource = new ThemeResource("Images/portalpic_958x491.png");
+		ThemeResource resource = new ThemeResource(
+				"Images/portalpic_958x491.png");
 		Image img = new Image(null, resource);
-		
+
 		fbBtnLayout = new FacebookButtonLayout();
 		HorizontalLayout hl = new HorizontalLayout();
 		hl.setSpacing(true);

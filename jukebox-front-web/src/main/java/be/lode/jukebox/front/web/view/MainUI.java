@@ -22,8 +22,6 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
-//TODO 650 externalise Strings
-//TODO 650 internationalisation
 
 @Theme("jukeboxTheme")
 @Widgetset("be.lode.jukebox.front.web.JukeboxWidgetset")
@@ -36,12 +34,12 @@ public class MainUI extends UI {
 	}
 
 	private static final long serialVersionUID = -4892783635443538479L;
+	private CurrencyManager currencyManager;
 	private String currentNavigationState;
+	private EntityManagerFactory emf;
 	private JukeboxManager jukeboxManager;
 	private OAuthApiInfoManager oAuthManager;
 	private String previousNavigationState;
-	private CurrencyManager currencyManager;
-	private EntityManagerFactory emf;
 
 	public MainUI() {
 		super();
@@ -79,7 +77,6 @@ public class MainUI extends UI {
 
 	public void navigateTo(String navigationState) {
 		// use this in stead of getNavigator, so we can go back
-		// TODO 890 possibly save in ordered list
 		this.previousNavigationState = currentNavigationState;
 		this.currentNavigationState = navigationState;
 		if (navigationState != null)

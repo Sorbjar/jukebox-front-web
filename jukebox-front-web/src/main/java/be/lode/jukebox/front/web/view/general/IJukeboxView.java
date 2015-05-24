@@ -6,9 +6,9 @@ import be.lode.jukebox.service.manager.CurrencyManager;
 import be.lode.jukebox.service.manager.JukeboxManager;
 
 public interface IJukeboxView {
-	JukeboxManager getJukeboxManager();
-
 	CurrencyManager getCurrencyManager();
+
+	JukeboxManager getJukeboxManager();
 
 	MainUI getMainUI();
 

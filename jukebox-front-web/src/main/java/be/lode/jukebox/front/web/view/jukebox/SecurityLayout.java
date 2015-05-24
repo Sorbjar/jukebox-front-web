@@ -121,7 +121,8 @@ public class SecurityLayout extends VerticalLayout {
 																VaadinSessionManager
 																		.getLoggedInAccount(),
 																toDelete)) {
-													parent.getJukeboxManager().updateCurrentUser();
+													parent.getJukeboxManager()
+															.updateCurrentUser();
 													parent.getMainUI()
 															.navigateTo(
 																	ChooseJukeboxView
@@ -193,23 +194,22 @@ public class SecurityLayout extends VerticalLayout {
 		securityContainer.addComponent(securityTable);
 		addSecurityActions();
 		updateSecurityTable();
-		
-		
+
 		Button deleteAllCustomers = new Button("Delete all customers");
 		deleteAllCustomers.addClickListener(new ClickListener() {
 			private static final long serialVersionUID = -4426923552502859188L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ConfirmDialog.show(parent.getMainUI(),
-						"Confirm delete",
-						"Are you sure you wish to delete all customers?", "Yes",
-						"No", new ConfirmDialog.Listener() {
+				ConfirmDialog.show(parent.getMainUI(), "Confirm delete",
+						"Are you sure you wish to delete all customers?",
+						"Yes", "No", new ConfirmDialog.Listener() {
 							private static final long serialVersionUID = 4106098936414046976L;
 
 							public void onClose(ConfirmDialog dialog) {
 								if (dialog.isConfirmed()) {
-									parent.getJukeboxManager().removeAllCustomers();
+									parent.getJukeboxManager()
+											.removeAllCustomers();
 									update();
 									securityTable.setVisible(true);
 									addAccountContainer.setVisible(false);
@@ -218,13 +218,13 @@ public class SecurityLayout extends VerticalLayout {
 						});
 			}
 		});
-		
+
 		securityContainer.setComponentAlignment(securityTable,
 				Alignment.TOP_CENTER);
 		securityContainer.addComponent(deleteAllCustomers);
 		securityContainer.setComponentAlignment(deleteAllCustomers,
 				Alignment.TOP_CENTER);
-		
+
 		mainPanelLayout.addComponent(securityContainer);
 		mainPanelLayout.setComponentAlignment(securityContainer,
 				Alignment.TOP_CENTER);
@@ -327,7 +327,6 @@ public class SecurityLayout extends VerticalLayout {
 				return cbox;
 			}
 		});
-		// TODO 100 delete all customers
 
 		securityTable.setWidth(80, Unit.PERCENTAGE);
 		securityTable.setPageLength(10);

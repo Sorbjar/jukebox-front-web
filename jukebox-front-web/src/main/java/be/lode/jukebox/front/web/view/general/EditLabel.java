@@ -14,16 +14,32 @@ public class EditLabel extends VerticalLayout {
 	private Label tempLabel;
 	private TextField tempTF;
 
-	public EditLabel()  {
+	public EditLabel() {
 		super();
 		this.caption = "";
 		init();
 	}
-	
+
 	public EditLabel(String caption) {
 		super();
 		this.caption = caption;
 		init();
+	}
+
+	public void addBlurListener(BlurListener listener) {
+		addListener(BlurEvent.EVENT_ID, BlurEvent.class, listener,
+				BlurListener.blurMethod);
+	}
+
+	public String getValue() {
+		return caption;
+	}
+
+	public void setValue(String name) {
+		removeAllComponents();
+		caption = name;
+		tempLabel.setValue(caption);
+		addComponent(tempLabel);
 	}
 
 	private void init() {
@@ -54,22 +70,6 @@ public class EditLabel extends VerticalLayout {
 				});
 			}
 		});
-	}
-
-	public void setValue(String name) {
-		removeAllComponents();
-		caption = name;
-		tempLabel.setValue(caption);
-		addComponent(tempLabel);
-	}
-
-	public String getValue() {
-		return caption;
-	}
-
-	public void addBlurListener(BlurListener listener) {
-		addListener(BlurEvent.EVENT_ID, BlurEvent.class, listener,
-                BlurListener.blurMethod);
 	}
 
 }

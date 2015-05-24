@@ -21,7 +21,6 @@ import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
-//TODO 610 prettify
 public class CurrentJukeboxLayout extends VerticalLayout {
 	private static final long serialVersionUID = -2978450768039658888L;
 	private Label jukeboxNameLabel;
@@ -65,7 +64,6 @@ public class CurrentJukeboxLayout extends VerticalLayout {
 
 	private void init() {
 		jukeboxNameLabel = new Label();
-		// TODO 610 change button to crotchet
 		editJukeboxButton = new NativeButton();
 		editJukeboxButton.setStyleName("editbutton");
 		editJukeboxButton.addClickListener(new ClickListener() {

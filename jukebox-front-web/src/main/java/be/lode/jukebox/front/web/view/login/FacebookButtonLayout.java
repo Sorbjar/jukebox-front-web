@@ -11,9 +11,9 @@ import com.vaadin.ui.VerticalLayout;
 public class FacebookButtonLayout extends VerticalLayout {
 	private static final long serialVersionUID = 6341978049030566583L;
 
+	private FacebookButton btn;
 	private OAuthApiInfoDTO oAuthApiInfoDTO;
 	private OAuthListenerJukebox oauthListener;
-	private FacebookButton btn;
 
 	@Override
 	public void attach() {
@@ -21,9 +21,8 @@ public class FacebookButtonLayout extends VerticalLayout {
 		OAuthApiInfoManager OAuthManager = new OAuthApiInfoManager();
 		oAuthApiInfoDTO = OAuthManager.getOAuthApiInfo("Facebook");
 
-		btn = new FacebookButton("Facebook",
-				oAuthApiInfoDTO.getApiKey(), oAuthApiInfoDTO.getApiSecret(),
-				oauthListener);
+		btn = new FacebookButton("Facebook", oAuthApiInfoDTO.getApiKey(),
+				oAuthApiInfoDTO.getApiSecret(), oauthListener);
 		btn.setIcon(FontAwesome.FACEBOOK_SQUARE);
 		btn.setStyleName("facebookbutton");
 		this.addComponent(btn);
