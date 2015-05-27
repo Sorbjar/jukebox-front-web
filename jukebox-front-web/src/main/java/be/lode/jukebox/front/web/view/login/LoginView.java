@@ -46,7 +46,7 @@ public class LoginView extends CustomComponent implements View {
 	private Layout getFacebookLayout() {
 
 		ThemeResource resource = new ThemeResource(
-				"Images/portalpic_958x491.png");
+				"Images/portalpic_860x459.png");
 		Image img = new Image(null, resource);
 
 		fbBtnLayout = new FacebookButtonLayout();
