@@ -68,7 +68,7 @@ public class SecurityLayout extends VerticalLayout {
 					AccountDTO toAdd = (AccountDTO) target;
 					parent.getJukeboxManager().addAccount(toAdd);
 					update();
-					securityTable.setVisible(true);
+					securityContainer.setVisible(true);
 					addAccountContainer.setVisible(false);
 				}
 				addAccountTable.markAsDirtyRecursive();
@@ -136,7 +136,7 @@ public class SecurityLayout extends VerticalLayout {
 				} else if (addAction == action) {
 
 					titleLabel.setValue("Add account ");
-					securityTable.setVisible(false);
+					securityContainer.setVisible(false);
 					addAccountContainer.setVisible(true);
 				}
 				securityTable.markAsDirtyRecursive();
@@ -160,7 +160,7 @@ public class SecurityLayout extends VerticalLayout {
 				AccountDTO toAdd = (AccountDTO) event.getItemId();
 				parent.getJukeboxManager().addAccount(toAdd);
 				update();
-				securityTable.setVisible(true);
+				securityContainer.setVisible(true);
 				addAccountContainer.setVisible(false);
 			}
 		});
@@ -174,7 +174,7 @@ public class SecurityLayout extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				update();
-				securityTable.setVisible(true);
+				securityContainer.setVisible(true);
 				addAccountContainer.setVisible(false);
 			}
 		});
@@ -211,7 +211,7 @@ public class SecurityLayout extends VerticalLayout {
 									parent.getJukeboxManager()
 											.removeAllCustomers();
 									update();
-									securityTable.setVisible(true);
+									securityContainer.setVisible(true);
 									addAccountContainer.setVisible(false);
 								}
 							}
@@ -266,7 +266,7 @@ public class SecurityLayout extends VerticalLayout {
 
 		createSecurityTable();
 		createAddAccountTable();
-		securityTable.setVisible(true);
+		securityContainer.setVisible(true);
 		addAccountContainer.setVisible(false);
 
 		mainPanel.setStyleName("centerpanel");
