@@ -19,6 +19,9 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.BootstrapFragmentResponse;
+import com.vaadin.server.BootstrapListener;
+import com.vaadin.server.BootstrapPageResponse;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
@@ -48,6 +51,7 @@ public class MainUI extends UI {
 		currencyManager = new CurrencyManager(emf);
 		oAuthManager = new OAuthApiInfoManager(emf);
 		getPage().setTitle("Nyimbox");
+		
 	}
 
 	public CurrencyManager getCurrencyManager() {
