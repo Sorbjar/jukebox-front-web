@@ -1,5 +1,6 @@
 package be.lode.jukebox.front.web.view.jukeboxPlayer.parts;
 
+import be.lode.jukebox.front.web.Constants;
 import be.lode.jukebox.front.web.view.general.EditLabel;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.service.dto.SongDTO;
@@ -185,7 +186,7 @@ public class CurrentPlaylistLayout extends VerticalLayout {
 			JukeboxManager mgr = parent.getJukeboxManager();
 			cont.addAll(mgr.getMandatorySongs());
 		}
-		mandatoryPageLength = min(cont.size(), 5);
+		mandatoryPageLength = min(cont.size(), Constants.MAX_MANDATORY_TABLE_LENGTH);
 		return cont;
 	}
 
@@ -275,6 +276,6 @@ public class CurrentPlaylistLayout extends VerticalLayout {
 				.setContainerDataSource(generatePlaylistSongTableContent());
 		playlistSongTable.setVisibleColumns(new Object[] { "Songs" });
 		playlistSongTable.setColumnHeaders("Songs");
-		playlistSongTable.setPageLength(16 - mandatoryPageLength);
+		playlistSongTable.setPageLength(Constants.MAX_TABLE_LENGTH + 1 - mandatoryPageLength);
 	}
 }

@@ -1,6 +1,7 @@
 package be.lode.jukebox.front.web.view.jukeboxPlayer.parts;
 
 import be.lode.jukebox.business.model.enums.Role;
+import be.lode.jukebox.front.web.Constants;
 import be.lode.jukebox.front.web.view.VaadinSessionManager;
 import be.lode.jukebox.front.web.view.jukebox.EditJukeboxView;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
@@ -85,7 +86,7 @@ public class CurrentJukeboxLayout extends VerticalLayout {
 		playlistTable = new Table();
 
 		updatePlaylistTable();
-		playlistTable.setPageLength(15);
+		playlistTable.setPageLength(Constants.MAX_TABLE_LENGTH);
 		playlistTable.setSelectable(true);
 		playlistTable.setMultiSelect(false);
 		playlistTable.setImmediate(true);

@@ -1,5 +1,6 @@
 package be.lode.jukebox.front.web.view.jukeboxPlayer.parts;
 
+import be.lode.jukebox.front.web.Constants;
 import be.lode.jukebox.front.web.view.jukeboxPlayer.JukeboxPlayerView;
 import be.lode.jukebox.service.dto.SongDTO;
 import be.lode.jukebox.service.manager.JukeboxManager;
@@ -63,7 +64,7 @@ public class LibraryLayout extends VerticalLayout {
 
 		libraryTable = new Table();
 		updateSongLibraryTable();
-		libraryTable.setPageLength(16);
+		libraryTable.setPageLength(Constants.MAX_TABLE_LENGTH + 1);
 		libraryTable.setSelectable(true);
 		libraryTable.setMultiSelect(true);
 		libraryTable.setImmediate(true);
